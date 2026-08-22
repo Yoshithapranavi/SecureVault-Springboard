@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <!-- Log Directory -->
+    <property name="LOG_PATH" value="logs"/>
+
+    <!-- Console Appender -->
+    <appender name="CONSOLE"
+              class="ch.qos.logback.core.ConsoleAppender">
+
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+
+    </appender>
+
+    <!-- Rolling File Appender -->
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>${LOG_PATH}/securevault.log</file>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+            <!-- Daily Log File -->
+
+            <fileNamePattern>
+                ${LOG_PATH}/securevault-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+
+            <!-- Max File Size -->
+
+            <maxFileSize>10MB</maxFileSize>
+
+            <!-- Keep logs for 7 days -->
+
+            <maxHistory>7</maxHistory>
+
+            <!-- Maximum storage -->
+
+            <totalSizeCap>1GB</totalSizeCap>
+
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+
+    </appender>
+
+    <!-- Root Logger -->
+
+    <root level="INFO">
+
+        <appender-ref ref="CONSOLE"/>
+
+        <appender-ref ref="FILE"/>
+
+    </root>
+
+</configuration>

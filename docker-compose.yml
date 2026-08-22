@@ -1,0 +1,75 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: securevault-postgres
+
+    environment:
+      POSTGRES_DB: securevault
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: securevault-redis
+
+    volumes:
+      - redis_data:/data
+
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: securevault-backend:latest
+    container_name: securevault-backend
+
+    ports:
+      - "8081:8081"
+
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      AES_KEY: ${AES_KEY}
+      AES_KEY_V2: ${AES_KEY_V2}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/securevault
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+
+    depends_on:
+      - postgres
+      - redis
+
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    image: securevault-frontend:latest
+    container_name: securevault-frontend
+
+    ports:
+      - "3000:80"
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:

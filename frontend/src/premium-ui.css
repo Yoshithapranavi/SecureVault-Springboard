@@ -1,0 +1,6831 @@
+/* =========================================================
+   SECUREVAULT — PREMIUM DASHBOARD V2
+   ========================================================= */
+
+:root {
+    --sv-bg: #f3f5f9;
+    --sv-white: #ffffff;
+
+    --sv-navy: #0d1728;
+    --sv-navy-2: #141f33;
+    --sv-navy-3: #1c2940;
+
+    --sv-blue: #4169e1;
+    --sv-blue-dark: #3154c7;
+    --sv-blue-soft: #edf2ff;
+
+    --sv-violet: #8067ed;
+
+    --sv-text: #111c2f;
+    --sv-text-2: #536176;
+    --sv-muted: #7c889b;
+
+    --sv-border: #e1e6ee;
+
+    --sv-green: #14966b;
+    --sv-green-soft: #eaf8f2;
+
+    --sv-orange: #d08322;
+    --sv-orange-soft: #fff5e5;
+
+    --sv-red: #c74640;
+    --sv-red-soft: #fff0ef;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.sv-dashboard-page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding-bottom: 55px;
+    color: var(--sv-text);
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.sv-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 30px;
+
+    margin-bottom: 25px;
+
+    animation: sv-enter .6s ease both;
+}
+
+.sv-overline,
+.sv-card-overline {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: var(--sv-blue);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 1.7px;
+}
+
+.sv-dashboard-heading h1 {
+    margin: 0;
+
+    color: var(--sv-text);
+
+    font-size: clamp(30px, 3.2vw, 43px);
+    line-height: 1.05;
+
+    font-weight: 760;
+
+    letter-spacing: -1.8px;
+}
+
+.sv-dashboard-heading p {
+    margin: 10px 0 0;
+
+    color: var(--sv-text-2);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.sv-dashboard-header-actions {
+    display: flex;
+    gap: 9px;
+}
+
+.sv-secondary-action,
+.sv-primary-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 42px;
+    padding: 0 16px;
+
+    border-radius: 9px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.sv-secondary-action {
+    border: 1px solid var(--sv-border);
+    background: white;
+    color: #475467;
+}
+
+.sv-secondary-action:hover {
+    border-color: #c7cfdb;
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(15, 23, 42, .06);
+}
+
+.sv-primary-action {
+    border: 1px solid var(--sv-blue);
+    background: linear-gradient(135deg,
+            #4c70ed,
+            #385bd4);
+
+    color: white;
+
+    box-shadow:
+        0 8px 20px rgba(65, 105, 225, .23);
+}
+
+.sv-primary-action:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 28px rgba(65, 105, 225, .30);
+}
+
+.sv-primary-action span {
+    transition: transform .2s ease;
+}
+
+.sv-primary-action:hover span {
+    transform: translate(3px, -2px);
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.sv-security-hero {
+    position: relative;
+
+    min-height: 350px;
+
+    overflow: hidden;
+
+    margin-bottom: 16px;
+
+    border-radius: 21px;
+
+    background:
+        radial-gradient(circle at 78% 45%,
+            rgba(87, 112, 255, .23),
+            transparent 25%),
+        radial-gradient(circle at 65% 90%,
+            rgba(128, 103, 237, .15),
+            transparent 28%),
+        linear-gradient(125deg,
+            #0b1527 0%,
+            #101c30 50%,
+            #172542 100%);
+
+    box-shadow:
+        0 25px 55px rgba(15, 23, 42, .15);
+
+    animation:
+        sv-enter .7s .08s ease both;
+}
+
+.sv-security-hero::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(rgba(255, 255, 255, .035) 1px,
+            transparent 1px),
+        linear-gradient(90deg,
+            rgba(255, 255, 255, .035) 1px,
+            transparent 1px);
+
+    background-size: 36px 36px;
+
+    opacity: .8;
+}
+
+.sv-security-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    right: -130px;
+    top: -80px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(132, 151, 255, .07);
+
+    box-shadow:
+        0 0 0 60px rgba(132, 151, 255, .025),
+        0 0 0 120px rgba(132, 151, 255, .018);
+}
+
+.sv-hero-content {
+    position: relative;
+    z-index: 5;
+
+    width: 57%;
+
+    padding: 51px 0 50px 52px;
+}
+
+.sv-live-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 18px;
+
+    color: #9fb1ff;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 1.4px;
+}
+
+.sv-live-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #4ed8a4;
+
+    box-shadow:
+        0 0 0 5px rgba(78, 216, 164, .09);
+
+    animation: sv-pulse 2s infinite;
+}
+
+.sv-hero-content h2 {
+    margin: 0;
+
+    color: white;
+
+    font-size: clamp(34px, 4vw, 52px);
+
+    line-height: 1.01;
+
+    font-weight: 780;
+
+    letter-spacing: -2.2px;
+}
+
+.sv-hero-content h2 span {
+    background:
+        linear-gradient(90deg,
+            #8da5ff,
+            #a98df5);
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sv-hero-content p {
+    max-width: 590px;
+
+    margin: 20px 0 25px;
+
+    color: #aeb9ca;
+
+    font-size: 12.5px;
+
+    line-height: 1.75;
+}
+
+.sv-hero-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.sv-hero-primary,
+.sv-hero-secondary {
+    min-height: 42px;
+
+    padding: 0 16px;
+
+    border-radius: 8px;
+
+    font-size: 10.5px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.sv-hero-primary {
+    border: 1px solid #6f88ff;
+
+    background: #4269e5;
+
+    color: white;
+
+    box-shadow:
+        0 9px 22px rgba(55, 87, 211, .30);
+}
+
+.sv-hero-primary:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 13px 27px rgba(55, 87, 211, .38);
+}
+
+.sv-hero-secondary {
+    border: 1px solid rgba(255, 255, 255, .15);
+
+    background: rgba(255, 255, 255, .045);
+
+    color: #d7deeb;
+
+    backdrop-filter: blur(8px);
+}
+
+.sv-hero-secondary:hover {
+    background: rgba(255, 255, 255, .09);
+}
+
+
+/* =========================================================
+   SECURITY CORE
+   ========================================================= */
+
+.sv-security-visual {
+    position: absolute;
+
+    right: 1.5%;
+    top: 50%;
+
+    width: 420px;
+    height: 420px;
+
+    transform: translateY(-50%);
+
+    pointer-events: none;
+}
+
+.sv-security-grid {
+    position: absolute;
+
+    inset: 80px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle,
+            rgba(73, 104, 238, .20),
+            transparent 66%);
+
+    animation: sv-glow 4s infinite ease-in-out;
+}
+
+.sv-orbit {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    border-radius: 50%;
+
+    transform: translate(-50%, -50%);
+
+    border: 1px solid rgba(125, 150, 255, .17);
+}
+
+.sv-orbit-one {
+    width: 170px;
+    height: 170px;
+
+    animation: sv-orbit 11s linear infinite;
+}
+
+.sv-orbit-two {
+    width: 275px;
+    height: 275px;
+
+    border-color: rgba(144, 120, 255, .14);
+
+    animation: sv-orbit-reverse 17s linear infinite;
+}
+
+.sv-orbit-three {
+    width: 370px;
+    height: 370px;
+
+    border-color: rgba(125, 150, 255, .09);
+
+    animation: sv-orbit 24s linear infinite;
+}
+
+.sv-security-core {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 108px;
+    height: 108px;
+
+    display: grid;
+    place-items: center;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle at 35% 28%,
+            #7790ff,
+            #3558ce 45%,
+            #17285e);
+
+    border: 1px solid rgba(255, 255, 255, .2);
+
+    box-shadow:
+        0 0 0 14px rgba(66, 99, 235, .07),
+        0 0 50px rgba(66, 99, 235, .34);
+
+    animation: sv-core-float 4s ease-in-out infinite;
+}
+
+.sv-core-inner {
+    display: grid;
+    place-items: center;
+
+    width: 63px;
+    height: 63px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, .23);
+
+    background: rgba(8, 17, 38, .45);
+
+    color: white;
+
+    font-size: 15px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.sv-orbit-dot {
+    position: absolute;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #91a5ff;
+
+    box-shadow:
+        0 0 13px rgba(120, 145, 255, .9);
+
+    animation: sv-pulse 2.5s infinite;
+}
+
+.sv-dot-one {
+    left: 71px;
+    top: 115px;
+}
+
+.sv-dot-two {
+    right: 50px;
+    top: 166px;
+
+    background: #a78fff;
+}
+
+.sv-dot-three {
+    left: 104px;
+    bottom: 69px;
+}
+
+
+/* =========================================================
+   METRICS — LESS BORING THAN CARDS
+   ========================================================= */
+
+.sv-stat-strip {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 0;
+
+    margin-bottom: 18px;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--sv-border);
+
+    border-radius: 13px;
+
+    background: white;
+
+    box-shadow:
+        0 4px 18px rgba(15, 23, 42, .035);
+
+    animation:
+        sv-enter .65s .18s ease both;
+}
+
+.sv-stat-item {
+    position: relative;
+
+    min-height: 122px;
+
+    padding: 20px 23px;
+
+    border: 0;
+
+    border-right:
+        1px solid #edf0f4;
+
+    background: white;
+
+    color: var(--sv-text);
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.sv-stat-item:last-child {
+    border-right: 0;
+}
+
+.sv-stat-item:hover {
+    background:
+        linear-gradient(145deg,
+            #ffffff,
+            #f8faff);
+}
+
+.sv-stat-item::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 3px;
+    height: 0;
+
+    background: var(--sv-blue);
+
+    transition: height .25s ease;
+}
+
+.sv-stat-item:hover::before {
+    height: 100%;
+}
+
+.sv-stat-label {
+    color: #7b8798;
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 1.1px;
+}
+
+.sv-stat-item strong {
+    display: block;
+
+    margin-top: 11px;
+
+    color: #142033;
+
+    font-size: 30px;
+
+    line-height: 1;
+
+    letter-spacing: -1px;
+}
+
+.sv-stat-note {
+    display: block;
+
+    margin-top: 8px;
+
+    color: #8a95a6;
+
+    font-size: 9px;
+}
+
+.sv-stat-arrow {
+    position: absolute;
+
+    right: 20px;
+    bottom: 19px;
+
+    color: #a4afbd;
+
+    transition: .2s ease;
+}
+
+.sv-stat-item:hover .sv-stat-arrow {
+    color: var(--sv-blue);
+
+    transform: translateX(4px);
+}
+
+.sv-stat-warning::after {
+    content: "ATTENTION";
+
+    position: absolute;
+
+    top: 20px;
+    right: 20px;
+
+    padding: 4px 7px;
+
+    border-radius: 999px;
+
+    background: var(--sv-orange-soft);
+
+    color: var(--sv-orange);
+
+    font-size: 7px;
+    font-weight: 800;
+}
+
+.sv-stat-good::after {
+    content: "HEALTHY";
+
+    position: absolute;
+
+    top: 20px;
+    right: 20px;
+
+    padding: 4px 7px;
+
+    border-radius: 999px;
+
+    background: var(--sv-green-soft);
+
+    color: var(--sv-green);
+
+    font-size: 7px;
+    font-weight: 800;
+}
+
+.sv-stat-security {
+    cursor: default;
+}
+
+.sv-security-status {
+    position: absolute;
+
+    right: 19px;
+    top: 20px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    color: var(--sv-green);
+
+    font-size: 7px;
+    font-weight: 800;
+
+    letter-spacing: .6px;
+}
+
+.sv-security-status span {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #42c593;
+
+    animation: sv-pulse 2s infinite;
+}
+
+
+/* =========================================================
+   LOWER AREA
+   ========================================================= */
+
+.sv-dashboard-lower {
+    display: grid;
+
+    grid-template-columns:
+        1.45fr .85fr;
+
+    gap: 15px;
+
+    margin-bottom: 15px;
+
+    animation:
+        sv-enter .65s .27s ease both;
+}
+
+.sv-dashboard-card {
+    border:
+        1px solid var(--sv-border);
+
+    border-radius: 14px;
+
+    background: white;
+
+    box-shadow:
+        0 4px 18px rgba(15, 23, 42, .035);
+
+    transition:
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
+
+.sv-dashboard-card:hover {
+    border-color: #d7dee9;
+
+    box-shadow:
+        0 14px 35px rgba(15, 23, 42, .065);
+}
+
+.sv-quick-card,
+.sv-pulse-card,
+.sv-activity-card {
+    padding: 23px;
+}
+
+.sv-card-heading {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    margin-bottom: 18px;
+}
+
+.sv-card-heading h2 {
+    margin: 0;
+
+    color: #162033;
+
+    font-size: 17px;
+
+    letter-spacing: -.35px;
+}
+
+.sv-card-heading p {
+    margin: 5px 0 0;
+
+    color: #818c9d;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+   ========================================================= */
+
+.sv-quick-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 9px;
+}
+
+.sv-quick-grid button {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-height: 78px;
+
+    padding: 13px;
+
+    border:
+        1px solid #e8ebf0;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(145deg,
+            #ffffff,
+            #fafbfe);
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.sv-quick-grid button:hover {
+    border-color: #cbd5e5;
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 10px 24px rgba(15, 23, 42, .065);
+}
+
+.sv-quick-icon {
+    display: grid;
+
+    place-items: center;
+
+    width: 37px;
+    height: 37px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(145deg,
+            #edf2ff,
+            #f3efff);
+
+    color: var(--sv-blue);
+
+    font-size: 15px;
+
+    transition: .2s ease;
+}
+
+.sv-quick-grid button:hover .sv-quick-icon {
+    transform:
+        scale(1.08) rotate(-4deg);
+}
+
+.sv-quick-text strong {
+    display: block;
+
+    color: #2b3648;
+
+    font-size: 10.5px;
+}
+
+.sv-quick-text small {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #8a95a5;
+
+    font-size: 8.5px;
+}
+
+.sv-quick-arrow {
+    position: absolute;
+
+    right: 13px;
+
+    color: #a5afbd;
+
+    transition: .2s ease;
+}
+
+.sv-quick-grid button:hover .sv-quick-arrow {
+    color: var(--sv-blue);
+
+    transform: translate(3px, -2px);
+}
+
+
+/* =========================================================
+   SECURITY PULSE
+   ========================================================= */
+
+.sv-pulse-card {
+    position: relative;
+
+    overflow: hidden;
+}
+
+.sv-pulse-card::before {
+    content: "";
+
+    position: absolute;
+
+    right: -70px;
+    top: -70px;
+
+    width: 190px;
+    height: 190px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle,
+            rgba(66, 99, 235, .09),
+            transparent 65%);
+}
+
+.sv-pulse-live {
+    padding: 5px 8px;
+
+    border-radius: 999px;
+
+    background: var(--sv-green-soft);
+
+    color: var(--sv-green);
+
+    font-size: 7px;
+    font-weight: 800;
+
+    letter-spacing: .7px;
+}
+
+.sv-security-check {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    min-height: 60px;
+
+    border-bottom:
+        1px solid #edf0f4;
+}
+
+.sv-security-check:last-child {
+    border-bottom: 0;
+}
+
+.sv-check-mark {
+    display: grid;
+
+    place-items: center;
+
+    width: 25px;
+    height: 25px;
+
+    border-radius: 50%;
+
+    background: var(--sv-green-soft);
+
+    color: var(--sv-green);
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.sv-security-check div {
+    flex: 1;
+}
+
+.sv-security-check strong {
+    display: block;
+
+    color: #344054;
+
+    font-size: 10px;
+}
+
+.sv-security-check small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #8b95a4;
+
+    font-size: 8.5px;
+}
+
+.sv-check-active {
+    color: var(--sv-green);
+
+    font-size: 7px;
+    font-weight: 800;
+}
+
+.sv-text-action {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 14px;
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    color: var(--sv-blue);
+
+    font-size: 9px;
+    font-weight: 750;
+
+    cursor: pointer;
+}
+
+.sv-text-action span {
+    transition: .2s ease;
+}
+
+.sv-text-action:hover span {
+    transform: translateX(4px);
+}
+
+
+/* =========================================================
+   ACTIVITY
+   ========================================================= */
+
+.sv-activity-card {
+    animation:
+        sv-enter .65s .36s ease both;
+}
+
+.sv-activity-list {
+    border-top:
+        1px solid #edf0f4;
+}
+
+.sv-activity-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-height: 60px;
+
+    border-bottom:
+        1px solid #edf0f4;
+
+    transition: .18s ease;
+}
+
+.sv-activity-row:hover {
+    padding-left: 5px;
+
+    background:
+        linear-gradient(90deg,
+            #fbfcff,
+            white);
+}
+
+.sv-activity-indicator {
+    display: grid;
+
+    place-items: center;
+
+    width: 28px;
+    height: 28px;
+
+    border-radius: 8px;
+
+    background: var(--sv-blue-soft);
+}
+
+.sv-activity-indicator span {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: var(--sv-blue);
+
+    box-shadow:
+        0 0 8px rgba(66, 99, 235, .4);
+}
+
+.sv-activity-main {
+    flex: 1;
+}
+
+.sv-activity-main strong {
+    display: block;
+
+    color: #344054;
+
+    font-size: 10px;
+}
+
+.sv-activity-main span {
+    display: block;
+
+    margin-top: 3px;
+
+    overflow: hidden;
+
+    color: #8b95a4;
+
+    font-size: 8.5px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.sv-risk-badge {
+    padding: 4px 7px;
+
+    border-radius: 999px;
+
+    background: #f2f4f7;
+
+    color: #667085;
+
+    font-size: 7px;
+
+    font-weight: 800;
+}
+
+.sv-risk-badge.high,
+.sv-risk-badge.critical {
+    background: var(--sv-red-soft);
+    color: var(--sv-red);
+}
+
+.sv-risk-badge.medium {
+    background: var(--sv-orange-soft);
+    color: var(--sv-orange);
+}
+
+.sv-risk-badge.low {
+    background: var(--sv-green-soft);
+    color: var(--sv-green);
+}
+
+.sv-activity-arrow {
+    color: #a8b1be;
+
+    transition: .2s ease;
+}
+
+.sv-activity-row:hover .sv-activity-arrow {
+    color: var(--sv-blue);
+
+    transform: translateX(3px);
+}
+
+
+/* =========================================================
+   SIDEBAR POLISH
+   ========================================================= */
+
+.app-sidebar {
+    background:
+        linear-gradient(180deg,
+            #111c2d 0%,
+            #0d1726 100%) !important;
+
+    border-right:
+        1px solid rgba(255, 255, 255, .055);
+
+    box-shadow:
+        5px 0 25px rgba(10, 18, 32, .12);
+}
+
+.sidebar-brand {
+    min-height: 78px;
+
+    padding: 17px 17px;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, .06);
+}
+
+.brand-mark {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(145deg,
+            #4a6ff0,
+            #3154ca);
+
+    box-shadow:
+        0 7px 18px rgba(65, 105, 225, .25);
+}
+
+.sidebar-navigation {
+    padding: 14px 9px;
+}
+
+.sidebar-section-label {
+    margin:
+        20px 11px 7px;
+
+    color: #68778f;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.3px;
+}
+
+.sidebar-item {
+    position: relative;
+
+    min-height: 42px;
+
+    margin: 2px 0;
+
+    border-radius: 9px;
+
+    color: #aab5c7;
+
+    transition: .2s ease;
+}
+
+.sidebar-item::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 8px;
+
+    width: 3px;
+    height: 0;
+
+    border-radius: 0 3px 3px 0;
+
+    background: #7190ff;
+
+    transition: height .2s ease;
+}
+
+.sidebar-item:hover {
+    background:
+        rgba(255, 255, 255, .045);
+
+    color: white;
+
+    transform: translateX(2px);
+}
+
+.sidebar-item:hover::before {
+    height: 25px;
+}
+
+.sidebar-item.active {
+    background:
+        linear-gradient(90deg,
+            rgba(66, 99, 235, .28),
+            rgba(66, 99, 235, .12)) !important;
+
+    color: white;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .025);
+}
+
+.sidebar-item.active::before {
+    height: 25px;
+
+    background:
+        linear-gradient(180deg,
+            #91a8ff,
+            #4269e5);
+}
+
+.sidebar-item.active .sidebar-icon {
+    color: #9eb1ff;
+}
+
+.sidebar-icon {
+    transition: .2s ease;
+}
+
+.sidebar-item:hover .sidebar-icon {
+    color: #91a7ff;
+
+    transform: scale(1.08);
+}
+
+.sidebar-footer {
+    background:
+        rgba(0, 0, 0, .13);
+
+    border-top:
+        1px solid rgba(255, 255, 255, .06);
+}
+
+.sidebar-user {
+    border-radius: 9px;
+
+    background:
+        rgba(255, 255, 255, .035);
+}
+
+.user-avatar {
+    border-radius: 9px;
+
+    background:
+        linear-gradient(145deg,
+            #4269e5,
+            #3154c7);
+}
+
+.sidebar-logout {
+    border-radius: 8px;
+
+    transition: .2s ease;
+}
+
+.sidebar-logout:hover {
+    background:
+        rgba(255, 255, 255, .05);
+
+    color: white;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes sv-enter {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+@keyframes sv-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: .5;
+        transform: scale(.72);
+    }
+}
+
+@keyframes sv-glow {
+
+    0%,
+    100% {
+        opacity: .65;
+        transform: scale(.96);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes sv-core-float {
+
+    0%,
+    100% {
+        transform:
+            translate(-50%, -50%) translateY(0);
+    }
+
+    50% {
+        transform:
+            translate(-50%, -50%) translateY(-8px);
+    }
+}
+
+@keyframes sv-orbit {
+    from {
+        transform:
+            translate(-50%, -50%) rotate(0);
+    }
+
+    to {
+        transform:
+            translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes sv-orbit-reverse {
+    from {
+        transform:
+            translate(-50%, -50%) rotate(360deg);
+    }
+
+    to {
+        transform:
+            translate(-50%, -50%) rotate(0);
+    }
+}
+
+/* =========================================================
+   EMPTY SECURITY ACTIVITY STATE
+   ========================================================= */
+
+.sv-empty-activity {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    min-height: 90px;
+
+    padding: 8px 0 4px;
+}
+
+.sv-empty-icon {
+    display: grid;
+
+    place-items: center;
+
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #eaf8f2;
+
+    color: #14966b;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    box-shadow:
+        0 0 0 6px rgba(20, 150, 107, .05);
+}
+
+.sv-empty-activity div:last-child {
+    min-width: 0;
+}
+
+.sv-empty-activity strong {
+    display: block;
+
+    color: #263246;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.sv-empty-activity span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #8792a3;
+
+    font-size: 9.5px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1150px) {
+
+    .sv-security-visual {
+        right: -60px;
+
+        transform:
+            translateY(-50%) scale(.82);
+    }
+
+    .sv-hero-content {
+        width: 68%;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .sv-security-visual {
+        opacity: .25;
+    }
+
+    .sv-hero-content {
+        width: 82%;
+    }
+
+    .sv-stat-strip {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .sv-dashboard-lower {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .sv-dashboard-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .sv-dashboard-header-actions {
+        width: 100%;
+    }
+
+    .sv-secondary-action,
+    .sv-primary-action {
+        flex: 1;
+    }
+
+    .sv-security-hero {
+        min-height: 470px;
+    }
+
+    .sv-hero-content {
+        width: 100%;
+
+        padding: 34px 26px;
+    }
+
+    .sv-hero-content h2 {
+        font-size: 35px;
+    }
+
+    .sv-security-visual {
+        right: -120px;
+        bottom: -100px;
+        top: auto;
+
+        transform: scale(.65);
+
+        opacity: .35;
+    }
+
+    .sv-stat-strip {
+        grid-template-columns: 1fr;
+    }
+
+    .sv-stat-item {
+        border-right: 0;
+
+        border-bottom:
+            1px solid #edf0f4;
+    }
+
+    .sv-stat-item:last-child {
+        border-bottom: 0;
+    }
+
+    .sv-quick-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: .01ms !important;
+    }
+}
+
+/* =========================================================
+   FINAL SECUREVAULT FRONTEND POLISH
+========================================================= */
+
+
+/* ---------------------------------------------------------
+   DASHBOARD EMPTY ACTIVITY
+--------------------------------------------------------- */
+
+.sv-empty-activity {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 90px;
+    padding: 8px 0 4px;
+}
+
+.sv-empty-icon {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #eaf8f2;
+    color: #14966b;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    box-shadow:
+        0 0 0 6px rgba(20, 150, 107, .05);
+}
+
+.sv-empty-activity strong {
+    display: block;
+
+    color: #263246;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.sv-empty-activity span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #8792a3;
+
+    font-size: 9.5px;
+    line-height: 1.5;
+}
+
+
+/* ---------------------------------------------------------
+   PASSWORD EYE BUTTON
+--------------------------------------------------------- */
+
+.password-input-wrapper,
+.password-display,
+.shared-password-field {
+    position: relative;
+}
+
+.password-input-wrapper input,
+.password-display input,
+.shared-password-field input {
+    padding-right: 52px !important;
+}
+
+.password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 9px;
+
+    width: 34px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    transform: translateY(-50%);
+
+    border: 0;
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #667085;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        color .18s ease,
+        background .18s ease,
+        transform .18s ease;
+}
+
+.password-toggle:hover {
+    background: #eef3ff;
+
+    color: #4169e1;
+}
+
+.password-toggle:active {
+    transform:
+        translateY(-50%) scale(.92);
+}
+
+
+/* ---------------------------------------------------------
+   VIEW PASSWORD
+--------------------------------------------------------- */
+
+.view-credential-modal .password-display {
+    position: relative;
+}
+
+.view-credential-modal .password-display input {
+    width: 100%;
+
+    padding-right: 52px !important;
+
+    box-sizing: border-box;
+}
+
+.view-credential-modal .password-display .password-toggle {
+    right: 9px;
+
+    color: #667085;
+}
+
+.view-credential-modal .password-display .password-toggle:hover {
+    color: #4169e1;
+
+    background: #eef3ff;
+}
+
+
+/* ---------------------------------------------------------
+   SHARED PASSWORD
+--------------------------------------------------------- */
+
+.shared-password-field {
+    position: relative;
+}
+
+.shared-password-field input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding-right: 52px !important;
+}
+
+.shared-password-field .password-toggle {
+    right: 8px;
+}
+
+
+/* ---------------------------------------------------------
+   MODAL POLISH
+--------------------------------------------------------- */
+
+.modal-overlay {
+    background:
+        rgba(8, 15, 28, .62) !important;
+
+    backdrop-filter:
+        blur(8px);
+}
+
+.credential-modal,
+.view-credential-modal,
+.delete-modal,
+.share-management-modal {
+    border-radius: 17px !important;
+
+    box-shadow:
+        0 30px 90px rgba(8, 15, 28, .28) !important;
+
+    animation:
+        sv-modal-enter .25s ease both;
+}
+
+.modal-header {
+    background:
+        linear-gradient(180deg,
+            #ffffff,
+            #fbfcfe);
+}
+
+.modal-security-icon {
+    box-shadow:
+        0 6px 16px rgba(65, 105, 225, .12);
+}
+
+.modal-close {
+    transition:
+        background .18s ease,
+        color .18s ease,
+        transform .18s ease;
+}
+
+.modal-close:hover {
+    transform:
+        rotate(4deg);
+}
+
+
+/* ---------------------------------------------------------
+   CREDENTIAL CARDS
+--------------------------------------------------------- */
+
+.credential-card {
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(145deg,
+            #ffffff,
+            #fafbfe);
+
+    transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        border-color .22s ease;
+}
+
+.credential-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 3px;
+    height: 0;
+
+    background:
+        linear-gradient(180deg,
+            #4169e1,
+            #8067ed);
+
+    transition:
+        height .25s ease;
+}
+
+.credential-card:hover {
+    transform:
+        translateY(-4px);
+
+    border-color:
+        #d0d8e6;
+
+    box-shadow:
+        0 18px 38px rgba(15, 23, 42, .075);
+}
+
+.credential-card:hover::before {
+    height: 100%;
+}
+
+
+/* ---------------------------------------------------------
+   VAULT SEARCH
+--------------------------------------------------------- */
+
+.search-input,
+.category-select,
+.admin-user-search {
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease,
+        background .18s ease;
+}
+
+.search-input:focus,
+.category-select:focus,
+.admin-user-search:focus {
+    border-color:
+        #7f98e8 !important;
+
+    box-shadow:
+        0 0 0 3px rgba(65, 105, 225, .10) !important;
+
+    outline: none;
+}
+
+
+/* ---------------------------------------------------------
+   AUTH PAGES
+--------------------------------------------------------- */
+
+.auth-page {
+    background:
+        radial-gradient(circle at 15% 20%,
+            rgba(65, 105, 225, .08),
+            transparent 28%),
+        radial-gradient(circle at 85% 80%,
+            rgba(128, 103, 237, .06),
+            transparent 30%),
+        #f4f6fa;
+}
+
+.auth-card {
+    border:
+        1px solid rgba(255, 255, 255, .9);
+
+    box-shadow:
+        0 25px 70px rgba(15, 23, 42, .10);
+
+    animation:
+        sv-auth-enter .5s ease both;
+}
+
+.auth-card input {
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.auth-card input:focus {
+    border-color:
+        #6e88df !important;
+
+    box-shadow:
+        0 0 0 3px rgba(65, 105, 225, .10) !important;
+
+    outline: none;
+}
+
+.auth-button {
+    background:
+        linear-gradient(135deg,
+            #4169e1,
+            #365bd1) !important;
+
+    box-shadow:
+        0 8px 20px rgba(65, 105, 225, .20);
+}
+
+.auth-button:hover {
+    transform:
+        translateY(-2px) !important;
+
+    box-shadow:
+        0 12px 27px rgba(65, 105, 225, .28) !important;
+}
+
+
+/* ---------------------------------------------------------
+   SHARED WITH ME
+--------------------------------------------------------- */
+
+.shared-credential-card {
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
+
+.shared-credential-card:hover {
+    transform:
+        translateY(-3px);
+
+    border-color:
+        #d0d8e6;
+
+    box-shadow:
+        0 16px 34px rgba(15, 23, 42, .065);
+}
+
+.share-management-card {
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        transform .18s ease;
+}
+
+.share-management-card:hover {
+    background: #ffffff;
+
+    border-color: #d0d8e6;
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* ---------------------------------------------------------
+   PASSWORD HEALTH
+--------------------------------------------------------- */
+
+.password-health-card {
+    overflow: hidden;
+}
+
+.health-bar-container {
+    background:
+        #e9edf3 !important;
+}
+
+.health-bar {
+    background:
+        linear-gradient(90deg,
+            #d9534f,
+            #d99532,
+            #14966b) !important;
+}
+
+
+/* ---------------------------------------------------------
+   SECURITY / LOGIN ACTIVITY
+--------------------------------------------------------- */
+
+.login-activity-card,
+.security-alert-card {
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
+
+.login-activity-card:hover,
+.security-alert-card:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        #d0d8e6;
+}
+
+
+/* ---------------------------------------------------------
+   NOTIFICATIONS
+--------------------------------------------------------- */
+
+.notification-card {
+    transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.notification-card:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        #d2dae7;
+
+    box-shadow:
+        0 9px 24px rgba(15, 23, 42, .05);
+}
+
+
+/* ---------------------------------------------------------
+   BUTTON CONSISTENCY
+--------------------------------------------------------- */
+
+.primary-button,
+.add-button {
+    background:
+        linear-gradient(135deg,
+            #4169e1,
+            #365bd1) !important;
+
+    border-color:
+        #4169e1 !important;
+
+    box-shadow:
+        0 6px 16px rgba(65, 105, 225, .16);
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        background .18s ease;
+}
+
+.primary-button:hover,
+.add-button:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 10px 23px rgba(65, 105, 225, .23);
+}
+
+
+/* ---------------------------------------------------------
+   EMPTY STATES
+--------------------------------------------------------- */
+
+.empty-state,
+.empty-vault,
+.empty-trash,
+.empty-shared {
+    transition:
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.empty-state:hover,
+.empty-vault:hover,
+.empty-trash:hover,
+.empty-shared:hover {
+    border-color:
+        #cfd7e4;
+
+    background:
+        #fcfdff;
+}
+
+
+/* ---------------------------------------------------------
+   MODAL ANIMATION
+--------------------------------------------------------- */
+
+@keyframes sv-modal-enter {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(12px) scale(.985);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0) scale(1);
+    }
+}
+
+@keyframes sv-auth-enter {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* ---------------------------------------------------------
+   MOBILE PASSWORD BUTTON
+--------------------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    .password-toggle {
+        width: 36px;
+        height: 34px;
+    }
+
+    .credential-modal,
+    .view-credential-modal,
+    .delete-modal,
+    .share-management-modal {
+        width: 100% !important;
+
+        border-radius: 14px !important;
+    }
+}
+
+/* =========================================================
+   SECUREVAULT FINAL APPLICATION UI
+   GLOBAL PAGE POLISH
+========================================================= */
+
+:root {
+    --sv-page: #f4f6fa;
+    --sv-surface: #ffffff;
+    --sv-surface-soft: #f8faff;
+
+    --sv-ink: #142033;
+    --sv-ink-soft: #475467;
+    --sv-muted-final: #7d899b;
+
+    --sv-line: #e3e8ef;
+    --sv-line-strong: #d5dce7;
+
+    --sv-primary-final: #4169e1;
+    --sv-primary-dark-final: #3154c7;
+    --sv-primary-soft-final: #edf2ff;
+
+    --sv-violet-final: #8067ed;
+
+    --sv-success-final: #14966b;
+    --sv-success-bg-final: #eaf8f2;
+
+    --sv-warning-final: #c77919;
+    --sv-warning-bg-final: #fff5e5;
+
+    --sv-danger-final: #c74640;
+    --sv-danger-bg-final: #fff0ef;
+
+    --sv-shadow-final:
+        0 5px 22px rgba(15, 23, 42, .045);
+
+    --sv-shadow-final-hover:
+        0 16px 38px rgba(15, 23, 42, .075);
+}
+
+
+/* =========================================================
+   COMMON PAGE BACKGROUND
+========================================================= */
+
+.content-page,
+.section-wrapper {
+    animation:
+        svPageEnter .42s ease both;
+}
+
+.page-heading {
+    padding-bottom: 4px;
+}
+
+.page-heading h1,
+.vault-header h1 {
+    color: var(--sv-ink);
+    font-weight: 760;
+}
+
+.page-heading p,
+.vault-header p {
+    color: var(--sv-ink-soft);
+}
+
+
+/* =========================================================
+   COMMON BUTTON SYSTEM
+========================================================= */
+
+.primary-button,
+.add-button,
+.auth-button,
+.generator-button,
+.share-button,
+.save-button {
+    border: 1px solid var(--sv-primary-final) !important;
+
+    background:
+        linear-gradient(135deg,
+            #4a70e8,
+            #365bd2) !important;
+
+    color: #ffffff !important;
+
+    box-shadow:
+        0 7px 18px rgba(65, 105, 225, .17);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+.primary-button:hover,
+.add-button:hover,
+.auth-button:hover,
+.generator-button:hover,
+.share-button:hover,
+.save-button:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 11px 25px rgba(65, 105, 225, .25);
+}
+
+.secondary-button,
+.cancel-button {
+    background: #ffffff !important;
+
+    border-color:
+        var(--sv-line-strong) !important;
+
+    color:
+        var(--sv-ink-soft) !important;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+}
+
+.secondary-button:hover,
+.cancel-button:hover {
+    background:
+        #f9fafc !important;
+
+    border-color:
+        #bcc6d5 !important;
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   COMMON PAGE CARDS
+========================================================= */
+
+.stat-card,
+.dashboard-panel,
+.password-health-card,
+.profile-card,
+.device-card,
+.generator-card,
+.shared-credential-card,
+.trash-card,
+.login-activity-card,
+.security-alert-card,
+.security-stat,
+.notification-card {
+    border:
+        1px solid var(--sv-line) !important;
+
+    background:
+        var(--sv-surface) !important;
+
+    box-shadow:
+        var(--sv-shadow-final);
+
+    transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        border-color .22s ease;
+}
+
+.stat-card:hover,
+.dashboard-panel:hover,
+.password-health-card:hover,
+.device-card:hover,
+.generator-card:hover,
+.shared-credential-card:hover,
+.trash-card:hover,
+.login-activity-card:hover,
+.security-alert-card:hover,
+.notification-card:hover {
+    border-color:
+        #d2dae6 !important;
+
+    box-shadow:
+        var(--sv-shadow-final-hover);
+}
+
+
+/* =========================================================
+   VAULT
+========================================================= */
+
+.vault-page {
+    background:
+        transparent !important;
+}
+
+.vault-header {
+    padding-bottom: 20px;
+}
+
+.vault-header>div:first-child h1 {
+    font-size: 30px;
+    letter-spacing: -1px;
+}
+
+.vault-top {
+    margin-top: 10px;
+}
+
+.vault-top h2 {
+    font-size: 18px;
+    letter-spacing: -.3px;
+}
+
+.vault-controls {
+    padding: 11px;
+
+    border:
+        1px solid var(--sv-line);
+
+    border-radius: 13px;
+
+    background:
+        rgba(255, 255, 255, .72);
+
+    box-shadow:
+        0 3px 14px rgba(15, 23, 42, .025);
+
+    backdrop-filter:
+        blur(8px);
+}
+
+.search-input,
+.category-select,
+.admin-user-search {
+    min-height: 43px !important;
+
+    border:
+        1px solid #dce2eb !important;
+
+    border-radius: 9px !important;
+
+    background:
+        #ffffff !important;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.search-input:focus,
+.category-select:focus,
+.admin-user-search:focus {
+    border-color:
+        #8ba0df !important;
+
+    box-shadow:
+        0 0 0 3px rgba(65, 105, 225, .09) !important;
+
+    outline: none !important;
+}
+
+.credential-grid {
+    gap: 14px;
+}
+
+.credential-card {
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 14px !important;
+
+    background:
+        linear-gradient(145deg,
+            #ffffff,
+            #fafbfe) !important;
+
+    transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        border-color .22s ease;
+}
+
+.credential-card::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 3px;
+    height: 0;
+
+    background:
+        linear-gradient(180deg,
+            #4169e1,
+            #8067ed);
+
+    transition:
+        height .25s ease;
+}
+
+.credential-card:hover {
+    transform:
+        translateY(-4px);
+
+    border-color:
+        #ccd5e3 !important;
+
+    box-shadow:
+        var(--sv-shadow-final-hover);
+}
+
+.credential-card:hover::before {
+    height: 100%;
+}
+
+
+/* =========================================================
+   CREDENTIAL MODALS
+========================================================= */
+
+.modal-overlay {
+    background:
+        rgba(9, 17, 31, .62) !important;
+
+    backdrop-filter:
+        blur(8px);
+}
+
+.credential-modal,
+.view-credential-modal,
+.delete-modal,
+.share-management-modal {
+    border-radius:
+        17px !important;
+
+    box-shadow:
+        0 30px 85px rgba(8, 15, 28, .28) !important;
+
+    animation:
+        svModalEnter .24s ease both;
+}
+
+.modal-header {
+    background:
+        linear-gradient(180deg,
+            #ffffff,
+            #fbfcfe);
+
+    border-bottom:
+        1px solid #edf0f4 !important;
+}
+
+.modal-security-icon,
+.delete-icon {
+    background:
+        var(--sv-primary-soft-final) !important;
+
+    color:
+        var(--sv-primary-final) !important;
+}
+
+.modal-close:hover {
+    background:
+        #eef2f7 !important;
+
+    color:
+        var(--sv-ink) !important;
+}
+
+
+/* =========================================================
+   PASSWORD FIELDS
+========================================================= */
+
+.password-input-wrapper,
+.password-display,
+.shared-password-field {
+    position: relative;
+}
+
+.password-input-wrapper input,
+.password-display input,
+.shared-password-field input {
+    padding-right:
+        50px !important;
+}
+
+.password-toggle {
+    position: absolute !important;
+
+    top: 50% !important;
+    right: 8px !important;
+
+    width: 34px !important;
+    height: 32px !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    transform:
+        translateY(-50%) !important;
+
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    border-radius: 7px !important;
+
+    background:
+        transparent !important;
+
+    color:
+        #68758a !important;
+
+    font-size: 0 !important;
+
+    cursor: pointer !important;
+
+    transition:
+        background .18s ease,
+        color .18s ease,
+        transform .18s ease !important;
+}
+
+.password-toggle::before {
+    content: "◉";
+
+    font-size: 15px;
+}
+
+.password-toggle:hover {
+    background:
+        #edf2ff !important;
+
+    color:
+        var(--sv-primary-final) !important;
+}
+
+.password-toggle:active {
+    transform:
+        translateY(-50%) scale(.92) !important;
+}
+
+
+/* =========================================================
+   SHARED WITH ME
+========================================================= */
+
+.shared-credentials-section {
+    margin-top: 0;
+
+    padding: 0;
+}
+
+.shared-header,
+.trash-header {
+    padding-bottom: 4px;
+}
+
+.shared-credential-card {
+    overflow: hidden;
+
+    border-radius: 14px !important;
+}
+
+.shared-card-header {
+    padding-bottom: 4px;
+}
+
+.permission-read {
+    background:
+        #f2f4f7 !important;
+
+    color:
+        #475467 !important;
+}
+
+.permission-edit {
+    background:
+        #edf2ff !important;
+
+    color:
+        #4169e1 !important;
+}
+
+.shared-permission-info {
+    background:
+        #f7f9fc !important;
+
+    border:
+        1px solid #edf0f4;
+}
+
+.share-management-card {
+    background:
+        #fafbfe !important;
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease,
+        background .18s ease;
+}
+
+.share-management-card:hover {
+    transform:
+        translateY(-2px);
+
+    background:
+        #ffffff !important;
+
+    border-color:
+        #ccd5e3 !important;
+}
+
+
+/* =========================================================
+   PASSWORD GENERATOR
+========================================================= */
+
+.generator-layout {
+    gap: 15px;
+}
+
+.generator-card {
+    border-radius: 15px !important;
+}
+
+.generator-card-header h2 {
+    font-size: 20px;
+    letter-spacing: -.5px;
+}
+
+.generator-option {
+    background:
+        #fafbfe !important;
+
+    transition:
+        border-color .18s ease,
+        background .18s ease,
+        transform .18s ease;
+}
+
+.generator-option:hover {
+    border-color:
+        #cbd5e4 !important;
+
+    background:
+        #ffffff !important;
+
+    transform:
+        translateY(-1px);
+}
+
+.generator-option input {
+    accent-color:
+        var(--sv-primary-final);
+}
+
+.generated-password input {
+    background:
+        #f7f9fc !important;
+
+    font-size: 14px !important;
+
+    letter-spacing: .2px;
+}
+
+
+/* =========================================================
+   PASSWORD HEALTH
+========================================================= */
+
+.password-health-card {
+    position: relative;
+
+    overflow: hidden;
+}
+
+.health-score {
+    position: relative;
+}
+
+.password-health-stats {
+    gap: 10px;
+}
+
+.password-health-stats>div {
+    border-radius: 11px !important;
+
+    background:
+        #fafbfe !important;
+
+    border:
+        1px solid #e8ecf2 !important;
+}
+
+.password-health-warning {
+    border-radius:
+        11px !important;
+
+    background:
+        var(--sv-warning-bg-final) !important;
+}
+
+.password-health-good {
+    border-radius:
+        11px !important;
+
+    background:
+        var(--sv-success-bg-final) !important;
+}
+
+
+/* =========================================================
+   TRASH
+========================================================= */
+
+.trash-section {
+    margin-top: 0;
+
+    padding: 0;
+}
+
+.trash-card {
+    border-radius: 13px !important;
+}
+
+.trash-actions button {
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease;
+}
+
+.trash-actions button:hover {
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   SECURITY OVERVIEW
+========================================================= */
+
+.security-status-panel {
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius:
+        15px !important;
+
+    background:
+        linear-gradient(145deg,
+            #ffffff,
+            #f6f8fc) !important;
+}
+
+.security-status-panel::after {
+    content: "";
+
+    position: absolute;
+
+    width: 190px;
+    height: 190px;
+
+    right: -90px;
+    top: -90px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(circle,
+            rgba(65, 105, 225, .10),
+            transparent 68%);
+}
+
+.security-stat {
+    position: relative;
+
+    overflow: hidden;
+}
+
+.security-stat::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 3px;
+    height: 100%;
+
+    background:
+        var(--sv-primary-final);
+}
+
+.security-stat.success::before {
+    background:
+        var(--sv-success-final);
+}
+
+.security-stat.warning::before {
+    background:
+        var(--sv-warning-final);
+}
+
+.security-stat.danger::before {
+    background:
+        var(--sv-danger-final);
+}
+
+
+/* =========================================================
+   LOGIN ACTIVITY
+========================================================= */
+
+.activity-summary>div {
+    border-radius:
+        13px !important;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.activity-summary>div:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        var(--sv-shadow-final-hover);
+}
+
+.login-activity-card {
+    border-radius:
+        13px !important;
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease;
+}
+
+.login-activity-card:hover {
+    transform:
+        translateX(3px);
+
+    border-color:
+        #d0d8e5 !important;
+}
+
+
+/* =========================================================
+   SECURITY ALERTS
+========================================================= */
+
+.alert-filter-card {
+    transition:
+        transform .18s ease,
+        border-color .18s ease,
+        background .18s ease;
+}
+
+.alert-filter-card:hover {
+    transform:
+        translateY(-2px);
+}
+
+.alert-filter-card.active {
+    border-color:
+        #b9c8f5 !important;
+
+    background:
+        #edf2ff !important;
+}
+
+.security-alert-card {
+    border-radius:
+        13px !important;
+}
+
+.resolve-alert-button {
+    transition:
+        transform .18s ease,
+        background .18s ease;
+}
+
+.resolve-alert-button:hover {
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+.notifications-list {
+    gap: 10px;
+}
+
+.notifications-list>* {
+    border-radius:
+        12px !important;
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease;
+}
+
+.notifications-list>*:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        var(--sv-shadow-final-hover);
+}
+
+.notification-card.unread {
+    border-left:
+        3px solid var(--sv-primary-final) !important;
+
+    background:
+        #fbfcff !important;
+}
+
+
+/* =========================================================
+   DEVICES
+========================================================= */
+
+.devices-list {
+    gap: 12px;
+}
+
+.device-card {
+    border-radius:
+        13px !important;
+}
+
+.device-icon {
+    background:
+        var(--sv-primary-soft-final) !important;
+
+    color:
+        var(--sv-primary-final) !important;
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.profile-card {
+    border-radius:
+        15px !important;
+}
+
+.profile-card input,
+.profile-card select,
+.profile-card textarea {
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.profile-card input:focus,
+.profile-card select:focus,
+.profile-card textarea:focus {
+    border-color:
+        #8ba0df !important;
+
+    box-shadow:
+        0 0 0 3px rgba(65, 105, 225, .09) !important;
+
+    outline: none;
+}
+
+
+/* =========================================================
+   AUDIT LOGS
+========================================================= */
+
+.audit-table-wrapper {
+    border-radius:
+        14px !important;
+
+    overflow:
+        auto;
+
+    box-shadow:
+        var(--sv-shadow-final);
+}
+
+.audit-table thead {
+    background:
+        #f7f9fc !important;
+}
+
+.audit-table tbody tr {
+    transition:
+        background .16s ease;
+}
+
+.audit-table tbody tr:hover {
+    background:
+        #fafbfe !important;
+}
+
+.audit-action {
+    background:
+        #edf2ff !important;
+
+    color:
+        #4169e1 !important;
+}
+
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+.admin-page {
+    background:
+        var(--sv-page) !important;
+}
+
+.admin-stat-card {
+    border-radius:
+        14px !important;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.admin-stat-card:hover {
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        var(--sv-shadow-final-hover);
+}
+
+.admin-users-table {
+    background:
+        #ffffff;
+}
+
+.admin-users-table tbody tr {
+    transition:
+        background .16s ease;
+}
+
+.admin-users-table tbody tr:hover {
+    background:
+        #fafbfc;
+}
+
+.admin-user-avatar {
+    background:
+        #edf2ff !important;
+
+    color:
+        #4169e1 !important;
+}
+
+.admin-role {
+    background:
+        #fff4d6 !important;
+
+    color:
+        #a96509 !important;
+}
+
+.user-role {
+    background:
+        #f2f4f7 !important;
+
+    color:
+        #475467 !important;
+}
+
+
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
+
+.auth-page {
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at 10% 20%,
+            rgba(65, 105, 225, .09),
+            transparent 27%),
+        radial-gradient(circle at 90% 85%,
+            rgba(128, 103, 237, .07),
+            transparent 28%),
+        #f4f6fa !important;
+}
+
+.auth-card {
+    position: relative;
+
+    border-radius:
+        18px !important;
+
+    border:
+        1px solid rgba(255, 255, 255, .95) !important;
+
+    box-shadow:
+        0 28px 75px rgba(15, 23, 42, .11) !important;
+
+    animation:
+        svAuthEnter .45s ease both;
+}
+
+.auth-header h1 {
+    letter-spacing:
+        -.8px;
+}
+
+.auth-header p {
+    color:
+        var(--sv-ink-soft);
+}
+
+.auth-card input {
+    border-radius:
+        9px !important;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.auth-card input:focus {
+    border-color:
+        #8ba0df !important;
+
+    box-shadow:
+        0 0 0 3px rgba(65, 105, 225, .09) !important;
+
+    outline: none;
+}
+
+.auth-footer button,
+.forgot-password-row button {
+    transition:
+        color .18s ease;
+}
+
+.auth-footer button:hover,
+.forgot-password-row button:hover {
+    color:
+        var(--sv-primary-dark-final) !important;
+}
+
+
+/* =========================================================
+   GLOBAL INPUT POLISH
+========================================================= */
+
+input,
+select,
+textarea {
+    outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color:
+        #a0a9b7;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+}
+
+
+/* =========================================================
+   EMPTY STATES
+========================================================= */
+
+.empty-state,
+.empty-vault,
+.empty-trash,
+.empty-shared,
+.admin-empty {
+    padding:
+        54px 24px !important;
+
+    border-radius:
+        14px !important;
+
+    background:
+        #ffffff !important;
+
+    border:
+        1px dashed #d7dee8 !important;
+}
+
+.empty-state-icon {
+    background:
+        #edf2ff !important;
+
+    color:
+        #4169e1 !important;
+
+    box-shadow:
+        0 0 0 7px rgba(65, 105, 225, .045);
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.page-loading,
+.admin-loading {
+    min-height:
+        260px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    color:
+        var(--sv-muted-final);
+}
+
+
+/* =========================================================
+   FINAL MICRO-INTERACTIONS
+========================================================= */
+
+button:not(:disabled) {
+    -webkit-tap-highlight-color:
+        transparent;
+}
+
+button:disabled {
+    cursor:
+        not-allowed;
+}
+
+a {
+    transition:
+        color .18s ease;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes svPageEnter {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(9px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+@keyframes svModalEnter {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(12px) scale(.985);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0) scale(1);
+    }
+}
+
+@keyframes svAuthEnter {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .app-main {
+        padding:
+            70px 18px 35px !important;
+    }
+
+    .page-heading {
+        margin-bottom:
+            20px;
+    }
+
+    .vault-controls {
+        padding:
+            9px !important;
+    }
+
+    .shared-header,
+    .trash-header {
+        gap:
+            12px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .page-heading h1,
+    .vault-header>div:first-child h1 {
+        font-size:
+            25px;
+    }
+
+    .auth-card {
+        border-radius:
+            15px !important;
+    }
+
+    .credential-grid,
+    .shared-credentials-list,
+    .devices-list {
+        grid-template-columns:
+            1fr !important;
+    }
+
+    .credential-actions {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .password-toggle {
+        width:
+            35px !important;
+
+        height:
+            33px !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            .01ms !important;
+    }
+}
+
+/* =========================================================
+   SECUREVAULT FINAL MODAL + PASSWORD POLISH
+   ========================================================= */
+
+/* ---------- MODAL OVERLAY ---------- */
+
+.modal-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+    width: 100vw !important;
+    height: 100vh !important;
+
+    padding: 24px !important;
+
+    background: rgba(10, 18, 34, 0.62) !important;
+
+    backdrop-filter: blur(7px);
+
+    z-index: 9999 !important;
+
+    overflow: hidden !important;
+}
+
+
+/* ---------- MAIN MODAL ---------- */
+
+.modal-overlay .credential-modal,
+.modal-overlay .view-credential-modal,
+.modal-overlay .delete-modal,
+.modal-overlay .share-management-modal {
+
+    position: relative !important;
+
+    width: min(560px, calc(100vw - 48px)) !important;
+
+    max-width: 560px !important;
+
+    max-height: calc(100vh - 48px) !important;
+
+    margin: 0 auto !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+
+    background: #ffffff !important;
+
+    border: 1px solid #e3e8f0 !important;
+
+    border-radius: 20px !important;
+
+    box-shadow:
+        0 30px 80px rgba(15, 23, 42, 0.28),
+        0 8px 24px rgba(15, 23, 42, 0.10) !important;
+
+    animation:
+        secureVaultModalIn 0.22s ease-out both;
+}
+
+
+/* ---------- MODAL HEADER ---------- */
+
+.modal-overlay .modal-header {
+
+    display: flex !important;
+
+    align-items: flex-start !important;
+
+    justify-content: space-between !important;
+
+    gap: 18px !important;
+
+    padding: 22px 24px !important;
+
+    margin: 0 !important;
+
+    border-bottom:
+        1px solid #edf0f4 !important;
+
+    background: #ffffff !important;
+}
+
+
+/* ---------- TITLE ROW ---------- */
+
+.modal-overlay .modal-title-row {
+
+    min-width: 0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 12px !important;
+}
+
+
+.modal-overlay .modal-title-row>div {
+
+    min-width: 0 !important;
+}
+
+
+.modal-overlay .modal-title-row h2 {
+
+    margin: 0 !important;
+
+    color: #172033 !important;
+
+    font-size: 20px !important;
+
+    line-height: 1.25 !important;
+
+    font-weight: 750 !important;
+
+    letter-spacing: -0.02em !important;
+}
+
+
+.modal-overlay .modal-title-row p {
+
+    margin: 5px 0 0 !important;
+
+    color: #7b879a !important;
+
+    font-size: 12px !important;
+
+    line-height: 1.5 !important;
+}
+
+
+/* ---------- ICON ---------- */
+
+.modal-overlay .modal-security-icon {
+
+    width: 42px !important;
+
+    height: 42px !important;
+
+    flex: 0 0 42px !important;
+
+    display: grid !important;
+
+    place-items: center !important;
+
+    border-radius: 12px !important;
+
+    background: #eef3ff !important;
+
+    color: #3563df !important;
+
+    font-size: 18px !important;
+}
+
+
+/* ---------- CLOSE ---------- */
+
+.modal-overlay .modal-close {
+
+    width: 34px !important;
+
+    height: 34px !important;
+
+    flex: 0 0 34px !important;
+
+    display: grid !important;
+
+    place-items: center !important;
+
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    border-radius: 9px !important;
+
+    background: transparent !important;
+
+    color: #7b879a !important;
+
+    font-size: 23px !important;
+
+    line-height: 1 !important;
+
+    cursor: pointer !important;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease !important;
+}
+
+
+.modal-overlay .modal-close:hover {
+
+    background: #f1f4f8 !important;
+
+    color: #172033 !important;
+
+    transform: rotate(3deg) !important;
+}
+
+
+/* ---------- FORM BODY ---------- */
+
+.modal-overlay .credential-modal form {
+
+    padding: 22px 24px 24px !important;
+
+    margin: 0 !important;
+
+    max-height:
+        calc(100vh - 190px) !important;
+
+    overflow-y: auto !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ---------- FORM GROUP ---------- */
+
+.modal-overlay .credential-modal .form-group {
+
+    width: 100% !important;
+
+    margin: 0 0 18px !important;
+
+    box-sizing: border-box !important;
+}
+
+
+.modal-overlay .credential-modal .form-group:last-of-type {
+
+    margin-bottom: 0 !important;
+}
+
+
+.modal-overlay .credential-modal .form-group label {
+
+    display: block !important;
+
+    margin: 0 0 7px !important;
+
+    color: #24324a !important;
+
+    font-size: 12px !important;
+
+    line-height: 1.4 !important;
+
+    font-weight: 700 !important;
+}
+
+
+/* ---------- INPUTS ---------- */
+
+.modal-overlay .credential-modal .form-group input:not(.sv-password-input),
+.modal-overlay .credential-modal .form-group select,
+.modal-overlay .credential-modal .form-group textarea {
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    border: 1px solid #d7deea !important;
+
+    border-radius: 11px !important;
+
+    background: #fbfcfe !important;
+
+    color: #172033 !important;
+
+    font-family: inherit !important;
+
+    font-size: 14px !important;
+
+    outline: none !important;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease !important;
+}
+
+
+.modal-overlay .credential-modal .form-group input:not(.sv-password-input),
+.modal-overlay .credential-modal .form-group select {
+
+    height: 46px !important;
+
+    padding:
+        0 13px !important;
+}
+
+
+.modal-overlay .credential-modal .form-group textarea {
+
+    min-height: 96px !important;
+
+    padding: 12px 13px !important;
+
+    resize: vertical !important;
+}
+
+
+.modal-overlay .credential-modal .form-group input:focus,
+.modal-overlay .credential-modal .form-group select:focus,
+.modal-overlay .credential-modal .form-group textarea:focus {
+
+    border-color: #4b6fe8 !important;
+
+    background: #ffffff !important;
+
+    box-shadow:
+        0 0 0 4px rgba(75, 111, 232, 0.10) !important;
+}
+
+
+/* =========================================================
+   PASSWORD INPUT
+   ========================================================= */
+
+.sv-password-field,
+.password-display {
+
+    position: relative !important;
+
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* INPUT ITSELF */
+
+.sv-password-field .sv-password-input,
+.password-display input {
+
+    width: 100% !important;
+
+    height: 46px !important;
+
+    min-height: 46px !important;
+
+    box-sizing: border-box !important;
+
+    padding:
+        0 48px 0 13px !important;
+
+    border:
+        1px solid #d7deea !important;
+
+    border-radius: 11px !important;
+
+    background: #fbfcfe !important;
+
+    color: #172033 !important;
+
+    font-family: inherit !important;
+
+    font-size: 14px !important;
+
+    outline: none !important;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease !important;
+}
+
+
+/* PASSWORD INPUT FOCUS */
+
+.sv-password-field .sv-password-input:focus,
+.password-display input:focus {
+
+    border-color: #4b6fe8 !important;
+
+    background: #ffffff !important;
+
+    box-shadow:
+        0 0 0 4px rgba(75, 111, 232, 0.10) !important;
+}
+
+
+/* ---------- REMOVE BROWSER PASSWORD EYE ---------- */
+
+/*
+   Edge/IE native reveal button.
+   We provide our own SecureVault eye button.
+*/
+
+.sv-password-field input::-ms-reveal,
+
+.sv-password-field input::-ms-clear,
+
+.password-display input::-ms-reveal,
+
+.password-display input::-ms-clear {
+
+    display: none !important;
+}
+
+
+/*
+   WebKit/Safari credential decoration.
+   Keep it hidden so the custom SecureVault
+   eye is the only visible control.
+*/
+
+.sv-password-field input::-webkit-credentials-auto-fill-button,
+
+.password-display input::-webkit-credentials-auto-fill-button {
+
+    visibility: hidden !important;
+
+    pointer-events: none !important;
+
+    position: absolute !important;
+
+    right: 0 !important;
+}
+
+
+/* ---------- CUSTOM EYE BUTTON ---------- */
+
+.sv-password-toggle,
+.sv-password-field .sv-password-toggle,
+.password-display .password-toggle {
+
+    position: absolute !important;
+
+    top: 50% !important;
+
+    right: 8px !important;
+
+    transform:
+        translateY(-50%) !important;
+
+    width: 34px !important;
+
+    height: 34px !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    display: grid !important;
+
+    place-items: center !important;
+
+    border: 0 !important;
+
+    border-radius: 8px !important;
+
+    background: transparent !important;
+
+    color: #73819a !important;
+
+    cursor: pointer !important;
+
+    z-index: 5 !important;
+
+    transition:
+        color 0.18s ease,
+        background 0.18s ease,
+        transform 0.18s ease !important;
+}
+
+
+.sv-password-toggle:hover,
+.sv-password-field .sv-password-toggle:hover,
+.password-display .password-toggle:hover {
+
+    color: #3563df !important;
+
+    background: #edf2ff !important;
+}
+
+
+.sv-password-toggle:active,
+.sv-password-field .sv-password-toggle:active,
+.password-display .password-toggle:active {
+
+    transform:
+        translateY(-50%) scale(0.94) !important;
+}
+
+
+.sv-password-toggle svg,
+.sv-password-field .sv-password-toggle svg,
+.password-display .password-toggle svg {
+
+    width: 18px !important;
+
+    height: 18px !important;
+
+    display: block !important;
+}
+
+
+/* ---------- PASSWORD HINT ---------- */
+
+.modal-overlay .form-hint {
+
+    display: block !important;
+
+    margin: 6px 0 0 !important;
+
+    color: #8994a7 !important;
+
+    font-size: 11px !important;
+
+    line-height: 1.45 !important;
+}
+
+
+/* =========================================================
+   VIEW CREDENTIAL
+   ========================================================= */
+
+.view-credential-modal .credential-details {
+
+    padding: 22px 24px 6px !important;
+
+    max-height:
+        calc(100vh - 170px) !important;
+
+    overflow-y: auto !important;
+
+    box-sizing: border-box !important;
+}
+
+
+.view-credential-modal .detail-group {
+
+    margin: 0 0 18px !important;
+}
+
+
+.view-credential-modal .detail-group label {
+
+    display: block !important;
+
+    margin-bottom: 7px !important;
+
+    color: #718096 !important;
+
+    font-size: 11px !important;
+
+    font-weight: 750 !important;
+
+    letter-spacing: 0.08em !important;
+
+    text-transform: uppercase !important;
+}
+
+
+.view-credential-modal .detail-value,
+.view-credential-modal .detail-link {
+
+    width: 100% !important;
+
+    min-height: 44px !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    padding: 10px 13px !important;
+
+    border:
+        1px solid #e0e6ef !important;
+
+    border-radius: 10px !important;
+
+    background: #f8fafc !important;
+
+    color: #25324a !important;
+
+    font-size: 13px !important;
+
+    line-height: 1.45 !important;
+
+    word-break: break-word !important;
+}
+
+
+.view-credential-modal .password-display {
+
+    width: 100% !important;
+}
+
+
+/* =========================================================
+   MODAL FOOTER
+   ========================================================= */
+
+.modal-overlay .credential-modal .modal-actions {
+
+    display: flex !important;
+
+    justify-content: flex-end !important;
+
+    align-items: center !important;
+
+    gap: 10px !important;
+
+    padding: 16px 24px 20px !important;
+
+    margin: 0 !important;
+
+    border-top:
+        1px solid #edf0f4 !important;
+
+    background: #ffffff !important;
+}
+
+
+.modal-overlay .modal-actions button {
+
+    min-height: 42px !important;
+
+    padding:
+        0 17px !important;
+
+    border-radius: 10px !important;
+
+    font-family: inherit !important;
+
+    font-size: 12px !important;
+
+    font-weight: 700 !important;
+
+    cursor: pointer !important;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease !important;
+}
+
+
+.modal-overlay .cancel-button {
+
+    border:
+        1px solid #d8e0eb !important;
+
+    background: #ffffff !important;
+
+    color: #435069 !important;
+}
+
+
+.modal-overlay .cancel-button:hover {
+
+    background: #f6f8fb !important;
+
+    border-color: #c9d3e1 !important;
+
+    transform: translateY(-1px) !important;
+}
+
+
+.modal-overlay .auth-button,
+.modal-overlay .primary-button {
+
+    border:
+        1px solid #4168df !important;
+
+    background: #4168df !important;
+
+    color: #ffffff !important;
+
+    box-shadow:
+        0 8px 20px rgba(65, 104, 223, 0.20) !important;
+}
+
+
+.modal-overlay .auth-button:hover,
+.modal-overlay .primary-button:hover {
+
+    background: #355bd0 !important;
+
+    border-color: #355bd0 !important;
+
+    transform: translateY(-1px) !important;
+
+    box-shadow:
+        0 10px 24px rgba(65, 104, 223, 0.25) !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 620px) {
+
+    .modal-overlay {
+
+        padding: 12px !important;
+
+        align-items: center !important;
+    }
+
+
+    .modal-overlay .credential-modal,
+    .modal-overlay .view-credential-modal {
+
+        width:
+            calc(100vw - 24px) !important;
+
+        max-width:
+            calc(100vw - 24px) !important;
+
+        max-height:
+            calc(100vh - 24px) !important;
+
+        border-radius: 16px !important;
+    }
+
+
+    .modal-overlay .modal-header {
+
+        padding:
+            18px !important;
+    }
+
+
+    .modal-overlay .credential-modal form {
+
+        padding:
+            18px !important;
+
+        max-height:
+            calc(100vh - 160px) !important;
+    }
+
+
+    .view-credential-modal .credential-details {
+
+        padding:
+            18px 18px 4px !important;
+    }
+
+
+    .modal-overlay .credential-modal .modal-actions {
+
+        padding:
+            14px 18px 18px !important;
+    }
+
+}
+
+
+/* =========================================================
+   MODAL ANIMATION
+   ========================================================= */
+
+@keyframes secureVaultModalIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(10px) scale(0.985);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0) scale(1);
+    }
+}
+
+/* =========================================================
+   SECUREVAULT - FINAL SHARED CREDENTIAL MODAL FIX
+   ========================================================= */
+
+/* Modal itself */
+.modal-overlay>.credential-modal {
+    width: min(620px, calc(100vw - 48px)) !important;
+    max-width: 620px !important;
+    max-height: calc(100vh - 48px) !important;
+
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* Header */
+.modal-overlay>.credential-modal>.modal-header {
+    flex: 0 0 auto !important;
+
+    padding: 26px 30px 22px !important;
+
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+
+    border-bottom: 1px solid #edf0f4 !important;
+}
+
+
+/* Shared credential header text */
+.modal-overlay>.credential-modal>.modal-header .eyebrow {
+    display: block !important;
+
+    margin: 0 0 10px !important;
+
+    color: #3563df !important;
+
+    font-size: 11px !important;
+    font-weight: 800 !important;
+
+    letter-spacing: 0.14em !important;
+}
+
+
+.modal-overlay>.credential-modal>.modal-header h2 {
+    margin: 0 !important;
+
+    color: #172033 !important;
+
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+
+    font-weight: 760 !important;
+
+    letter-spacing: -0.025em !important;
+}
+
+
+.modal-overlay>.credential-modal>.modal-header p {
+    margin: 12px 0 0 !important;
+
+    color: #5f6d82 !important;
+
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+}
+
+
+/* Close button */
+.modal-overlay>.credential-modal>.modal-header .modal-close {
+    flex: 0 0 34px !important;
+}
+
+
+/* =========================================================
+   SHARED CREDENTIAL DETAILS
+   ========================================================= */
+
+.modal-overlay>.credential-modal>.credential-details {
+
+    flex: 1 1 auto !important;
+
+    width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    padding: 22px 30px 8px !important;
+
+    margin: 0 !important;
+
+    overflow-y: auto !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    gap: 0 !important;
+}
+
+
+/* Each field */
+.modal-overlay>.credential-modal>.credential-details>.detail-group {
+
+    width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    margin: 0 0 20px !important;
+
+    padding: 0 !important;
+}
+
+
+/* Labels */
+.modal-overlay>.credential-modal>.credential-details>.detail-group>label {
+
+    display: block !important;
+
+    margin: 0 0 7px !important;
+
+    color: #738096 !important;
+
+    font-size: 11px !important;
+
+    line-height: 1.4 !important;
+
+    font-weight: 800 !important;
+
+    letter-spacing: 0.08em !important;
+
+    text-transform: uppercase !important;
+}
+
+
+/* Plain text values */
+.modal-overlay>.credential-modal>.credential-details>.detail-group>p {
+
+    display: block !important;
+
+    width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    margin: 0 !important;
+
+    padding: 10px 0 !important;
+
+    color: #25324a !important;
+
+    font-size: 14px !important;
+
+    line-height: 1.45 !important;
+
+    word-break: break-word !important;
+}
+
+
+/* =========================================================
+   PASSWORD DISPLAY
+   ========================================================= */
+
+.modal-overlay>.credential-modal .password-display {
+
+    position: relative !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+}
+
+
+.modal-overlay>.credential-modal .password-display input {
+
+    width: 100% !important;
+
+    height: 46px !important;
+
+    box-sizing: border-box !important;
+
+    padding: 0 48px 0 13px !important;
+
+    margin: 0 !important;
+
+    border: 1px solid #d7deea !important;
+
+    border-radius: 10px !important;
+
+    background: #fbfcfe !important;
+
+    color: #172033 !important;
+
+    font-family: ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        monospace !important;
+
+    font-size: 13px !important;
+
+    outline: none !important;
+}
+
+
+/* Hide browser native Edge password eye */
+.modal-overlay>.credential-modal .password-display input::-ms-reveal {
+
+    display: none !important;
+}
+
+
+/* Hide browser clear/reveal controls */
+.modal-overlay>.credential-modal .password-display input::-ms-clear {
+
+    display: none !important;
+}
+
+
+/* Custom eye */
+.modal-overlay>.credential-modal .password-display .password-toggle {
+
+    position: absolute !important;
+
+    top: 50% !important;
+
+    right: 7px !important;
+
+    transform: translateY(-50%) !important;
+
+    width: 34px !important;
+
+    height: 34px !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    display: grid !important;
+
+    place-items: center !important;
+
+    border: 0 !important;
+
+    border-radius: 8px !important;
+
+    background: transparent !important;
+
+    color: #74829a !important;
+
+    z-index: 20 !important;
+
+    cursor: pointer !important;
+}
+
+
+.modal-overlay>.credential-modal .password-display .password-toggle:hover {
+
+    background: #edf2ff !important;
+
+    color: #3563df !important;
+}
+
+
+/* Password hint */
+.modal-overlay>.credential-modal .credential-details .form-hint {
+
+    margin: 6px 0 0 !important;
+
+    color: #8a95a7 !important;
+
+    font-size: 10px !important;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.modal-overlay>.credential-modal>.modal-actions {
+
+    flex: 0 0 auto !important;
+
+    display: flex !important;
+
+    justify-content: flex-end !important;
+
+    align-items: center !important;
+
+    gap: 10px !important;
+
+    padding: 16px 30px 22px !important;
+
+    margin: 0 !important;
+
+    border-top: 1px solid #edf0f4 !important;
+
+    background: #ffffff !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .modal-overlay {
+        padding: 14px !important;
+    }
+
+    .modal-overlay>.credential-modal {
+
+        width: calc(100vw - 28px) !important;
+
+        max-width: calc(100vw - 28px) !important;
+
+        max-height: calc(100vh - 28px) !important;
+    }
+
+    .modal-overlay>.credential-modal>.modal-header {
+
+        padding:
+            20px 20px 18px !important;
+    }
+
+    .modal-overlay>.credential-modal>.credential-details {
+
+        padding:
+            18px 20px 4px !important;
+    }
+
+    .modal-overlay>.credential-modal>.modal-actions {
+
+        padding:
+            14px 20px 18px !important;
+    }
+}
+
+/* =========================================================
+   SECUREVAULT FINAL MODAL SYSTEM
+   ========================================================= */
+
+.modal-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100vh !important;
+
+    display: grid !important;
+    place-items: center !important;
+
+    padding: 24px !important;
+
+    box-sizing: border-box !important;
+
+    background: rgba(12, 20, 35, 0.62) !important;
+
+    backdrop-filter: blur(7px);
+
+    z-index: 99999 !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal-overlay>.credential-modal {
+
+    position: relative !important;
+
+    width: 620px !important;
+    max-width: calc(100vw - 48px) !important;
+
+    max-height: calc(100vh - 48px) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+
+    background: #ffffff !important;
+
+    border: 1px solid #e3e8f0 !important;
+
+    border-radius: 20px !important;
+
+    box-shadow:
+        0 32px 80px rgba(15, 23, 42, 0.28),
+        0 8px 24px rgba(15, 23, 42, 0.12) !important;
+
+    transform: none !important;
+
+    animation: secureVaultModalIn 0.2s ease-out both !important;
+}
+
+
+/* =========================================================
+   SHARED MODAL HEADER
+   ========================================================= */
+
+.modal-overlay>.credential-modal>.modal-header {
+
+    flex: 0 0 auto !important;
+
+    display: flex !important;
+
+    align-items: flex-start !important;
+
+    justify-content: space-between !important;
+
+    gap: 20px !important;
+
+    padding: 26px 30px 22px !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+
+    border-bottom: 1px solid #edf0f4 !important;
+
+    background: #ffffff !important;
+}
+
+
+.modal-overlay>.credential-modal .modal-header>div:first-child {
+
+    min-width: 0 !important;
+}
+
+
+.modal-overlay>.credential-modal .modal-header .eyebrow {
+
+    display: block !important;
+
+    margin: 0 0 9px !important;
+
+    color: #3563df !important;
+
+    font-size: 10px !important;
+
+    font-weight: 800 !important;
+
+    letter-spacing: 0.14em !important;
+}
+
+
+.modal-overlay>.credential-modal .modal-header h2 {
+
+    margin: 0 !important;
+
+    color: #172033 !important;
+
+    font-size: 27px !important;
+
+    line-height: 1.2 !important;
+
+    font-weight: 760 !important;
+
+    letter-spacing: -0.025em !important;
+}
+
+
+.modal-overlay>.credential-modal .modal-header p {
+
+    margin: 10px 0 0 !important;
+
+    color: #66748a !important;
+
+    font-size: 14px !important;
+
+    line-height: 1.5 !important;
+}
+
+
+/* =========================================================
+   CLOSE
+   ========================================================= */
+
+.modal-overlay>.credential-modal .modal-close {
+
+    flex: 0 0 34px !important;
+
+    width: 34px !important;
+
+    height: 34px !important;
+
+    display: grid !important;
+
+    place-items: center !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    border: 0 !important;
+
+    border-radius: 9px !important;
+
+    background: transparent !important;
+
+    color: #7b879a !important;
+
+    font-size: 23px !important;
+
+    cursor: pointer !important;
+}
+
+
+.modal-overlay>.credential-modal .modal-close:hover {
+
+    background: #f1f4f8 !important;
+
+    color: #172033 !important;
+}
+
+
+/* =========================================================
+   SHARED DETAILS
+   ========================================================= */
+
+.modal-overlay>.credential-modal>.credential-details {
+
+    flex: 1 1 auto !important;
+
+    width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    padding: 22px 30px 4px !important;
+
+    margin: 0 !important;
+
+    overflow-y: auto !important;
+
+    overflow-x: hidden !important;
+}
+
+
+.modal-overlay>.credential-modal>.credential-details>.detail-group {
+
+    width: 100% !important;
+
+    margin: 0 0 18px !important;
+
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+
+.modal-overlay>.credential-modal>.credential-details>.detail-group:last-child {
+
+    margin-bottom: 8px !important;
+}
+
+
+.modal-overlay>.credential-modal>.credential-details>.detail-group>label {
+
+    display: block !important;
+
+    margin: 0 0 6px !important;
+
+    padding: 0 !important;
+
+    color: #748096 !important;
+
+    font-size: 10px !important;
+
+    line-height: 1.4 !important;
+
+    font-weight: 800 !important;
+
+    letter-spacing: 0.10em !important;
+
+    text-transform: uppercase !important;
+}
+
+
+.modal-overlay>.credential-modal>.credential-details>.detail-group>p {
+
+    margin: 0 !important;
+
+    padding: 4px 0 !important;
+
+    color: #25324a !important;
+
+    font-size: 14px !important;
+
+    line-height: 1.45 !important;
+
+    word-break: break-word !important;
+}
+
+
+/* =========================================================
+   PASSWORD DISPLAY
+   ========================================================= */
+
+.modal-overlay .password-display {
+
+    position: relative !important;
+
+    width: 100% !important;
+
+    height: 46px !important;
+
+    box-sizing: border-box !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+}
+
+
+.modal-overlay .password-display-value {
+
+    width: 100% !important;
+
+    height: 46px !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    padding: 0 48px 0 13px !important;
+
+    border: 1px solid #d7deea !important;
+
+    border-radius: 10px !important;
+
+    background: #fbfcfe !important;
+
+    color: #172033 !important;
+
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        monospace !important;
+
+    font-size: 13px !important;
+
+    line-height: 1 !important;
+
+    overflow: hidden !important;
+
+    white-space: nowrap !important;
+
+    text-overflow: ellipsis !important;
+}
+
+
+.modal-overlay .password-display-value.masked {
+
+    letter-spacing: 2px !important;
+
+    color: #56657d !important;
+}
+
+
+.modal-overlay .password-display-value.visible {
+
+    letter-spacing: 0 !important;
+}
+
+
+/* =========================================================
+   SINGLE EYE
+   ========================================================= */
+
+.modal-overlay .password-display .password-toggle {
+
+    position: absolute !important;
+
+    top: 50% !important;
+
+    right: 7px !important;
+
+    transform: translateY(-50%) !important;
+
+    width: 34px !important;
+
+    height: 34px !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    display: grid !important;
+
+    place-items: center !important;
+
+    border: 0 !important;
+
+    border-radius: 8px !important;
+
+    background: transparent !important;
+
+    color: #75839a !important;
+
+    cursor: pointer !important;
+
+    z-index: 10 !important;
+}
+
+
+.modal-overlay .password-display .password-toggle:hover {
+
+    background: #edf2ff !important;
+
+    color: #3563df !important;
+}
+
+
+.modal-overlay .password-display .password-toggle svg {
+
+    display: block !important;
+
+    width: 18px !important;
+
+    height: 18px !important;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.modal-overlay>.credential-modal>.modal-actions {
+
+    flex: 0 0 auto !important;
+
+    display: flex !important;
+
+    justify-content: flex-end !important;
+
+    align-items: center !important;
+
+    gap: 10px !important;
+
+    padding: 16px 30px 20px !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+
+    border-top: 1px solid #edf0f4 !important;
+
+    background: #ffffff !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 680px) {
+
+    .modal-overlay {
+
+        padding: 12px !important;
+    }
+
+    .modal-overlay>.credential-modal {
+
+        width: calc(100vw - 24px) !important;
+
+        max-width: calc(100vw - 24px) !important;
+
+        max-height: calc(100vh - 24px) !important;
+
+        border-radius: 16px !important;
+    }
+
+    .modal-overlay>.credential-modal>.modal-header {
+
+        padding:
+            20px 20px 18px !important;
+    }
+
+    .modal-overlay>.credential-modal>.credential-details {
+
+        padding:
+            18px 20px 4px !important;
+    }
+
+    .modal-overlay>.credential-modal>.modal-actions {
+
+        padding:
+            14px 20px 18px !important;
+    }
+}
+
+
+/* =========================================================
+   ANIMATION
+   ========================================================= */
+
+@keyframes secureVaultModalIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================================================
+   SECUREVAULT — FINAL UI SYSTEM
+   Professional SaaS / Security Product
+   ========================================================= */
+
+:root {
+    --sv-primary: #3158c9;
+    --sv-primary-dark: #2445a8;
+    --sv-primary-soft: #eef3ff;
+
+    --sv-bg: #f6f8fb;
+    --sv-surface: #ffffff;
+    --sv-surface-soft: #f8fafc;
+
+    --sv-text: #172033;
+    --sv-text-soft: #475569;
+    --sv-muted: #7b879a;
+
+    --sv-border: #e2e8f0;
+    --sv-border-soft: #edf1f5;
+
+    --sv-success: #16805b;
+    --sv-success-bg: #ecfdf5;
+
+    --sv-warning: #b7791f;
+    --sv-warning-bg: #fff8e8;
+
+    --sv-danger: #c53b3b;
+    --sv-danger-bg: #fff1f2;
+
+    --sv-radius: 14px;
+    --sv-radius-lg: 20px;
+
+    --sv-shadow:
+        0 8px 28px rgba(15, 23, 42, 0.07);
+
+    --sv-shadow-hover:
+        0 16px 38px rgba(15, 23, 42, 0.11);
+}
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   APP LAYOUT
+   ========================================================= */
+
+.app-main {
+    background: var(--sv-bg);
+    min-height: 100vh;
+}
+
+.content-page,
+.section-wrapper {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   PAGE HEADERS
+   ========================================================= */
+
+.page-heading,
+.vault-top,
+.shared-header,
+.trash-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 26px;
+}
+
+.page-heading h1,
+.vault-header h1,
+.shared-header h2,
+.trash-header h2 {
+    margin: 5px 0 7px;
+    color: var(--sv-text);
+    font-size: 28px;
+    line-height: 1.2;
+    font-weight: 760;
+    letter-spacing: -0.025em;
+}
+
+.page-heading p,
+.vault-header p,
+.shared-header p,
+.trash-header p {
+    margin: 0;
+    color: var(--sv-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.eyebrow {
+    display: inline-block;
+    color: var(--sv-primary);
+    font-size: 10px;
+    line-height: 1.3;
+    font-weight: 800;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   BUTTON SYSTEM
+   ========================================================= */
+
+.auth-button,
+.primary-button,
+.add-credential-button,
+.generate-button,
+.text-button {
+    border: 0;
+    border-radius: 10px;
+    font-weight: 700;
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        background .18s ease;
+}
+
+.auth-button,
+.primary-button,
+.add-credential-button,
+.generate-button {
+    min-height: 42px;
+    padding: 0 17px;
+    background: var(--sv-primary);
+    color: #fff;
+    box-shadow:
+        0 7px 18px rgba(49, 88, 201, .18);
+}
+
+.auth-button:hover,
+.primary-button:hover,
+.add-credential-button:hover,
+.generate-button:hover {
+    background: var(--sv-primary-dark);
+    transform: translateY(-1px);
+    box-shadow:
+        0 10px 24px rgba(49, 88, 201, .23);
+}
+
+.cancel-button {
+    min-height: 42px;
+    padding: 0 17px;
+    border: 1px solid var(--sv-border);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--sv-text-soft);
+    font-weight: 700;
+}
+
+.cancel-button:hover {
+    background: var(--sv-surface-soft);
+}
+
+.text-button {
+    padding: 8px 12px;
+    background: transparent;
+    color: var(--sv-primary);
+}
+
+.text-button:hover {
+    background: var(--sv-primary-soft);
+}
+
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+.sv-dashboard-page {
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+.sv-security-hero {
+    position: relative;
+    min-height: 270px;
+    margin-bottom: 24px;
+    padding: 34px;
+    overflow: hidden;
+    border-radius: 22px;
+    background:
+        linear-gradient(135deg,
+            #172033 0%,
+            #23355d 100%);
+    color: #fff;
+    box-shadow:
+        0 20px 45px rgba(15, 23, 42, .15);
+}
+
+.sv-security-hero h1,
+.sv-security-hero h2 {
+    position: relative;
+    z-index: 2;
+    max-width: 580px;
+    margin: 8px 0;
+    color: #fff;
+    font-size: 34px;
+    line-height: 1.15;
+    letter-spacing: -.035em;
+}
+
+.sv-security-hero p {
+    position: relative;
+    z-index: 2;
+    max-width: 540px;
+    margin: 0;
+    color: rgba(255, 255, 255, .72);
+    line-height: 1.7;
+}
+
+.sv-stat-strip,
+.dashboard-stats {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.sv-dashboard-card,
+.dashboard-card,
+.sv-stat-card,
+.dashboard-stat {
+    background: #fff;
+    border: 1px solid var(--sv-border-soft);
+    border-radius: var(--sv-radius);
+    box-shadow: var(--sv-shadow);
+}
+
+.sv-dashboard-card:hover,
+.dashboard-card:hover,
+.sv-stat-card:hover,
+.dashboard-stat:hover {
+    box-shadow: var(--sv-shadow-hover);
+}
+
+
+/* =========================================================
+   VAULT
+   ========================================================= */
+
+.vault-page {
+    max-width: 1240px;
+    margin: 0 auto;
+}
+
+.vault-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 14px;
+    box-shadow: var(--sv-shadow);
+}
+
+.vault-controls input {
+    flex: 1;
+    min-width: 180px;
+}
+
+.vault-controls input,
+.category-select,
+.vault-controls select {
+    height: 42px;
+    padding: 0 13px;
+    border: 1px solid var(--sv-border);
+    border-radius: 9px;
+    background: var(--sv-surface-soft);
+    color: var(--sv-text);
+    outline: none;
+}
+
+.vault-controls input:focus,
+.category-select:focus,
+.vault-controls select:focus {
+    border-color: var(--sv-primary);
+    background: #fff;
+    box-shadow:
+        0 0 0 3px rgba(49, 88, 201, .09);
+}
+
+.credential-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 17px;
+}
+
+.credential-card {
+    position: relative;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 16px;
+    box-shadow: var(--sv-shadow);
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
+
+.credential-card:hover {
+    transform: translateY(-3px);
+    border-color: #cbd6ed;
+    box-shadow: var(--sv-shadow-hover);
+}
+
+.credential-card h3 {
+    margin: 0 0 5px;
+    color: var(--sv-text);
+    font-size: 16px;
+    font-weight: 750;
+}
+
+.credential-card p {
+    margin: 5px 0;
+    color: var(--sv-muted);
+    font-size: 12px;
+}
+
+.credential-card .category,
+.credential-card .credential-category {
+    display: inline-flex;
+    margin-bottom: 14px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: var(--sv-primary-soft);
+    color: var(--sv-primary);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .07em;
+}
+
+.credential-actions {
+    display: flex;
+    gap: 7px;
+    margin-top: 17px;
+    padding-top: 14px;
+    border-top: 1px solid var(--sv-border-soft);
+}
+
+.credential-actions button {
+    min-height: 34px;
+    padding: 0 11px;
+    border: 1px solid var(--sv-border);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--sv-text-soft);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.credential-actions button:hover {
+    background: var(--sv-primary-soft);
+    border-color: #cbd7f5;
+    color: var(--sv-primary);
+}
+
+
+/* =========================================================
+   SHARED WITH ME
+   ========================================================= */
+
+.shared-credentials-section {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.shared-credentials-list {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.shared-credential-card {
+    padding: 20px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 16px;
+    box-shadow: var(--sv-shadow);
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.shared-credential-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sv-shadow-hover);
+}
+
+.shared-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--sv-border-soft);
+}
+
+.shared-card-header h3 {
+    margin: 0 0 5px;
+    color: var(--sv-text);
+    font-size: 16px;
+}
+
+.shared-card-header span {
+    color: var(--sv-muted);
+    font-size: 11px;
+}
+
+.permission-edit,
+.permission-read {
+    flex: 0 0 auto;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 9px !important;
+    font-weight: 800 !important;
+}
+
+.permission-edit {
+    background: #eef3ff;
+    color: var(--sv-primary) !important;
+}
+
+.permission-read {
+    background: #edf8f3;
+    color: var(--sv-success) !important;
+}
+
+.shared-detail {
+    padding: 13px 0;
+}
+
+.shared-detail label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--sv-muted);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+}
+
+.shared-detail p {
+    margin: 0;
+    color: var(--sv-text-soft);
+    font-size: 13px;
+    word-break: break-word;
+}
+
+.shared-permission-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 4px;
+    padding: 12px;
+    border-radius: 9px;
+    background: var(--sv-surface-soft);
+}
+
+.shared-permission-info strong {
+    color: var(--sv-text);
+    font-size: 11px;
+}
+
+.shared-permission-info span {
+    color: var(--sv-muted);
+    font-size: 10px;
+}
+
+.shared-card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.shared-card-actions button {
+    flex: 1;
+    min-height: 37px;
+    border: 1px solid var(--sv-border);
+    border-radius: 9px;
+    background: #fff;
+    color: var(--sv-text-soft);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.shared-card-actions button:hover {
+    border-color: var(--sv-primary);
+    background: var(--sv-primary-soft);
+    color: var(--sv-primary);
+}
+
+
+/* =========================================================
+   TRASH
+   ========================================================= */
+
+.trash-section {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.trash-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    margin-bottom: 12px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 15px;
+    box-shadow: var(--sv-shadow);
+}
+
+.trash-card-info {
+    min-width: 0;
+}
+
+.trash-card-info h3 {
+    margin: 0 0 5px;
+    color: var(--sv-text);
+    font-size: 15px;
+}
+
+.trash-card-info span {
+    display: inline-block;
+    margin-bottom: 6px;
+    color: var(--sv-danger);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .07em;
+}
+
+.trash-card-info p {
+    margin: 3px 0;
+    color: var(--sv-muted);
+    font-size: 11px;
+}
+
+.trash-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.trash-actions button {
+    min-height: 37px;
+    padding: 0 12px;
+    border-radius: 9px;
+    font-size: 10px;
+    font-weight: 750;
+}
+
+.trash-actions button:first-child {
+    border: 1px solid #b9dfcf;
+    background: var(--sv-success-bg);
+    color: var(--sv-success);
+}
+
+.trash-actions button:last-child {
+    border: 1px solid #f0c5c9;
+    background: var(--sv-danger-bg);
+    color: var(--sv-danger);
+}
+
+
+/* =========================================================
+   PASSWORD GENERATOR
+   ========================================================= */
+
+.generator-layout {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 18px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.generator-card {
+    padding: 24px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 17px;
+    box-shadow: var(--sv-shadow);
+}
+
+.generator-card-header h2 {
+    margin: 0 0 5px;
+    color: var(--sv-text);
+    font-size: 18px;
+}
+
+.generator-card-header p {
+    margin: 0 0 24px;
+    color: var(--sv-muted);
+    font-size: 11px;
+}
+
+.generator-field-heading {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 9px;
+}
+
+.generator-field-heading label {
+    color: var(--sv-text-soft);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.generator-field-heading strong {
+    color: var(--sv-primary);
+    font-size: 13px;
+}
+
+.generator-length input[type="range"] {
+    width: 100%;
+    accent-color: var(--sv-primary);
+}
+
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+    color: var(--sv-muted);
+    font-size: 10px;
+}
+
+.generator-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin: 22px 0;
+}
+
+.generator-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px;
+    border: 1px solid var(--sv-border);
+    border-radius: 9px;
+    background: var(--sv-surface-soft);
+    color: var(--sv-text-soft);
+    font-size: 11px;
+}
+
+.generated-password {
+    min-height: 110px;
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-break: break-all;
+    text-align: center;
+    border-radius: 13px;
+    background: #172033;
+    color: #fff;
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Consolas,
+        monospace;
+    font-size: 17px;
+    letter-spacing: .03em;
+}
+
+
+/* =========================================================
+   PASSWORD HEALTH
+   ========================================================= */
+
+.password-health-card {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 17px;
+    box-shadow: var(--sv-shadow);
+}
+
+.password-health-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--sv-border-soft);
+}
+
+.health-score {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.health-score strong {
+    color: var(--sv-text);
+    font-size: 42px;
+    line-height: 1;
+}
+
+.password-health-stats {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.health-stat {
+    padding: 17px;
+    border: 1px solid var(--sv-border);
+    border-radius: 12px;
+    background: var(--sv-surface-soft);
+}
+
+.health-stat strong {
+    display: block;
+    color: var(--sv-text);
+    font-size: 23px;
+}
+
+.health-stat span {
+    color: var(--sv-muted);
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   SECURITY
+   ========================================================= */
+
+.security-status-panel,
+.security-panel,
+.activity-summary,
+.alert-summary-grid,
+.login-activity-list,
+.security-alert-list {
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.security-status-panel {
+    padding: 25px;
+    margin-bottom: 18px;
+    border: 1px solid #cce8dc;
+    border-radius: 16px;
+    background: var(--sv-success-bg);
+}
+
+.security-status-panel h2 {
+    margin: 0 0 5px;
+    color: var(--sv-success);
+}
+
+.security-status-panel p {
+    margin: 0;
+    color: #487564;
+    font-size: 12px;
+}
+
+.security-stats,
+.activity-summary,
+.alert-summary-grid,
+.admin-stat-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.security-stat,
+.activity-summary-card,
+.alert-summary-card,
+.admin-stat-card {
+    padding: 19px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 14px;
+    box-shadow: var(--sv-shadow);
+}
+
+.security-stat strong,
+.activity-summary-card strong,
+.alert-summary-card strong,
+.admin-stat-card strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--sv-text);
+    font-size: 24px;
+}
+
+.security-stat span,
+.activity-summary-card span,
+.alert-summary-card span,
+.admin-stat-card span {
+    color: var(--sv-muted);
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   ACTIVITY
+   ========================================================= */
+
+.login-activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.login-activity-card {
+    padding: 17px 19px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 12px;
+    box-shadow: var(--sv-shadow);
+}
+
+.activity-meta {
+    color: var(--sv-muted);
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.security-alert-list {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+.alert-card {
+    padding: 18px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 13px;
+    box-shadow: var(--sv-shadow);
+}
+
+.alert-card.warning {
+    border-left: 4px solid var(--sv-warning);
+}
+
+.alert-card.danger {
+    border-left: 4px solid var(--sv-danger);
+}
+
+.alert-card.success {
+    border-left: 4px solid var(--sv-success);
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+   ========================================================= */
+
+.notifications-list {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.notification-card {
+    padding: 17px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 12px;
+    transition: background .18s ease;
+}
+
+.notification-card:hover {
+    background: #fbfcff;
+}
+
+
+/* =========================================================
+   DEVICES
+   ========================================================= */
+
+.devices-list {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.device-card {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 18px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 13px;
+    box-shadow: var(--sv-shadow);
+}
+
+.device-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 42px;
+    border-radius: 11px;
+    background: var(--sv-primary-soft);
+    color: var(--sv-primary);
+}
+
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+.profile-card {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 26px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 17px;
+    box-shadow: var(--sv-shadow);
+}
+
+
+/* =========================================================
+   AUDIT
+   ========================================================= */
+
+.audit-table-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 14px;
+    box-shadow: var(--sv-shadow);
+}
+
+.audit-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.audit-table th {
+    padding: 13px 15px;
+    background: #f8fafc;
+    color: var(--sv-muted);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.audit-table td {
+    padding: 14px 15px;
+    border-top: 1px solid var(--sv-border-soft);
+    color: var(--sv-text-soft);
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
+.admin-stat-grid {
+    max-width: 1200px;
+    margin: 0 auto 20px;
+}
+
+.admin-section {
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    padding: 22px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 15px;
+    box-shadow: var(--sv-shadow);
+}
+
+.admin-section h2 {
+    margin: 0 0 17px;
+    color: var(--sv-text);
+    font-size: 17px;
+}
+
+.admin-users-toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.admin-user-search {
+    width: 100%;
+    max-width: 360px;
+}
+
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 18px;
+    background:
+        radial-gradient(circle at 10% 10%,
+            rgba(49, 88, 201, .09),
+            transparent 32%),
+        var(--sv-bg);
+}
+
+.auth-card {
+    width: min(100%, 440px);
+    padding: 34px;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 20px;
+    box-shadow:
+        0 24px 65px rgba(15, 23, 42, .10);
+}
+
+.auth-header {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.auth-header h1 {
+    margin: 8px 0;
+    color: var(--sv-text);
+    font-size: 28px;
+    letter-spacing: -.025em;
+}
+
+.auth-header p {
+    margin: 0;
+    color: var(--sv-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.auth-form .form-group,
+.auth-card .form-group {
+    margin-bottom: 16px;
+}
+
+.auth-form label,
+.auth-card label {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--sv-text-soft);
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.auth-form input,
+.auth-card input,
+.auth-card select,
+.auth-card textarea {
+    width: 100%;
+    min-height: 45px;
+    padding: 0 13px;
+    border: 1px solid var(--sv-border);
+    border-radius: 10px;
+    background: #fbfcfe;
+    color: var(--sv-text);
+    outline: none;
+}
+
+.auth-card textarea {
+    padding-top: 11px;
+}
+
+.auth-form input:focus,
+.auth-card input:focus,
+.auth-card select:focus,
+.auth-card textarea:focus {
+    border-color: var(--sv-primary);
+    background: #fff;
+    box-shadow:
+        0 0 0 3px rgba(49, 88, 201, .09);
+}
+
+
+/* =========================================================
+   PASSWORD FIELDS
+   ========================================================= */
+
+.sv-password-field,
+.password-input-wrapper,
+.password-display {
+    position: relative;
+    width: 100%;
+}
+
+.sv-password-field input,
+.password-input-wrapper input,
+.password-display input {
+    width: 100%;
+    min-height: 45px;
+    padding-right: 48px !important;
+}
+
+.sv-password-toggle,
+.password-input-wrapper .password-toggle,
+.password-display .password-toggle {
+    position: absolute !important;
+    top: 50%;
+    right: 6px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    transform: translateY(-50%);
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #75839a;
+    z-index: 5;
+}
+
+.sv-password-toggle:hover,
+.password-input-wrapper .password-toggle:hover,
+.password-display .password-toggle:hover {
+    background: var(--sv-primary-soft);
+    color: var(--sv-primary);
+}
+
+.sv-password-toggle svg,
+.password-display .password-toggle svg {
+    display: block;
+}
+
+
+/* =========================================================
+   MODALS — FINAL
+   ========================================================= */
+
+.modal-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 20px !important;
+    box-sizing: border-box !important;
+
+    background: rgba(15, 23, 42, .60) !important;
+    backdrop-filter: blur(6px);
+
+    z-index: 99999 !important;
+}
+
+.modal-overlay>.credential-modal,
+.modal-overlay>.view-credential-modal,
+.modal-overlay>.delete-modal,
+.modal-overlay>.share-management-modal {
+    width: min(620px, calc(100vw - 40px)) !important;
+    max-width: 620px !important;
+    max-height: calc(100vh - 40px) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    background: #fff !important;
+    border: 1px solid var(--sv-border) !important;
+    border-radius: 19px !important;
+
+    box-shadow:
+        0 30px 80px rgba(15, 23, 42, .25) !important;
+}
+
+.modal-header {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 18px !important;
+
+    padding: 22px 25px !important;
+    border-bottom: 1px solid var(--sv-border-soft) !important;
+}
+
+.modal-title-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 11px !important;
+}
+
+.modal-security-icon {
+    width: 40px !important;
+    height: 40px !important;
+    display: grid !important;
+    place-items: center !important;
+    flex: 0 0 40px !important;
+
+    border-radius: 11px !important;
+    background: var(--sv-primary-soft) !important;
+    color: var(--sv-primary) !important;
+}
+
+.modal-header h2 {
+    margin: 0 !important;
+    color: var(--sv-text) !important;
+    font-size: 20px !important;
+}
+
+.modal-header p {
+    margin: 5px 0 0 !important;
+    color: var(--sv-muted) !important;
+    font-size: 11px !important;
+}
+
+.modal-close {
+    width: 33px !important;
+    height: 33px !important;
+    display: grid !important;
+    place-items: center !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+
+    color: var(--sv-muted) !important;
+    font-size: 22px !important;
+}
+
+.modal-close:hover {
+    background: var(--sv-surface-soft) !important;
+    color: var(--sv-text) !important;
+}
+
+.credential-modal form {
+    max-height: calc(100vh - 175px);
+    overflow-y: auto;
+    padding: 22px 25px !important;
+}
+
+.credential-modal .form-group {
+    margin-bottom: 16px !important;
+}
+
+.credential-modal .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--sv-text-soft);
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.credential-modal .form-group input,
+.credential-modal .form-group select,
+.credential-modal .form-group textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--sv-border);
+    border-radius: 9px;
+    background: #fbfcfe;
+    color: var(--sv-text);
+    outline: none;
+}
+
+.credential-modal .form-group textarea {
+    padding-top: 11px;
+    min-height: 90px;
+}
+
+.credential-modal .form-group input:focus,
+.credential-modal .form-group select:focus,
+.credential-modal .form-group textarea:focus {
+    border-color: var(--sv-primary);
+    background: #fff;
+    box-shadow:
+        0 0 0 3px rgba(49, 88, 201, .08);
+}
+
+.modal-actions {
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 9px !important;
+
+    padding: 15px 25px 20px !important;
+
+    border-top: 1px solid var(--sv-border-soft) !important;
+}
+
+
+/* =========================================================
+   SHARED VIEW MODAL
+   ========================================================= */
+
+.credential-details {
+    padding: 21px 25px 7px !important;
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+}
+
+.detail-group {
+    margin-bottom: 17px !important;
+}
+
+.detail-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--sv-muted);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+}
+
+.detail-group>p {
+    margin: 0 !important;
+    color: var(--sv-text-soft);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   EMPTY / LOADING / ERROR
+   ========================================================= */
+
+.empty-state,
+.empty-shared {
+    padding: 60px 25px;
+    text-align: center;
+    background: #fff;
+    border: 1px dashed var(--sv-border);
+    border-radius: 16px;
+}
+
+.empty-state h2,
+.empty-shared h3 {
+    margin: 0 0 7px;
+    color: var(--sv-text);
+}
+
+.empty-state p,
+.empty-shared p {
+    margin: 0;
+    color: var(--sv-muted);
+    font-size: 11px;
+}
+
+.error-message {
+    padding: 11px 13px;
+    margin-bottom: 14px;
+    border: 1px solid #f0c5c9;
+    border-radius: 9px;
+    background: var(--sv-danger-bg);
+    color: var(--sv-danger);
+    font-size: 11px;
+}
+
+.success-message {
+    padding: 11px 13px;
+    margin-bottom: 14px;
+    border: 1px solid #b9dfcf;
+    border-radius: 9px;
+    background: var(--sv-success-bg);
+    color: var(--sv-success);
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   TABLE / GENERAL CARDS
+   ========================================================= */
+
+.table-wrapper,
+.data-table-wrapper {
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid var(--sv-border);
+    border-radius: 14px;
+    box-shadow: var(--sv-shadow);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .credential-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-stats,
+    .sv-stat-strip,
+    .security-stats,
+    .admin-stat-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+@media (max-width: 800px) {
+
+    .credential-grid,
+    .shared-credentials-list,
+    .devices-list {
+        grid-template-columns: 1fr;
+    }
+
+    .generator-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .vault-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .vault-controls input,
+    .category-select {
+        width: 100%;
+    }
+
+    .page-heading,
+    .vault-top,
+    .shared-header,
+    .trash-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .trash-card {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .trash-actions {
+        width: 100%;
+    }
+
+    .trash-actions button {
+        flex: 1;
+    }
+
+    .password-health-stats,
+    .security-stats,
+    .activity-summary,
+    .alert-summary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .app-main {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .page-heading h1,
+    .vault-header h1,
+    .shared-header h2,
+    .trash-header h2 {
+        font-size: 24px;
+    }
+
+    .dashboard-stats,
+    .sv-stat-strip,
+    .security-stats,
+    .password-health-stats,
+    .activity-summary,
+    .alert-summary-grid,
+    .admin-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-card {
+        padding: 26px 20px;
+    }
+
+    .generator-options {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-overlay {
+        padding: 10px !important;
+    }
+
+    .modal-overlay>.credential-modal,
+    .modal-overlay>.view-credential-modal,
+    .modal-overlay>.delete-modal,
+    .modal-overlay>.share-management-modal {
+        width: calc(100vw - 20px) !important;
+        max-width: calc(100vw - 20px) !important;
+        max-height: calc(100vh - 20px) !important;
+        border-radius: 15px !important;
+    }
+
+    .modal-header {
+        padding: 18px !important;
+    }
+
+    .credential-modal form,
+    .credential-details {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+
+    .modal-actions {
+        padding:
+            13px 18px 17px !important;
+    }
+
+    .modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .modal-actions button {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   MOTION
+   ========================================================= */
+
+@keyframes secureVaultFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.credential-card,
+.shared-credential-card,
+.trash-card,
+.generator-card,
+.password-health-card,
+.security-stat,
+.notification-card,
+.device-card,
+.admin-stat-card {
+    animation:
+        secureVaultFadeIn .25s ease-out both;
+}
+
+/* =========================================================
+   LOGIN ACTIVITY — FINAL ALIGNMENT FIX
+   ========================================================= */
+
+.login-activity-card {
+    padding: 22px 24px !important;
+}
+
+.login-activity-card .activity-meta {
+    display: grid !important;
+    grid-template-columns: 90px 145px 150px 1fr !important;
+    align-items: start !important;
+    column-gap: 16px !important;
+    row-gap: 6px !important;
+
+    margin-top: 18px !important;
+
+    color: #718096 !important;
+    font-size: 11px !important;
+    line-height: 1.5 !important;
+}
+
+/* Keep individual pieces separated */
+.login-activity-card .activity-meta>* {
+    min-width: 0 !important;
+}
+
+/* Device information */
+.login-activity-card .activity-meta .device-info,
+.login-activity-card .activity-meta>div:last-child {
+    word-break: break-word !important;
+}
+
+/* Failed login = red indicator */
+.login-activity-card.failed .activity-status,
+.login-activity-card .status-failed,
+.login-activity-card .failed-indicator {
+    color: #c53b3b !important;
+}
+
+/* Successful login = green */
+.login-activity-card.success .activity-status,
+.login-activity-card .status-success {
+    color: #16805b !important;
+}
+
+
+/* If metadata is rendered as plain inline elements */
+.login-activity-card .activity-meta span {
+    display: block !important;
+}
+
+
+/* Mobile */
+@media (max-width: 750px) {
+
+    .login-activity-card .activity-meta {
+        grid-template-columns: 1fr 1fr !important;
+        column-gap: 18px !important;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .login-activity-card .activity-meta {
+        grid-template-columns: 1fr !important;
+    }
+}
