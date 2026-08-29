@@ -11,9 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 public class PasswordRecoveryService {
+        @Value("${app.frontend-url:http://localhost:3000}")
+        private String frontendUrl;
 
         private final UserRepository userRepository;
         private final PasswordResetTokenRepository tokenRepository;
@@ -66,8 +69,7 @@ public class PasswordRecoveryService {
 
                 tokenRepository.save(resetToken);
 
-                String resetLink = "http://localhost:5173/reset-password?token="
-                                + token;
+                String resetLink = frontendUrl + "/reset-password?token=" + token;
 
                 emailService.sendPasswordResetEmail(
                                 user.getEmail(),
