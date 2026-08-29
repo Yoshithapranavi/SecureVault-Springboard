@@ -58,12 +58,17 @@ public class SecurityConfig {
                                                 .permitAll()
 
                                                 // Public authentication endpoints
+                                                // Public authentication endpoints
                                                 .requestMatchers(
                                                                 "/api/auth/register",
                                                                 "/api/auth/login",
                                                                 "/api/auth/mfa/verify",
                                                                 "/api/auth/password/forgot",
-                                                                "/api/auth/password/reset")
+                                                                "/api/auth/password/reset",
+
+                                                                // Google OAuth2 endpoints
+                                                                "/oauth2/**",
+                                                                "/login/oauth2/**")
                                                 .permitAll()
 
                                                 // Everything else requires authentication
