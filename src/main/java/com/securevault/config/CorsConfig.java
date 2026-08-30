@@ -17,8 +17,9 @@ public class CorsConfig {
                 CorsConfiguration configuration = new CorsConfiguration();
 
                 configuration.setAllowedOrigins(List.of(
-        "http://localhost:3000",
-        "http://localhost:5173"));
+                                "http://localhost:3000",
+                                "http://localhost:5173",
+                                "https://securevault-frontend-nu.vercel.app"));
 
                 configuration.setAllowedMethods(List.of(
                                 "GET",
@@ -33,7 +34,7 @@ public class CorsConfig {
                 configuration.setExposedHeaders(List.of(
                                 "Authorization"));
 
-                configuration.setAllowCredentials(false);
+                configuration.setAllowCredentials(true);
 
                 UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
