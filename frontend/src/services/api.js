@@ -7,16 +7,55 @@ const api = axios.create({
     },
 });
 
+// =========================================================
+// JWT INTERCEPTOR
+// =========================================================
+
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem("securevault_token");
+
+        // Authentication endpoints must NOT receive
+        // an old/stale JWT.
+        const publicAuthEndpoints = [
+            "/auth/login",
+            "/auth/register",
+            "/auth/mfa/verify",
+            "/auth/password/forgot",
+            "/auth/password/reset",
+        ];
+
+        const isPublicAuthEndpoint =
+            publicAuthEndpoints.some(
+                (endpoint) => config.url?.startsWith(endpoint)
+            );
+
+        if (isPublicAuthEndpoint) {
+
+            // Make sure an old Authorization header
+            // is not accidentally sent.
+            if (config.headers) {
+                delete config.headers.Authorization;
+            }
+
+            return config;
+        }
+
+        // =====================================================
+        // PROTECTED REQUESTS
+        // =====================================================
+
+        const token =
+            localStorage.getItem("securevault_token");
 
         if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+
+            config.headers.Authorization =
+                `Bearer ${token}`;
         }
 
         return config;
     },
+
     (error) => {
         return Promise.reject(error);
     }
