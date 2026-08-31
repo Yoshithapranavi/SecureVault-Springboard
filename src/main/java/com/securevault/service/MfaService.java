@@ -4,8 +4,6 @@ import com.securevault.entity.MfaOtp;
 import com.securevault.entity.User;
 import com.securevault.repository.MfaOtpRepository;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +18,17 @@ public class MfaService {
 
         private final MfaOtpRepository mfaOtpRepository;
         private final BCryptPasswordEncoder passwordEncoder;
-        private final JavaMailSender mailSender;
+        private final EmailService emailService;
         private final SecureRandom secureRandom;
 
         public MfaService(
                         MfaOtpRepository mfaOtpRepository,
                         BCryptPasswordEncoder passwordEncoder,
-                        JavaMailSender mailSender) {
+                        EmailService emailService) {
 
                 this.mfaOtpRepository = mfaOtpRepository;
                 this.passwordEncoder = passwordEncoder;
-                this.mailSender = mailSender;
+                this.emailService = emailService;
                 this.secureRandom = new SecureRandom();
         }
 
@@ -48,9 +46,11 @@ public class MfaService {
 
                 mfaOtp.setUser(user);
 
+                // Hash OTP before storing it
                 mfaOtp.setOtpHash(
                                 passwordEncoder.encode(otp));
 
+                // OTP expires after 5 minutes
                 mfaOtp.setExpiresAt(
                                 LocalDateTime.now()
                                                 .plusMinutes(OTP_EXPIRATION_MINUTES));
@@ -61,6 +61,7 @@ public class MfaService {
                 mfaOtp.setCreatedAt(
                                 LocalDateTime.now());
 
+                // Store hashed OTP in database
                 mfaOtpRepository.save(mfaOtp);
 
                 return otp;
@@ -74,22 +75,20 @@ public class MfaService {
                         String email,
                         String otp) {
 
-                SimpleMailMessage message = new SimpleMailMessage();
+                String subject = "SecureVault MFA Verification Code";
 
-                message.setTo(email);
+                String text = "Your SecureVault verification code is: "
+                                + otp
+                                + "\n\n"
+                                + "This OTP is valid for 5 minutes."
+                                + "\n"
+                                + "Do not share this code with anyone.";
 
-                message.setSubject(
-                                "SecureVault MFA Verification Code");
-
-                message.setText(
-                                "Your SecureVault verification code is: "
-                                                + otp
-                                                + "\n\n"
-                                                + "This OTP is valid for 5 minutes."
-                                                + "\n"
-                                                + "Do not share this code with anyone.");
-
-                mailSender.send(message);
+                // Send through Brevo HTTPS API
+                emailService.sendEmail(
+                                email,
+                                subject,
+                                text);
         }
 
         // =========================================================
@@ -101,34 +100,42 @@ public class MfaService {
                         String otp) {
 
                 MfaOtp mfaOtp = mfaOtpRepository
-                                .findTopByUserAndVerifiedFalseOrderByCreatedAtDesc(user)
+                                .findTopByUserAndVerifiedFalseOrderByCreatedAtDesc(
+                                                user)
                                 .orElse(null);
 
+                // OTP not found
                 if (mfaOtp == null) {
                         return false;
                 }
 
+                // OTP expired
                 if (mfaOtp.getExpiresAt()
                                 .isBefore(LocalDateTime.now())) {
 
                         return false;
                 }
 
+                // Maximum attempts reached
                 if (mfaOtp.getAttempts() >= MAX_ATTEMPTS) {
                         return false;
                 }
 
+                // Increment attempt count
                 mfaOtp.setAttempts(
                                 mfaOtp.getAttempts() + 1);
 
+                // Compare entered OTP with stored hash
                 boolean valid = passwordEncoder.matches(
                                 otp,
                                 mfaOtp.getOtpHash());
 
+                // Mark OTP as verified
                 if (valid) {
                         mfaOtp.setVerified(true);
                 }
 
+                // Save updated OTP
                 mfaOtpRepository.save(mfaOtp);
 
                 return valid;
