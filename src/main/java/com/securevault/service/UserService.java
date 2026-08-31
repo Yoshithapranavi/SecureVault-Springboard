@@ -277,6 +277,11 @@ public class UserService {
                 User user = userRepository.findByEmail(email)
                                 .orElseThrow(() -> new InvalidCredentialsException(
                                                 "User not found."));
+                logger.info(
+                                "MFA user loaded: id={}, email={}, role={}",
+                                user.getId(),
+                                user.getEmail(),
+                                user.getRole());
 
                 boolean valid = mfaService.verifyOtp(
                                 user,
@@ -352,10 +357,14 @@ public class UserService {
                 // JWT
                 // -----------------------------------------------------
 
-                String token = jwtService.generateToken(
+                logger.info(
+                                "Generating JWT: email={}, role={}",
                                 user.getEmail(),
                                 user.getRole());
 
+                String token = jwtService.generateToken(
+                                user.getEmail(),
+                                user.getRole());
                 // -----------------------------------------------------
                 // LOGIN AUDIT
                 // -----------------------------------------------------
