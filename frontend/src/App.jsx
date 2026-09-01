@@ -576,9 +576,8 @@ function App() {
           activeSection === "admin" && (
 
             <AdminDashboard
-              onNavigate={
-                setActiveSection
-              }
+              onGoToVault={() => setActiveSection("vault")}
+              onLogout={logout}
             />
 
           )}
