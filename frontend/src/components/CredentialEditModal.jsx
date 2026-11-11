@@ -149,7 +149,10 @@ function CredentialEditModal({
                 <div className="modal-header">
                     <div className="modal-title-row">
                         <span className="modal-security-icon">
-                            ✎
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <path d="m4 16 9.5-9.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                                <path d="m13.5 7.5 3 3" />
+                            </svg>
                         </span>
 
                         <div>

@@ -2,37 +2,6 @@
    SECUREVAULT — PREMIUM DASHBOARD V2
    ========================================================= */
 
-:root {
-    --sv-bg: #f3f5f9;
-    --sv-white: #ffffff;
-
-    --sv-navy: #0d1728;
-    --sv-navy-2: #141f33;
-    --sv-navy-3: #1c2940;
-
-    --sv-blue: #4169e1;
-    --sv-blue-dark: #3154c7;
-    --sv-blue-soft: #edf2ff;
-
-    --sv-violet: #8067ed;
-
-    --sv-text: #111c2f;
-    --sv-text-2: #536176;
-    --sv-muted: #7c889b;
-
-    --sv-border: #e1e6ee;
-
-    --sv-green: #14966b;
-    --sv-green-soft: #eaf8f2;
-
-    --sv-orange: #d08322;
-    --sv-orange-soft: #fff5e5;
-
-    --sv-red: #c74640;
-    --sv-red-soft: #fff0ef;
-}
-
-
 /* =========================================================
    PAGE
    ========================================================= */
@@ -267,10 +236,8 @@
 
     border-radius: 50%;
 
-    background: #4ed8a4;
-
-    box-shadow:
-        0 0 0 5px rgba(78, 216, 164, .09);
+    background: var(--sv-emerald);
+    box-shadow: none;
 
     animation: sv-pulse 2s infinite;
 }
@@ -727,7 +694,7 @@
 
     border-radius: 50%;
 
-    background: #42c593;
+    background: var(--sv-emerald);
 
     animation: sv-pulse 2s infinite;
 }
@@ -1489,9 +1456,9 @@
 
     border-radius: 50%;
 
-    background: #eaf8f2;
+    background: var(--sv-success-bg);
 
-    color: #14966b;
+    color: var(--sv-success);
 
     font-size: 14px;
     font-weight: 800;
@@ -1667,8 +1634,8 @@
 
     border-radius: 50%;
 
-    background: #eaf8f2;
-    color: #14966b;
+    background: var(--sv-success-bg);
+    color: var(--sv-success);
 
     font-size: 14px;
     font-weight: 800;
@@ -2058,11 +2025,7 @@
 }
 
 .health-bar {
-    background:
-        linear-gradient(90deg,
-            #d9534f,
-            #d99532,
-            #14966b) !important;
+    background: var(--sv-emerald) !important;
 }
 
 
@@ -2233,41 +2196,6 @@
    SECUREVAULT FINAL APPLICATION UI
    GLOBAL PAGE POLISH
 ========================================================= */
-
-:root {
-    --sv-page: #f4f6fa;
-    --sv-surface: #ffffff;
-    --sv-surface-soft: #f8faff;
-
-    --sv-ink: #142033;
-    --sv-ink-soft: #475467;
-    --sv-muted-final: #7d899b;
-
-    --sv-line: #e3e8ef;
-    --sv-line-strong: #d5dce7;
-
-    --sv-primary-final: #4169e1;
-    --sv-primary-dark-final: #3154c7;
-    --sv-primary-soft-final: #edf2ff;
-
-    --sv-violet-final: #8067ed;
-
-    --sv-success-final: #14966b;
-    --sv-success-bg-final: #eaf8f2;
-
-    --sv-warning-final: #c77919;
-    --sv-warning-bg-final: #fff5e5;
-
-    --sv-danger-final: #c74640;
-    --sv-danger-bg-final: #fff0ef;
-
-    --sv-shadow-final:
-        0 5px 22px rgba(15, 23, 42, .045);
-
-    --sv-shadow-final-hover:
-        0 16px 38px rgba(15, 23, 42, .075);
-}
-
 
 /* =========================================================
    COMMON PAGE BACKGROUND
@@ -5150,42 +5078,6 @@ a {
    Professional SaaS / Security Product
    ========================================================= */
 
-:root {
-    --sv-primary: #3158c9;
-    --sv-primary-dark: #2445a8;
-    --sv-primary-soft: #eef3ff;
-
-    --sv-bg: #f6f8fb;
-    --sv-surface: #ffffff;
-    --sv-surface-soft: #f8fafc;
-
-    --sv-text: #172033;
-    --sv-text-soft: #475569;
-    --sv-muted: #7b879a;
-
-    --sv-border: #e2e8f0;
-    --sv-border-soft: #edf1f5;
-
-    --sv-success: #16805b;
-    --sv-success-bg: #ecfdf5;
-
-    --sv-warning: #b7791f;
-    --sv-warning-bg: #fff8e8;
-
-    --sv-danger: #c53b3b;
-    --sv-danger-bg: #fff1f2;
-
-    --sv-radius: 14px;
-    --sv-radius-lg: 20px;
-
-    --sv-shadow:
-        0 8px 28px rgba(15, 23, 42, 0.07);
-
-    --sv-shadow-hover:
-        0 16px 38px rgba(15, 23, 42, 0.11);
-}
-
-
 /* =========================================================
    GLOBAL
    ========================================================= */
@@ -6801,10 +6693,10 @@ a {
     color: #c53b3b !important;
 }
 
-/* Successful login = green */
+/* Successful login uses a quiet positive text role. */
 .login-activity-card.success .activity-status,
 .login-activity-card .status-success {
-    color: #16805b !important;
+    color: var(--sv-success) !important;
 }
 
 
@@ -6827,5 +6719,847 @@ a {
 
     .login-activity-card .activity-meta {
         grid-template-columns: 1fr !important;
+    }
+}
+
+/* =========================================================
+   MIDNIGHT EMERALD FOUNDATION
+   Existing component selectors remain supported while the
+   shared tokens in index.css become the source of truth.
+========================================================= */
+
+body {
+    background: var(--sv-ivory);
+    color: var(--sv-text);
+}
+
+.securevault-app {
+    background: var(--sv-ivory);
+}
+
+.app-sidebar {
+    width: 248px;
+    background: var(--sv-midnight) !important;
+    border-right: 1px solid rgba(168, 201, 181, .16);
+    box-shadow: 4px 0 18px rgba(16, 27, 27, .08);
+}
+
+.sidebar-brand {
+    min-height: 76px;
+    padding: 18px 20px;
+    border-bottom-color: rgba(168, 201, 181, .14);
+}
+
+.brand-mark,
+.user-avatar {
+    background: var(--sv-emerald) !important;
+    box-shadow: none !important;
+}
+
+.sidebar-brand strong,
+.sidebar-user-info strong {
+    color: var(--sv-ivory);
+}
+
+.sidebar-brand span,
+.sidebar-user-info span,
+.sidebar-logout {
+    color: rgba(168, 201, 181, .72);
+}
+
+.sidebar-navigation {
+    padding: 18px 12px;
+}
+
+.sidebar-section-label {
+    color: rgba(168, 201, 181, .62);
+}
+
+.sidebar-item {
+    min-height: 41px;
+    border-radius: 7px;
+    color: rgba(242, 240, 232, .68);
+}
+
+.sidebar-item:hover {
+    background: rgba(168, 201, 181, .09);
+    color: var(--sv-ivory);
+    transform: none;
+}
+
+.sidebar-item.active {
+    background: var(--sv-pine) !important;
+    border-color: rgba(168, 201, 181, .14);
+    color: var(--sv-ivory);
+    box-shadow: inset 3px 0 0 var(--sv-emerald);
+}
+
+.sidebar-item.active .sidebar-icon,
+.sidebar-item:hover .sidebar-icon {
+    color: var(--sv-sage);
+}
+
+.sidebar-icon {
+    width: 20px;
+    color: rgba(168, 201, 181, .68);
+}
+
+.sidebar-svg-icon {
+    display: block;
+    width: 17px;
+    height: 17px;
+}
+
+.sidebar-footer {
+    padding: 14px;
+    background: rgba(0, 0, 0, .12);
+    border-top-color: rgba(168, 201, 181, .14);
+}
+
+.sidebar-logout:hover {
+    background: rgba(168, 201, 181, .09);
+    color: var(--sv-ivory);
+}
+
+.sidebar-logout-icon {
+    display: inline-flex;
+}
+
+.sidebar-logout-icon .sidebar-svg-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.app-main {
+    width: calc(100% - 248px);
+    margin-left: 248px;
+    padding: 32px 38px 48px;
+}
+
+.primary-button,
+.add-button,
+.auth-button,
+.generator-button,
+.share-button,
+.save-button,
+.sv-primary-action {
+    background: var(--sv-emerald) !important;
+    border-color: var(--sv-emerald) !important;
+    box-shadow: none !important;
+}
+
+.primary-button:hover,
+.add-button:hover,
+.auth-button:hover,
+.generator-button:hover,
+.share-button:hover,
+.save-button:hover,
+.sv-primary-action:hover {
+    background: var(--sv-primary-hover) !important;
+    transform: translateY(-1px);
+}
+
+.secondary-button,
+.cancel-button,
+.logout-button,
+.sv-secondary-action {
+    border-color: var(--sv-border-strong);
+    color: var(--sv-text-soft);
+    box-shadow: none;
+}
+
+.secondary-button:hover,
+.cancel-button:hover,
+.logout-button:hover,
+.sv-secondary-action:hover {
+    background: var(--sv-surface-soft);
+    border-color: var(--sv-emerald);
+    transform: none;
+}
+
+.mobile-menu-button {
+    background: var(--sv-midnight) !important;
+    border-color: var(--sv-pine) !important;
+    color: var(--sv-ivory) !important;
+}
+
+.mobile-menu-glyph {
+    display: grid;
+    gap: 4px;
+}
+
+.mobile-menu-glyph span {
+    display: block;
+    width: 17px;
+    height: 1.5px;
+    background: currentColor;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (max-width: 760px) {
+    .app-main {
+        width: 100%;
+        margin-left: 0;
+        padding: 72px 18px 32px;
+    }
+}
+
+/* =========================================================
+   ARCHIVE & SIGNAL PRODUCT REDESIGN
+   Design process informed by Unslop by Damir Sokolovsky.
+   The visual system below replaces the earlier dashboard
+   treatment while keeping existing feature selectors intact.
+========================================================= */
+
+:root {
+    --sv-motion: cubic-bezier(.22, 1, .36, 1);
+}
+
+html,
+body,
+#root {
+    background: var(--sv-ivory);
+}
+
+body {
+    font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--sv-emerald);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+.securevault-app {
+    background: var(--sv-ivory);
+}
+
+.app-sidebar {
+    width: 248px;
+    background: var(--sv-midnight) !important;
+    border-right: 1px solid rgba(245, 241, 232, .12);
+    box-shadow: none;
+}
+
+.sidebar-brand {
+    min-height: 78px;
+    padding: 20px;
+    border-bottom: 1px solid rgba(245, 241, 232, .12);
+}
+
+.brand-mark,
+.user-avatar {
+    background: var(--sv-emerald) !important;
+    border-radius: 6px;
+    box-shadow: none !important;
+}
+
+.brand-mark {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+}
+
+.sidebar-brand strong,
+.sidebar-user-info strong {
+    color: var(--sv-ivory);
+    font-weight: 500;
+}
+
+.sidebar-brand span,
+.sidebar-user-info span,
+.sidebar-logout {
+    color: #a9adb1;
+}
+
+.sidebar-navigation {
+    padding: 18px 12px;
+}
+
+.sidebar-section-label {
+    margin: 24px 9px 8px;
+    color: #858b92;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .04em;
+}
+
+.sidebar-item {
+    min-height: 36px;
+    margin: 2px 0;
+    padding: 8px 11px;
+    border-radius: 6px;
+    color: #b6bbc0;
+    font-size: 13px;
+    transition: background .16s var(--sv-motion), color .16s var(--sv-motion);
+}
+
+.sidebar-item:hover {
+    background: #252a30;
+    color: var(--sv-ivory);
+    transform: none;
+}
+
+.sidebar-item.active {
+    background: #343b44 !important;
+    border-color: transparent;
+    color: var(--sv-ivory);
+    box-shadow: inset 3px 0 0 var(--sv-emerald);
+}
+
+.sidebar-item.active .sidebar-icon,
+.sidebar-item:hover .sidebar-icon {
+    color: #e4d6c5;
+}
+
+.sidebar-icon {
+    width: 20px;
+    color: #858b92;
+}
+
+.sidebar-svg-icon {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.6;
+}
+
+.sidebar-footer {
+    padding: 14px;
+    background: #131517;
+    border-top: 1px solid rgba(245, 241, 232, .12);
+}
+
+.sidebar-logout:hover {
+    background: #252a30;
+    color: var(--sv-ivory);
+}
+
+.app-main {
+    width: calc(100% - 248px);
+    margin-left: 248px;
+    padding: 32px 40px 56px;
+}
+
+.section-wrapper,
+.content-page,
+.dashboard-page,
+.generator-placeholder,
+.vault-page {
+    max-width: 1280px;
+}
+
+.page-heading,
+.vault-header,
+.shared-header,
+.sv-dashboard-header {
+    margin-bottom: 32px;
+}
+
+.page-heading h1,
+.vault-header h1,
+.sv-dashboard-heading h1 {
+    color: var(--sv-text);
+    font-size: clamp(28px, 3vw, 38px);
+    font-weight: 500;
+    letter-spacing: -.025em;
+    line-height: 1.12;
+}
+
+.page-heading p,
+.vault-header p,
+.sv-dashboard-heading p {
+    color: var(--sv-text-2);
+}
+
+.eyebrow,
+.sv-overline,
+.sv-card-overline {
+    color: var(--sv-muted) !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    letter-spacing: .04em !important;
+}
+
+.primary-button,
+.add-button,
+.auth-button,
+.generator-button,
+.share-button,
+.save-button,
+.sv-primary-action {
+    min-height: 40px;
+    border: 1px solid var(--sv-emerald) !important;
+    border-radius: 8px;
+    background: var(--sv-emerald) !important;
+    color: #fffdf9 !important;
+    box-shadow: none !important;
+    transition: background .16s var(--sv-motion), transform .16s var(--sv-motion);
+}
+
+.primary-button:hover,
+.add-button:hover,
+.auth-button:hover,
+.generator-button:hover,
+.share-button:hover,
+.save-button:hover,
+.sv-primary-action:hover {
+    background: var(--sv-primary-hover) !important;
+    transform: translateY(-1px);
+}
+
+.secondary-button,
+.cancel-button,
+.logout-button,
+.sv-secondary-action,
+.text-button {
+    border-radius: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+.search-input,
+.admin-user-search,
+.category-select,
+.generated-password input,
+.shared-password-field input {
+    min-height: 42px;
+    border: 1px solid var(--sv-border-strong);
+    border-radius: 8px;
+    background: var(--sv-surface);
+    color: var(--sv-text);
+    box-shadow: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus,
+.search-input:focus,
+.admin-user-search:focus,
+.category-select:focus {
+    border-color: var(--sv-emerald);
+    box-shadow: var(--sv-focus);
+}
+
+.form-group label,
+.detail-group label,
+.credential-info label,
+.shared-detail label {
+    color: var(--sv-text-soft);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.stat-card,
+.dashboard-panel,
+.password-health-card,
+.profile-card,
+.device-card,
+.generator-card,
+.shared-credential-card,
+.trash-card,
+.login-activity-card,
+.security-alert-card,
+.security-stat,
+.notification-card,
+.shared-credentials-section,
+.trash-section {
+    border: 1px solid var(--sv-border) !important;
+    border-radius: 12px;
+    background: var(--sv-surface) !important;
+    box-shadow: var(--sv-shadow);
+}
+
+.stat-card:hover,
+.dashboard-panel:hover,
+.password-health-card:hover,
+.profile-card:hover,
+.device-card:hover,
+.generator-card:hover,
+.shared-credential-card:hover,
+.trash-card:hover,
+.login-activity-card:hover,
+.security-alert-card:hover,
+.notification-card:hover {
+    border-color: var(--sv-border-strong) !important;
+    box-shadow: var(--sv-shadow-hover);
+    transform: none;
+}
+
+.dashboard-info-panel {
+    background: var(--sv-surface-soft) !important;
+}
+
+/* Dashboard: a quiet workspace, not a decorative hero. */
+.sv-security-hero {
+    min-height: 260px;
+    border: 1px solid #343b44;
+    border-radius: 12px;
+    background: var(--sv-midnight);
+    box-shadow: none;
+}
+
+.sv-security-hero::before,
+.sv-security-hero::after,
+.sv-security-visual {
+    display: none;
+}
+
+.sv-hero-content {
+    width: min(680px, 100%);
+    padding: 42px 44px;
+}
+
+.sv-live-status {
+    color: #e4d6c5;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .04em;
+}
+
+.sv-live-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--sv-emerald);
+    box-shadow: none;
+}
+
+.sv-hero-content h2 {
+    color: var(--sv-ivory);
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 500;
+    letter-spacing: -.035em;
+}
+
+.sv-hero-content h2 span {
+    color: #c9cdd0;
+}
+
+.sv-hero-content p {
+    max-width: 510px;
+    color: #b6bbc0;
+    font-size: 15px;
+}
+
+.sv-hero-secondary {
+    border-color: #59616a;
+    background: transparent;
+    color: var(--sv-ivory);
+}
+
+.sv-stat-strip {
+    gap: 0;
+    border: 1px solid var(--sv-border);
+    border-radius: 10px;
+    background: var(--sv-surface);
+    box-shadow: none;
+}
+
+.sv-stat-item {
+    min-height: 112px;
+    padding: 20px 22px;
+    border-right-color: var(--sv-border);
+}
+
+.sv-stat-label,
+.sv-stat-note {
+    color: var(--sv-muted);
+    font-size: 11px;
+    letter-spacing: 0;
+}
+
+.sv-stat-item strong {
+    color: var(--sv-text);
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.sv-stat-warning strong,
+.sv-stat-warning .sv-stat-note {
+    color: var(--sv-emerald);
+}
+
+/* Credential vault: rows first, cards only for real detail. */
+.vault-controls {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--sv-border);
+    border-radius: 10px;
+    background: var(--sv-surface);
+}
+
+.credential-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid var(--sv-border);
+    border-radius: 10px;
+    background: var(--sv-surface);
+}
+
+.credential-card {
+    min-height: 0;
+    padding: 16px 20px;
+    border: 0;
+    border-bottom: 1px solid var(--sv-border-soft);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.credential-card:last-child {
+    border-bottom: 0;
+}
+
+.credential-card:hover {
+    background: var(--sv-surface-soft);
+    transform: none;
+    box-shadow: none;
+}
+
+.credential-card-header {
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.credential-card-header h3 {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.credential-card-header span,
+.view-category-badge,
+.delete-category {
+    border-radius: 5px;
+    background: var(--sv-surface-soft);
+    color: var(--sv-text-2);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+.credential-info {
+    grid-template-columns: minmax(160px, 1.2fr) minmax(180px, 1fr) minmax(130px, .7fr);
+    gap: 18px;
+}
+
+.credential-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 12px;
+    padding-top: 10px;
+}
+
+.credential-actions button,
+.shared-card-actions button,
+.trash-actions button {
+    min-height: 32px;
+    border-radius: 6px;
+    background: transparent;
+}
+
+.favorite-button svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+}
+
+.modal-security-icon svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+}
+
+/* Modals and dialogs use one quiet panel treatment. */
+.modal-overlay {
+    background: rgba(23, 25, 28, .62);
+    backdrop-filter: none;
+}
+
+.credential-modal,
+.view-credential-modal,
+.delete-modal,
+.share-management-modal {
+    border: 1px solid var(--sv-border);
+    border-radius: 12px;
+    background: var(--sv-surface);
+    box-shadow: 0 18px 42px rgba(23, 25, 28, .18);
+}
+
+.modal-security-icon,
+.delete-icon {
+    border-radius: 7px;
+    background: var(--sv-primary-soft);
+    color: var(--sv-emerald);
+}
+
+.modal-close {
+    border-radius: 6px;
+}
+
+.health-bar {
+    background: var(--sv-emerald);
+}
+
+.health-bar-container {
+    background: var(--sv-surface-soft);
+}
+
+.permission-edit {
+    background: var(--sv-primary-soft);
+    color: var(--sv-emerald);
+}
+
+.error-message {
+    border-color: #e5b7ae;
+    background: #f1ddd5;
+    color: #84372d;
+}
+
+.success-message {
+    border-color: #bfd0c0;
+    background: var(--sv-green-soft);
+    color: var(--sv-success);
+}
+
+.auth-page {
+    position: relative;
+    justify-content: flex-end;
+    padding: 48px clamp(24px, 9vw, 160px) 48px 46%;
+    background: var(--sv-ivory);
+}
+
+.auth-page::before {
+    content: "SECUREVAULT\A A quieter place for\A the keys that matter.";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 42%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: clamp(48px, 10vh, 112px) clamp(28px, 6vw, 96px);
+    white-space: pre-line;
+    background: var(--sv-midnight);
+    color: var(--sv-ivory);
+    font-size: clamp(24px, 3vw, 42px);
+    font-weight: 500;
+    letter-spacing: -.03em;
+    line-height: 1.1;
+}
+
+.auth-card {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 430px);
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.auth-header {
+    margin-bottom: 32px;
+    text-align: left;
+}
+
+.auth-header h1 {
+    color: var(--sv-text);
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -.025em;
+}
+
+.auth-header p {
+    color: var(--sv-text-2);
+}
+
+.auth-footer {
+    text-align: left;
+}
+
+.auth-footer button,
+.forgot-password-row button {
+    color: var(--sv-emerald);
+}
+
+@media (max-width: 760px) {
+    .auth-page {
+        justify-content: center;
+        padding: 40px 20px;
+        background: var(--sv-ivory) !important;
+    }
+
+    .auth-page::before {
+        position: absolute;
+        inset: 0 0 auto;
+        width: 100%;
+        height: 132px;
+        padding: 28px 20px;
+        font-size: 22px;
+    }
+
+    .auth-card {
+        margin-top: 108px;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
+    .app-main {
+        width: 100%;
+        margin-left: 0;
+        padding: 72px 18px 32px;
+    }
+
+    .credential-info {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .vault-controls {
+        flex-wrap: wrap;
+    }
+
+    .vault-controls .search-input {
+        flex: 1 1 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
     }
 }

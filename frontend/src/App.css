@@ -3,36 +3,6 @@
    Clean security-dashboard design
 ========================================================= */
 
-:root {
-  --sv-bg: #f4f7fb;
-  --sv-surface: #ffffff;
-  --sv-surface-soft: #f8fafc;
-  --sv-sidebar: #111827;
-  --sv-sidebar-soft: #1f2937;
-  --sv-primary: #315bdc;
-  --sv-primary-hover: #2449bd;
-  --sv-primary-soft: #eef3ff;
-  --sv-text: #172033;
-  --sv-text-soft: #344054;
-  --sv-muted: #667085;
-  --sv-subtle: #98a2b3;
-  --sv-border: #e4e7ec;
-  --sv-border-strong: #d0d5dd;
-  --sv-success: #087443;
-  --sv-success-bg: #ecfdf3;
-  --sv-warning: #b54708;
-  --sv-warning-bg: #fffaeb;
-  --sv-danger: #b42318;
-  --sv-danger-bg: #fef3f2;
-  --sv-info: #175cd3;
-  --sv-info-bg: #eff8ff;
-  --sv-radius: 14px;
-  --sv-radius-sm: 10px;
-  --sv-shadow: 0 1px 3px rgba(16, 24, 40, .06), 0 8px 24px rgba(16, 24, 40, .04);
-  --sv-shadow-hover: 0 10px 30px rgba(16, 24, 40, .09);
-  --sv-focus: 0 0 0 4px rgba(49, 91, 220, .12);
-}
-
 * {
   box-sizing: border-box;
 }
@@ -88,7 +58,7 @@ textarea:focus-visible {
   padding: 32px 20px;
   background:
     radial-gradient(circle at 15% 10%, rgba(49, 91, 220, .10), transparent 30%),
-    radial-gradient(circle at 90% 90%, rgba(16, 185, 129, .07), transparent 28%),
+    radial-gradient(circle at 90% 90%, rgba(197, 82, 60, .07), transparent 28%),
     var(--sv-bg);
 }
 
@@ -1096,7 +1066,7 @@ textarea:focus-visible {
 .health-bar {
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #f04438, #f79009, #12b76a);
+  background: var(--sv-emerald);
   transition: width .4s ease;
 }
 
@@ -2075,8 +2045,8 @@ textarea:focus-visible {
 }
 
 .risk-badge.low {
-  background: #dcfae6;
-  color: #087443;
+  background: var(--sv-info-bg);
+  color: var(--sv-info);
 }
 
 .unresolved-status {
@@ -2085,8 +2055,8 @@ textarea:focus-visible {
 }
 
 .resolved-status {
-  background: #dcfae6;
-  color: #087443;
+  background: var(--sv-info-bg);
+  color: var(--sv-info);
 }
 
 .alert-count {
@@ -2933,28 +2903,6 @@ textarea:focus-visible {
    Product-style, restrained SaaS/security visual language.
    No neon gradients or decorative glow effects.
 ========================================================= */
-
-:root {
-  --sv-bg: #f6f7f9;
-  --sv-surface: #ffffff;
-  --sv-surface-soft: #f8f9fb;
-  --sv-sidebar: #18212f;
-  --sv-sidebar-soft: #222d3d;
-  --sv-primary: #2f5bd3;
-  --sv-primary-hover: #244bb8;
-  --sv-primary-soft: #eef3ff;
-  --sv-text: #172033;
-  --sv-text-soft: #344054;
-  --sv-muted: #667085;
-  --sv-subtle: #98a2b3;
-  --sv-border: #e4e7ec;
-  --sv-border-strong: #cfd5df;
-  --sv-radius: 12px;
-  --sv-radius-sm: 8px;
-  --sv-shadow: 0 1px 2px rgba(16, 24, 40, .04), 0 4px 14px rgba(16, 24, 40, .035);
-  --sv-shadow-hover: 0 8px 24px rgba(16, 24, 40, .07);
-  --sv-focus: 0 0 0 3px rgba(47, 91, 211, .12);
-}
 
 body {
   background: var(--sv-bg);

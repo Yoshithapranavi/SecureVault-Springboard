@@ -1,4 +1,75 @@
-/* SecureVault global document styles */
+/* SecureVault design system and global document styles */
+
+:root {
+  --sv-midnight: #17191c;
+  --sv-pine: #252a30;
+  --sv-white: #fffdf9;
+  --sv-navy: var(--sv-midnight);
+  --sv-navy-2: var(--sv-pine);
+  --sv-navy-3: #343b44;
+  --sv-emerald: #c5523c;
+  --sv-sage: #e4d6c5;
+  --sv-ivory: #f5f1e8;
+  --sv-copper: #c5523c;
+
+  --sv-bg: var(--sv-ivory);
+  --sv-page: var(--sv-ivory);
+  --sv-surface: #fffdf9;
+  --sv-surface-soft: #ebe7de;
+  --sv-text: #202329;
+  --sv-text-2: #59616a;
+  --sv-text-soft: #3f464e;
+  --sv-ink: #202329;
+  --sv-ink-soft: #59616a;
+  --sv-muted: #747b82;
+  --sv-muted-final: #747b82;
+  --sv-subtle: #9ca1a5;
+  --sv-border: #d9d5cc;
+  --sv-border-soft: #e7e2d9;
+  --sv-border-strong: #bdb8ae;
+  --sv-line: #d9d5cc;
+  --sv-line-strong: #bdb8ae;
+
+  --sv-primary: var(--sv-emerald);
+  --sv-primary-hover: #9f3f31;
+  --sv-primary-dark: #9f3f31;
+  --sv-primary-final: var(--sv-emerald);
+  --sv-primary-dark-final: #9f3f31;
+  --sv-primary-soft: #f1ddd5;
+  --sv-primary-soft-final: #f1ddd5;
+  --sv-blue: #53606d;
+  --sv-blue-soft: #e4e7e9;
+  --sv-blue-dark: #3e4a56;
+  --sv-violet: #53606d;
+  --sv-violet-final: #53606d;
+  --sv-green: #4c765e;
+  --sv-green-soft: #e3ebe2;
+  --sv-success: #3f6b52;
+  --sv-success-bg: #e3ebe2;
+  --sv-success-final: #3f6b52;
+  --sv-success-bg-final: #e3ebe2;
+  --sv-orange: var(--sv-copper);
+  --sv-orange-soft: #f1ddd5;
+  --sv-warning: #9f3f31;
+  --sv-warning-bg: #f1ddd5;
+  --sv-warning-final: #9f3f31;
+  --sv-warning-bg-final: #f1ddd5;
+  --sv-red: #a83e35;
+  --sv-red-soft: #f1ddd5;
+  --sv-danger: #a83e35;
+  --sv-danger-bg: #f1ddd5;
+  --sv-danger-final: #a83e35;
+  --sv-info: #53606d;
+  --sv-info-bg: #e4e7e9;
+
+  --sv-radius: 10px;
+  --sv-radius-sm: 7px;
+  --sv-focus: 0 0 0 3px rgba(197, 82, 60, .22);
+  --sv-shadow: 0 1px 2px rgba(23, 25, 28, .05);
+  --sv-shadow-hover: 0 7px 18px rgba(23, 25, 28, .09);
+  --sv-shadow-final: var(--sv-shadow);
+  --sv-shadow-final-hover: var(--sv-shadow-hover);
+}
 
 *,
 *::before,
