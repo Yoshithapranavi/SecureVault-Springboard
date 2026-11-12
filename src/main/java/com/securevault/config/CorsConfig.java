@@ -20,7 +20,8 @@ public class CorsConfig {
                                 "http://localhost:3000",
                                 "http://localhost:5173",
                                 "https://securevault-frontend-nu.vercel.app",
-                                "https://securevault-frontend-git-yoshitha-pranavi-yoshitha.vercel.app"));
+                                "https://securevault-frontend-git-yoshitha-pranavi-yoshitha.vercel.app",
+                                "https://securevault-frontend-jajrps06d-yoshitha.vercel.app"));
 
                 configuration.setAllowedMethods(List.of(
                                 "GET",
