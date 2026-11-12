@@ -1,54 +1,31 @@
 import { useEffect, useState } from "react";
 
-import {
-    getSharedWithMe,
-} from "../services/shareService";
+import { getSharedWithMe } from "../services/shareService";
 
 import CredentialEditModal from "./CredentialEditModal";
 import PasswordDisplay from "./PasswordDisplay";
-
+import Icon from "./Icon";
 
 function SharedCredentials({ userId }) {
-
-    const [credentials, setCredentials] =
-        useState([]);
-
-    const [loading, setLoading] =
-        useState(true);
-
-    const [refreshing, setRefreshing] =
-        useState(false);
-
-    const [error, setError] =
-        useState("");
-
-    const [selectedCredential, setSelectedCredential] =
-        useState(null);
-
-    const [editCredentialId, setEditCredentialId] =
-        useState(null);
-
-    // =========================================================
-    // LOAD SHARED CREDENTIALS
-    // =========================================================
+    const [credentials, setCredentials] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+    const [error, setError] = useState("");
+    const [selectedCredential, setSelectedCredential] = useState(null);
+    const [editCredentialId, setEditCredentialId] = useState(null);
 
     useEffect(() => {
-
         if (!userId) {
             return;
         }
 
         loadSharedCredentials();
-
+        // Sharing is loaded when the authenticated user changes.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userId]);
 
-
-    const loadSharedCredentials = async (
-        showFullLoading = true
-    ) => {
-
+    const loadSharedCredentials = async (showFullLoading = true) => {
         try {
-
             if (showFullLoading) {
                 setLoading(true);
             } else {
@@ -57,616 +34,336 @@ function SharedCredentials({ userId }) {
 
             setError("");
 
-            const response =
-                await getSharedWithMe(userId);
+            const response = await getSharedWithMe(userId);
 
             if (response?.success) {
-
                 setCredentials(
-                    Array.isArray(response.data)
-                        ? response.data
-                        : []
+                    Array.isArray(response.data) ? response.data : [],
                 );
-
             } else {
-
                 setError(
                     response?.message ||
-                    "Unable to load shared credentials."
+                        "Unable to load shared credentials.",
                 );
             }
-
         } catch (err) {
-
-            console.error(
-                "Shared credentials error:",
-                err
-            );
+            console.error("Shared credentials error:", err);
 
             setError(
                 err.response?.data?.message ||
-                "Unable to load shared credentials."
+                    "Unable to load shared credentials.",
             );
-
         } finally {
-
             setLoading(false);
             setRefreshing(false);
         }
     };
 
-
-    // =========================================================
-    // VIEW
-    // =========================================================
-
-    const handleView = (
-        credential
-    ) => {
-
-        setSelectedCredential(
-            credential
-        );
+    const handleView = (credential) => {
+        setSelectedCredential(credential);
     };
 
-
-    // =========================================================
-    // CLOSE VIEW
-    // =========================================================
-
     const handleCloseView = () => {
-
         setSelectedCredential(null);
     };
 
-
-    // =========================================================
-    // EDIT
-    // =========================================================
-
-    const handleEdit = (
-        credential
-    ) => {
-
-        /*
-         * Only EDIT permission can modify
-         * a shared credential.
-         */
-
-        if (
-            credential.permission !==
-            "EDIT"
-        ) {
+    const handleEdit = (credential) => {
+        if (credential.permission !== "EDIT") {
             return;
         }
 
-        setEditCredentialId(
-            credential.credentialId
-        );
+        setEditCredentialId(credential.credentialId);
     };
-
-
-    // =========================================================
-    // CLOSE EDIT
-    // =========================================================
 
     const handleCloseEdit = () => {
-
         setEditCredentialId(null);
     };
 
-
-    // =========================================================
-    // AFTER UPDATE
-    // =========================================================
-
     const handleUpdated = async () => {
-
         setEditCredentialId(null);
-
         await loadSharedCredentials(false);
     };
 
-
-    // =========================================================
-    // LOADING
-    // =========================================================
-
     if (loading) {
-
         return (
-
-            <section className="shared-credentials-section">
-
-                <div className="shared-header">
-
+            <section className="sv-page-stack">
+                <header className="sv-page-header">
                     <div>
-
-                        <span className="eyebrow">
-                            SHARING
-                        </span>
-
-                        <h2>
-                            Shared With Me
-                        </h2>
-
-                        <p>
-                            Credentials shared with your account
-                        </p>
-
+                        <span className="sv-eyebrow">Sharing</span>
+                        <h1>Shared With Me</h1>
+                        <p>Loading credentials shared with your account…</p>
                     </div>
+                </header>
 
+                <div className="sv-loading-panel" role="status">
+                    <span className="sv-loading-bar" aria-hidden="true" />
+                    Loading shared credentials…
                 </div>
-
-
-                <div className="page-loading">
-                    Loading shared credentials...
-                </div>
-
             </section>
         );
     }
 
-
     return (
-
-        <section className="shared-credentials-section">
-
-
-            {/* =================================================
-                HEADER
-            ================================================= */}
-
-            <div className="shared-header">
-
+        <section className="sv-page-stack">
+            <header className="sv-page-header">
                 <div>
-
-                    <span className="eyebrow">
-                        SHARING
-                    </span>
-
-                    <h2>
-                        Shared With Me
-                    </h2>
-
+                    <span className="sv-eyebrow">Sharing</span>
+                    <h1>Shared With Me</h1>
                     <p>
-                        Credentials other users have shared
-                        with your account.
+                        Credentials other SecureVault users have shared with
+                        your account, including the access level they granted.
                     </p>
-
                 </div>
 
-
-                <div className="shared-header-actions">
-
-                    <span className="shared-count">
-
-                        {credentials.length}
-
-                        <span>
-                            {" "}
-                            {credentials.length === 1
-                                ? "credential"
-                                : "credentials"}
-                        </span>
-
+                <div className="sv-header-actions">
+                    <span className="sv-status-chip neutral">
+                        {credentials.length}{" "}
+                        {credentials.length === 1
+                            ? "credential"
+                            : "credentials"}
                     </span>
-
 
                     <button
                         type="button"
-                        className="text-button"
-                        onClick={() =>
-                            loadSharedCredentials(false)
-                        }
+                        className="sv-btn sv-btn-secondary"
+                        onClick={() => loadSharedCredentials(false)}
                         disabled={refreshing}
                     >
-                        {refreshing
-                            ? "Refreshing..."
-                            : "Refresh"}
+                        <Icon name="refresh" size={16} />
+                        {refreshing ? "Refreshing…" : "Refresh"}
                     </button>
-
                 </div>
-
-            </div>
-
-
-            {/* =================================================
-                ERROR
-            ================================================= */}
+            </header>
 
             {error && (
-
-                <div className="error-message">
-
-                    <span>
-                        {error}
-                    </span>
-
+                <div className="sv-error-panel" role="alert">
+                    <div className="sv-error-icon" aria-hidden="true">
+                        <Icon name="warning" />
+                    </div>
+                    <div>
+                        <h2>Shared credentials unavailable</h2>
+                        <p>{error}</p>
+                    </div>
                     <button
                         type="button"
-                        className="text-button"
-                        onClick={() =>
-                            loadSharedCredentials(false)
-                        }
+                        className="sv-btn sv-btn-secondary"
+                        onClick={() => loadSharedCredentials(false)}
                         disabled={refreshing}
                     >
                         Try again
                     </button>
-
                 </div>
-
             )}
 
-
-            {/* =================================================
-                EMPTY
-            ================================================= */}
-
-            {!error &&
-                credentials.length === 0 && (
-
-                    <div className="empty-shared">
-
-                        <div className="empty-state-icon">
-                            ↗
-                        </div>
-
-                        <h3>
-                            Nothing shared with you yet
-                        </h3>
-
+            {!error && credentials.length === 0 && (
+                <div className="sv-empty-state large">
+                    <span className="sv-empty-icon" aria-hidden="true">
+                        <Icon name="shared" size={22} />
+                    </span>
+                    <div>
+                        <h2>Nothing shared with you yet</h2>
                         <p>
-                            Credentials shared with your
-                            account will appear here.
+                            When another user shares a credential, it will
+                            appear here with the permission they granted.
                         </p>
-
                     </div>
-
-                )}
-
-
-            {/* =================================================
-                SHARED CREDENTIAL CARDS
-            ================================================= */}
+                </div>
+            )}
 
             {credentials.length > 0 && (
+                <div className="sv-shared-grid">
+                    {credentials.map((credential) => {
+                        const isEdit = credential.permission === "EDIT";
 
-                <div className="shared-credentials-list">
-
-                    {credentials.map(
-                        (credential) => {
-
-                            const isEdit =
-                                credential.permission ===
-                                "EDIT";
-
-
-                            return (
-
-                                <div
-                                    className="shared-credential-card"
-                                    key={
-                                        credential.shareId
-                                    }
-                                >
-
-
-                                    {/* =============================
-                                        CARD HEADER
-                                    ============================== */}
-
-                                    <div className="shared-card-header">
-
-                                        <div>
-
-                                            <h3>
-                                                {credential.title}
-                                            </h3>
-
-                                            <span>
-                                                Shared by{" "}
-                                                {credential.ownerEmail}
-                                            </span>
-
-                                        </div>
-
-
-                                        <span
-                                            className={
-                                                isEdit
-                                                    ? "permission-edit"
-                                                    : "permission-read"
-                                            }
-                                        >
-                                            {isEdit
-                                                ? "EDIT"
-                                                : "READ"}
-                                        </span>
-
-                                    </div>
-
-
-                                    {/* =============================
-                                        USERNAME
-                                    ============================== */}
-
-                                    <div className="shared-detail">
-
-                                        <label>
-                                            Username
-                                        </label>
-
+                        return (
+                            <article
+                                className="sv-shared-card"
+                                key={credential.shareId}
+                            >
+                                <div className="sv-shared-card-head">
+                                    <div>
+                                        <h3>{credential.title}</h3>
                                         <p>
-                                            {credential.username}
+                                            Shared by{" "}
+                                            {credential.ownerEmail ||
+                                                "another user"}
                                         </p>
-
                                     </div>
 
-
-                                    {/* =============================
-                                        WEBSITE
-                                    ============================== */}
-
-                                    <div className="shared-detail">
-
-                                        <label>
-                                            Website
-                                        </label>
-
-                                        <p>
-                                            {credential.websiteUrl ||
-                                                "Not provided"}
-                                        </p>
-
-                                    </div>
-
-
-                                    {/* =============================
-                                        PERMISSION INFO
-                                    ============================== */}
-
-                                    <div className="shared-permission-info">
-
-                                        <strong>
-                                            {isEdit
-                                                ? "Edit access"
-                                                : "View-only access"}
-                                        </strong>
-
-                                        <span>
-                                            {isEdit
-                                                ? "You can view and modify this credential."
-                                                : "You can view this credential but cannot modify it."}
-                                        </span>
-
-                                    </div>
-
-
-                                    {/* =============================
-                                        ACTIONS
-                                    ============================== */}
-
-                                    <div className="shared-card-actions">
-
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                handleView(
-                                                    credential
-                                                )
-                                            }
-                                        >
-                                            View
-                                        </button>
-
-
-                                        {isEdit && (
-
-                                            <button
-                                                type="button"
-                                                onClick={() =>
-                                                    handleEdit(
-                                                        credential
-                                                    )
-                                                }
-                                            >
-                                                Edit
-                                            </button>
-
-                                        )}
-
-                                    </div>
-
+                                    <span
+                                        className={`sv-status-chip ${
+                                            isEdit ? "neutral" : "positive"
+                                        }`}
+                                    >
+                                        {isEdit ? "Edit access" : "View only"}
+                                    </span>
                                 </div>
 
-                            );
-                        }
-                    )}
+                                <div className="sv-shared-meta">
+                                    <div>
+                                        <span>Username</span>
+                                        <strong>
+                                            {credential.username || "—"}
+                                        </strong>
+                                    </div>
 
+                                    <div>
+                                        <span>Website</span>
+                                        <strong>
+                                            {credential.websiteUrl ||
+                                                "Not provided"}
+                                        </strong>
+                                    </div>
+
+                                    <div>
+                                        <span>Permission</span>
+                                        <strong>
+                                            {isEdit ? "EDIT" : "READ"}
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div className="sv-shared-permission">
+                                    <strong>
+                                        {isEdit
+                                            ? "Edit access"
+                                            : "View-only access"}
+                                    </strong>
+                                    <span>
+                                        {isEdit
+                                            ? "You can view and modify this credential."
+                                            : "You can view this credential but cannot modify it."}
+                                    </span>
+                                </div>
+
+                                <div className="sv-shared-actions">
+                                    <button
+                                        type="button"
+                                        className="sv-btn sv-btn-secondary"
+                                        onClick={() => handleView(credential)}
+                                    >
+                                        <Icon name="eye" size={15} />
+                                        View
+                                    </button>
+
+                                    {isEdit && (
+                                        <button
+                                            type="button"
+                                            className="sv-btn sv-btn-primary"
+                                            onClick={() => handleEdit(credential)}
+                                        >
+                                            <Icon name="edit" size={15} />
+                                            Edit
+                                        </button>
+                                    )}
+                                </div>
+                            </article>
+                        );
+                    })}
                 </div>
-
             )}
 
-
-            {/* =================================================
-                VIEW MODAL
-            ================================================= */}
-
             {selectedCredential && (
-
-                <div className="modal-overlay">
-
-                    <div className="credential-modal">
-
+                <div className="modal-overlay" onClick={handleCloseView}>
+                    <div
+                        className="credential-modal"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="shared-credential-title"
+                        onClick={(event) => event.stopPropagation()}
+                    >
                         <div className="modal-header">
-
                             <div>
-
-                                <span className="eyebrow">
-                                    SHARED CREDENTIAL
+                                <span className="sv-eyebrow">
+                                    Shared credential
                                 </span>
-
-                                <h2>
+                                <h2 id="shared-credential-title">
                                     {selectedCredential.title}
                                 </h2>
-
                                 <p>
                                     Shared by{" "}
-                                    {selectedCredential.ownerEmail}
+                                    {selectedCredential.ownerEmail ||
+                                        "another user"}
                                 </p>
-
                             </div>
-
 
                             <button
                                 className="modal-close"
                                 type="button"
-                                onClick={
-                                    handleCloseView
-                                }
+                                onClick={handleCloseView}
+                                aria-label="Close credential"
                             >
                                 ×
                             </button>
-
                         </div>
 
-
                         <div className="credential-details">
-
-
                             <div className="detail-group">
-
-                                <label>
-                                    Username
-                                </label>
-
-                                <p>
-                                    {selectedCredential.username}
-                                </p>
-
+                                <label>Username</label>
+                                <p>{selectedCredential.username || "—"}</p>
                             </div>
 
-
                             <div className="detail-group">
-
-                                <label>
-                                    Website
-                                </label>
-
+                                <label>Website</label>
                                 <p>
                                     {selectedCredential.websiteUrl ||
                                         "Not provided"}
                                 </p>
-
                             </div>
 
-
                             <div className="detail-group">
-
-                                <label>
-                                    Permission
-                                </label>
-
+                                <label>Permission</label>
                                 <p>
-                                    {selectedCredential.permission ===
-                                        "EDIT"
-                                        ? "EDIT - View and modify"
-                                        : "READ - View only"}
+                                    {selectedCredential.permission === "EDIT"
+                                        ? "EDIT — view and modify"
+                                        : "READ — view only"}
                                 </p>
-
                             </div>
 
-
                             <div className="detail-group">
-
-                                <label>
-                                    Password
-                                </label>
-
+                                <label>Password</label>
                                 <PasswordDisplay
                                     value={selectedCredential.password || ""}
                                 />
-
                             </div>
-
                         </div>
 
-
                         <div className="modal-actions">
-
                             <button
                                 type="button"
                                 className="cancel-button"
-                                onClick={
-                                    handleCloseView
-                                }
+                                onClick={handleCloseView}
                             >
                                 Close
                             </button>
 
-
-                            {selectedCredential.permission ===
-                                "EDIT" && (
-
-                                    <button
-                                        type="button"
-                                        className="primary-button"
-                                        onClick={() => {
-
-                                            handleCloseView();
-
-                                            handleEdit(
-                                                selectedCredential
-                                            );
-
-                                        }}
-                                    >
-                                        Edit Credential
-                                    </button>
-
-                                )}
-
+                            {selectedCredential.permission === "EDIT" && (
+                                <button
+                                    type="button"
+                                    className="primary-button"
+                                    onClick={() => {
+                                        handleCloseView();
+                                        handleEdit(selectedCredential);
+                                    }}
+                                >
+                                    Edit credential
+                                </button>
+                            )}
                         </div>
-
                     </div>
-
                 </div>
-
             )}
-
-
-            {/* =================================================
-                EDIT MODAL
-            ================================================= */}
 
             {editCredentialId !== null && (
-
                 <CredentialEditModal
-
-                    credentialId={
-                        editCredentialId
-                    }
-
-                    userId={
-                        userId
-                    }
-
-                    onClose={
-                        handleCloseEdit
-                    }
-
-                    onUpdated={
-                        handleUpdated
-                    }
-
+                    credentialId={editCredentialId}
+                    userId={userId}
+                    onClose={handleCloseEdit}
+                    onUpdated={handleUpdated}
                 />
-
             )}
-
         </section>
     );
 }
-
 
 export default SharedCredentials;

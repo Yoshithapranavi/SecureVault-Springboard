@@ -1,298 +1,203 @@
 import { useEffect, useState } from "react";
 
-import {
-    getDevices,
-    removeDevice,
-} from "../services/deviceService";
+import { getDevices, removeDevice } from "../services/deviceService";
+import Icon from "./Icon";
 
 function Devices() {
-
-    const [devices, setDevices] =
-        useState([]);
-
-    const [loading, setLoading] =
-        useState(true);
-
-    const [error, setError] =
-        useState("");
-
-    const [removingId, setRemovingId] =
-        useState(null);
-
-
-    // =========================================================
-    // LOAD DEVICES
-    // =========================================================
+    const [devices, setDevices] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [removingId, setRemovingId] = useState(null);
 
     useEffect(() => {
-
         loadDevices();
-
+        // Devices are loaded once for the mounted page.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
     const loadDevices = async () => {
-
         try {
-
             setLoading(true);
             setError("");
 
-            const response =
-                await getDevices();
+            const response = await getDevices();
 
             if (response?.success) {
-
-                setDevices(
-                    response.data || []
-                );
-
+                setDevices(response.data || []);
             } else {
-
-                setError(
-                    response?.message ||
-                    "Unable to load devices."
-                );
+                setError(response?.message || "Unable to load devices.");
             }
-
         } catch (err) {
-
-            console.error(
-                "Device loading error:",
-                err
-            );
+            console.error("Device loading error:", err);
 
             setError(
-                err.response?.data?.message ||
-                "Unable to load devices."
+                err.response?.data?.message || "Unable to load devices.",
             );
-
         } finally {
-
             setLoading(false);
         }
     };
 
-
-    // =========================================================
-    // REMOVE DEVICE
-    // =========================================================
-
-    const handleRemove = async (
-        deviceId
-    ) => {
-
-        const confirmed =
-            window.confirm(
-                "Remove this device from your account?"
-            );
+    const handleRemove = async (deviceId) => {
+        const confirmed = window.confirm(
+            "Remove this device from your account?",
+        );
 
         if (!confirmed) {
             return;
         }
 
         try {
-
             setRemovingId(deviceId);
             setError("");
 
-            const response =
-                await removeDevice(
-                    deviceId
-                );
+            const response = await removeDevice(deviceId);
 
             if (response?.success) {
-
-                setDevices(
-                    (current) =>
-                        current.filter(
-                            (device) =>
-                                device.id !==
-                                deviceId
-                        )
+                setDevices((current) =>
+                    current.filter((device) => device.id !== deviceId),
                 );
-
             } else {
-
-                setError(
-                    response?.message ||
-                    "Unable to remove device."
-                );
+                setError(response?.message || "Unable to remove device.");
             }
-
         } catch (err) {
-
-            console.error(
-                "Remove device error:",
-                err
-            );
+            console.error("Remove device error:", err);
 
             setError(
-                err.response?.data?.message ||
-                "Unable to remove device."
+                err.response?.data?.message || "Unable to remove device.",
             );
-
         } finally {
-
             setRemovingId(null);
         }
     };
 
-
-    // =========================================================
-    // LOADING
-    // =========================================================
-
     if (loading) {
-
         return (
-            <section className="content-page">
+            <section className="sv-page-stack">
+                <header className="sv-page-header">
+                    <div>
+                        <span className="sv-eyebrow">Account</span>
+                        <h1>Devices</h1>
+                        <p>Loading registered devices…</p>
+                    </div>
+                </header>
 
-                <div className="page-loading">
-                    Loading devices...
+                <div className="sv-loading-panel" role="status">
+                    <span className="sv-loading-bar" aria-hidden="true" />
+                    Loading devices…
                 </div>
-
             </section>
         );
     }
 
-
-    // =========================================================
-    // PAGE
-    // =========================================================
-
     return (
-
-        <section className="content-page">
-
-            <div className="page-heading">
-
+        <section className="sv-page-stack">
+            <header className="sv-page-header">
                 <div>
+                    <span className="sv-eyebrow">Account</span>
+                    <h1>Devices</h1>
+                    <p>
+                        Devices associated with your SecureVault account.
+                        Remove a device if you no longer recognise it or no
+                        longer use it to sign in.
+                    </p>
+                </div>
 
-                    <span className="eyebrow">
-                        SECURITY
+                <div className="sv-header-actions">
+                    <span className="sv-status-chip neutral">
+                        {devices.length}{" "}
+                        {devices.length === 1 ? "device" : "devices"}
                     </span>
 
-                    <h1>
-                        Devices
-                    </h1>
-
-                    <p>
-                        Review devices associated
-                        with your SecureVault account.
-                    </p>
-
+                    <button
+                        type="button"
+                        className="sv-btn sv-btn-secondary"
+                        onClick={loadDevices}
+                    >
+                        <Icon name="refresh" size={16} />
+                        Refresh
+                    </button>
                 </div>
-                <button
-                    type="button"
-                    className="text-button"
-                    onClick={loadDevices}
-                    disabled={loading}
-                >
-                    Refresh
-                </button>
-
-            </div>
-
+            </header>
 
             {error && (
-
-                <div className="error-message">
+                <div className="sv-inline-error" role="alert">
                     {error}
                 </div>
-
             )}
 
-
             {devices.length === 0 ? (
-
-                <div className="empty-state">
-
-                    <h2>
-                        No devices found
-                    </h2>
-
-                    <p>
-                        There are no registered
-                        devices for your account.
-                    </p>
-
+                <div className="sv-empty-state large">
+                    <span className="sv-empty-icon" aria-hidden="true">
+                        <Icon name="monitor" size={22} />
+                    </span>
+                    <div>
+                        <h2>No devices found</h2>
+                        <p>
+                            Devices will appear here after they are associated
+                            with your account.
+                        </p>
+                    </div>
                 </div>
-
             ) : (
+                <div className="sv-table-shell">
+                    <div className="sv-table-toolbar">
+                        <span className="sv-eyebrow" style={{ margin: 0 }}>
+                            Registered devices
+                        </span>
+                        <span className="sv-toolbar-count">
+                            {devices.length} total
+                        </span>
+                    </div>
 
-                <div className="devices-list">
+                    <div>
+                        {devices.map((device) => (
+                            <div className="sv-device-row" key={device.id}>
+                                <span
+                                    className="sv-device-icon"
+                                    aria-hidden="true"
+                                >
+                                    <Icon name="monitor" size={17} />
+                                </span>
 
-                    {devices.map(
-                        (device) => (
-
-                            <div
-                                className="device-card"
-                                key={device.id}
-                            >
-
-                                <div className="device-icon">
-                                    ▣
+                                <div className="sv-device-copy">
+                                    <strong>
+                                        {device.deviceName ||
+                                            "Unnamed device"}
+                                    </strong>
+                                    <span>
+                                        {device.ipAddress
+                                            ? `IP ${device.ipAddress}`
+                                            : "IP address not recorded"}
+                                    </span>
                                 </div>
 
-
-                                <div className="device-info">
-
-                                    <h3>
-                                        {device.deviceName || "Unknown Device"}
-                                    </h3>
-
-                                    {device.ipAddress && (
-                                        <small>
-                                            IP: {device.ipAddress}
-                                        </small>
-                                    )}
-
-
-                                    {device.lastLogin && (
-
-                                        <small>
-                                            Last login:{" "}
-                                            {new Date(
-                                                device.lastLogin
-                                            ).toLocaleString()}
-                                        </small>
-
-                                    )}
-
+                                <div className="sv-device-meta">
+                                    <span>Last login</span>
+                                    <span>
+                                        {device.lastLogin
+                                            ? new Date(
+                                                  device.lastLogin,
+                                              ).toLocaleString()
+                                            : "Not recorded"}
+                                    </span>
                                 </div>
-
 
                                 <button
                                     type="button"
-                                    className="delete-confirm-button"
-                                    disabled={
-                                        removingId ===
-                                        device.id
-                                    }
-                                    onClick={() =>
-                                        handleRemove(
-                                            device.id
-                                        )
-                                    }
+                                    className="sv-btn sv-btn-danger"
+                                    disabled={removingId === device.id}
+                                    onClick={() => handleRemove(device.id)}
                                 >
-
-                                    {removingId ===
-                                        device.id
-                                        ? "Removing..."
+                                    {removingId === device.id
+                                        ? "Removing…"
                                         : "Remove"}
-
                                 </button>
-
                             </div>
-
-                        )
-                    )}
-
+                        ))}
+                    </div>
                 </div>
-
             )}
-
         </section>
     );
 }

@@ -19,13 +19,12 @@ import PasswordHealth from "../components/PasswordHealth";
 import ShareCredentialModal from "../components/ShareCredentialModal";
 import ShareManagementModal from "../components/ShareManagementModal";
 
-import { useAuth } from "../context/AuthContext";
+import Icon from "../components/Icon";
 
 
 function Vault({
     isAdmin,
     onGoToAdmin,
-    onLogout,
 }) {
 
     // =========================================================
@@ -47,8 +46,6 @@ function Vault({
 
     const [error, setError] =
         useState("");
-
-    const { logout } = useAuth();
 
 
     // =========================================================
@@ -102,6 +99,19 @@ function Vault({
         "ENTERTAINMENT",
         "OTHER",
     ];
+
+    const websiteLabel = (value) => {
+
+        if (!value) {
+            return "No website";
+        }
+
+        try {
+            return new URL(value).hostname.replace(/^www\./, "");
+        } catch {
+            return value;
+        }
+    };
 
 
     // =========================================================
@@ -248,23 +258,6 @@ function Vault({
 
             setFilterLoading(false);
         }
-    };
-
-
-    // =========================================================
-    // LOGOUT
-    // =========================================================
-
-    const handleLogout = () => {
-
-        if (onLogout) {
-
-            onLogout();
-
-            return;
-        }
-
-        logout();
     };
 
 
@@ -599,53 +592,51 @@ function Vault({
                 HEADER
             ================================================= */}
 
-            <header className="vault-header">
+            <header className="sv-page-header">
 
                 <div>
 
+                    <span className="sv-eyebrow">
+                        Workspace
+                    </span>
+
                     <h1>
-                        SecureVault
+                        Password Vault
                     </h1>
 
                     <p>
-                        Welcome, {user?.name}
+                        {credentials.length} credential
+                        {credentials.length !== 1 ? "s" : ""} stored securely.
+                        Welcome back, {user?.name}.
                     </p>
 
                 </div>
 
 
-                <div className="vault-header-actions">
+                <div className="sv-header-actions">
+
+                    {isAdmin && (
+
+                        <button
+                            className="sv-btn sv-btn-secondary"
+                            type="button"
+                            onClick={onGoToAdmin}
+                        >
+                            <Icon name="admin" size={16} />
+                            Admin console
+                        </button>
+
+                    )}
 
                     <button
-                        className="add-button"
+                        className="sv-btn sv-btn-primary"
                         type="button"
                         onClick={() =>
                             setShowAddModal(true)
                         }
                     >
-                        Add Credential
-                    </button>
-
-
-                    {isAdmin && (
-
-                        <button
-                            className="admin-nav-button"
-                            type="button"
-                            onClick={onGoToAdmin}
-                        >
-                            Admin Dashboard
-                        </button>
-
-                    )}
-
-
-                    <button
-                        className="logout-button"
-                        type="button"
-                        onClick={handleLogout}
-                    >
-                        Logout
+                        <Icon name="plus" size={16} />
+                        Add credential
                     </button>
 
                 </div>
@@ -653,163 +644,156 @@ function Vault({
             </header>
 
 
-            {/* =================================================
-                MAIN
-            ================================================= */}
-
             <main className="vault-container">
 
 
                 {/* =================================================
-                    PASSWORD HEALTH
+                    PASSWORD HEALTH SUMMARY
                 ================================================= */}
 
-                <PasswordHealth
-                    userId={user?.id}
-                />
+                <PasswordHealth compact />
 
 
                 {/* =================================================
-                    VAULT TITLE
+                    VAULT TABLE
                 ================================================= */}
 
-                <div className="vault-top">
+                <section className="sv-vault-panel">
 
-                    <div>
+                    <div className="sv-vault-toolbar">
 
-                        <h2>
-                            My Vault
-                        </h2>
+                        <div className="sv-search-field">
 
-                        <p>
-                            {credentials.length} credential
-                            {credentials.length !== 1
-                                ? "s"
-                                : ""}
-                        </p>
+                            <Icon name="search" size={17} />
+
+                            <input
+                                type="text"
+                                placeholder="Search credentials..."
+                                aria-label="Search credentials"
+                                value={searchKeyword}
+                                onChange={(event) =>
+                                    handleSearch(
+                                        event.target.value
+                                    )
+                                }
+                            />
+
+                        </div>
+
+
+                        <div className="sv-toolbar-select">
+
+                            <Icon name="filter" size={16} />
+
+                            <select
+                                value={selectedCategory}
+                                aria-label="Filter by category"
+                                onChange={(event) =>
+                                    handleCategoryChange(
+                                        event.target.value
+                                    )
+                                }
+                            >
+
+                                {categories.map(
+                                    (category) => (
+
+                                        <option
+                                            key={category}
+                                            value={category}
+                                        >
+                                            {category === "ALL"
+                                                ? "All categories"
+                                                : category}
+                                        </option>
+
+                                    )
+                                )}
+
+                            </select>
+
+                        </div>
+
+
+                        {hasActiveFilter && (
+
+                            <button
+                                type="button"
+                                className="sv-text-link"
+                                onClick={async () => {
+
+                                    setSearchKeyword("");
+                                    setSelectedCategory("ALL");
+
+                                    await refreshVault();
+
+                                }}
+                            >
+                                Clear filters
+                            </button>
+
+                        )}
+
+
+                        <span className="sv-toolbar-count">
+
+                            {credentials.length}
+                            {" "}
+                            {credentials.length === 1
+                                ? "item"
+                                : "items"}
+
+                        </span>
 
                     </div>
 
-                </div>
 
+                    {filterLoading && (
 
-                {/* =================================================
-                    SEARCH + FILTER
-                ================================================= */}
-
-                <div className="vault-controls">
-
-                    <input
-                        type="text"
-                        placeholder="Search credentials..."
-                        value={searchKeyword}
-                        onChange={(event) =>
-                            handleSearch(
-                                event.target.value
-                            )
-                        }
-                        className="search-input"
-                    />
-
-
-                    <select
-                        value={selectedCategory}
-                        onChange={(event) =>
-                            handleCategoryChange(
-                                event.target.value
-                            )
-                        }
-                        className="category-select"
-                    >
-
-                        {categories.map(
-                            (category) => (
-
-                                <option
-                                    key={category}
-                                    value={category}
-                                >
-                                    {category === "ALL"
-                                        ? "All Categories"
-                                        : category}
-                                </option>
-
-                            )
-                        )}
-
-                    </select>
-
-
-                    {hasActiveFilter && (
-
-                        <button
-                            type="button"
-                            className="text-button"
-                            onClick={async () => {
-
-                                setSearchKeyword("");
-                                setSelectedCategory("ALL");
-
-                                await refreshVault();
-
-                            }}
-                        >
-                            Clear filters
-                        </button>
+                        <div className="sv-inline-loading" role="status">
+                            Updating results…
+                        </div>
 
                     )}
 
-                </div>
+
+                    {error && (
+
+                        <div className="sv-inline-error" role="alert">
+                            {error}
+                        </div>
+
+                    )}
 
 
-                {/* =================================================
-                    FILTER LOADING
-                ================================================= */}
+                    {credentials.length === 0 ? (
 
-                {filterLoading && (
+                        <div className="sv-empty-state large">
 
-                    <div className="filter-loading">
-                        Updating results...
-                    </div>
+                            <span className="sv-empty-icon" aria-hidden="true">
+                                <Icon name={hasActiveFilter ? "search" : "vault"} size={24} />
+                            </span>
 
-                )}
+                            <div>
 
-
-                {/* =================================================
-                    ERROR
-                ================================================= */}
-
-                {error && (
-
-                    <div className="error-message">
-                        {error}
-                    </div>
-
-                )}
-
-
-                {/* =================================================
-                    CREDENTIALS
-                ================================================= */}
-
-                {credentials.length === 0 ? (
-
-                    <div className="empty-vault">
-
-                        {hasActiveFilter ? (
-
-                            <>
-                                <h3>
-                                    No matching credentials
-                                </h3>
+                                <h2>
+                                    {hasActiveFilter
+                                        ? "No matching credentials"
+                                        : "Your vault is empty"}
+                                </h2>
 
                                 <p>
-                                    Try a different search term
-                                    or category.
+                                    {hasActiveFilter
+                                        ? "Try a different search term or category."
+                                        : "Add your first credential to start protecting your accounts."}
                                 </p>
 
+                            </div>
+
+                            {hasActiveFilter ? (
+
                                 <button
-                                    className="text-button"
+                                    className="sv-btn sv-btn-secondary"
                                     type="button"
                                     onClick={async () => {
 
@@ -822,210 +806,221 @@ function Vault({
                                 >
                                     Clear filters
                                 </button>
-                            </>
 
-                        ) : (
-
-                            <>
-                                <h3>
-                                    Your vault is empty
-                                </h3>
-
-                                <p>
-                                    Add your first credential
-                                    to get started.
-                                </p>
+                            ) : (
 
                                 <button
-                                    className="add-button"
+                                    className="sv-btn sv-btn-primary"
                                     type="button"
                                     onClick={() =>
                                         setShowAddModal(true)
                                     }
                                 >
-                                    Add Credential
+                                    <Icon name="plus" size={16} />
+                                    Add credential
                                 </button>
-                            </>
 
-                        )}
+                            )}
 
-                    </div>
+                        </div>
 
-                ) : (
+                    ) : (
 
-                    <div className="credential-grid">
+                        <>
 
-                        {credentials.map(
-                            (credential) => (
+                            <div className="sv-table-header" aria-hidden="true">
 
-                                <div
-                                    className="credential-card"
-                                    key={credential.id}
-                                >
+                                <span>
+                                    Credential
+                                </span>
 
+                                <span>
+                                    Category
+                                </span>
 
-                                    {/* =============================
-                                        CARD HEADER
-                                    ============================== */}
+                                <span>
+                                    Website
+                                </span>
 
-                                    <div className="credential-card-header">
+                                <span>
+                                    Actions
+                                </span>
 
-                                        <div>
-
-                                            <h3>
-                                                {credential.title}
-                                            </h3>
-
-                                            <span>
-                                                {credential.category}
-                                            </span>
-
-                                        </div>
+                            </div>
 
 
-                                        <button
-                                            className={`favorite-button ${credential.favorite
-                                                ? "favorite-active"
-                                                : ""
-                                                }`}
-                                            type="button"
-                                            title={
-                                                credential.favorite
-                                                    ? "Remove from favorites"
-                                                    : "Add to favorites"
-                                            }
-                                            onClick={() =>
-                                                handleToggleFavorite(
-                                                    credential.id
-                                                )
-                                            }
-                                        >
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill={credential.favorite ? "currentColor" : "none"}
-                                                stroke="currentColor"
-                                                strokeWidth="1.8"
-                                                strokeLinejoin="round"
-                                                aria-hidden="true"
+                            <div className="sv-vault-table" role="list">
+
+                                {credentials.map(
+                                    (credential) => {
+
+                                        const initial =
+                                            credential.title
+                                                ?.charAt(0)
+                                                .toUpperCase() || "V";
+
+                                        const category =
+                                            credential.category ||
+                                            "OTHER";
+
+                                        return (
+
+                                            <div
+                                                className="sv-vault-row"
+                                                role="listitem"
+                                                key={credential.id}
                                             >
-                                                <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9L12 3Z" />
-                                            </svg>
-                                        </button>
 
-                                    </div>
+                                                <div className="sv-vault-credential">
 
+                                                    <span className="sv-credential-avatar" aria-hidden="true">
+                                                        {initial}
+                                                    </span>
 
-                                    {/* =============================
-                                        CREDENTIAL INFO
-                                    ============================== */}
+                                                    <div className="sv-credential-copy">
 
-                                    <div className="credential-info">
+                                                        <strong>
+                                                            {credential.title}
+                                                        </strong>
 
-                                        <div>
+                                                        <span>
+                                                            {credential.username || "No username"}
+                                                        </span>
 
-                                            <label>
-                                                Username
-                                            </label>
-
-                                            <p>
-                                                {credential.username}
-                                            </p>
-
-                                        </div>
+                                                    </div>
 
 
-                                        <div>
+                                                    <button
+                                                        className={`sv-favorite-button ${credential.favorite
+                                                            ? "is-active"
+                                                            : ""
+                                                            }`}
+                                                        type="button"
+                                                        aria-label={
+                                                            credential.favorite
+                                                                ? `Remove ${credential.title} from favorites`
+                                                                : `Add ${credential.title} to favorites`
+                                                        }
+                                                        title={
+                                                            credential.favorite
+                                                                ? "Remove from favorites"
+                                                                : "Add to favorites"
+                                                        }
+                                                        onClick={() =>
+                                                            handleToggleFavorite(
+                                                                credential.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <Icon
+                                                            name="star"
+                                                            size={15}
+                                                            className={
+                                                                credential.favorite
+                                                                    ? "sv-star-filled"
+                                                                    : "sv-star"
+                                                            }
+                                                        />
+                                                    </button>
 
-                                            <label>
-                                                Website
-                                            </label>
-
-                                            <p>
-                                                {credential.websiteUrl ||
-                                                    "Not provided"}
-                                            </p>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    {/* =============================
-                                        ACTIONS
-                                    ============================== */}
-
-                                    <div className="credential-actions">
-
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                setSelectedCredentialId(
-                                                    credential.id
-                                                )
-                                            }
-                                        >
-                                            View
-                                        </button>
-
-
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                setEditCredentialId(
-                                                    credential.id
-                                                )
-                                            }
-                                        >
-                                            Edit
-                                        </button>
+                                                </div>
 
 
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                setShareCredentialData(
-                                                    credential
-                                                )
-                                            }
-                                        >
-                                            Share
-                                        </button>
+                                                <span
+                                                    className={`sv-category-badge ${String(category).toLowerCase()}`}
+                                                >
+                                                    {category}
+                                                </span>
 
 
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                setManageShareCredentialData(
-                                                    credential
-                                                )
-                                            }
-                                        >
-                                            Manage Sharing
-                                        </button>
+                                                <span className="sv-vault-site">
+                                                    {websiteLabel(credential.websiteUrl)}
+                                                </span>
 
 
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                setDeleteCredentialData(
-                                                    credential
-                                                )
-                                            }
-                                        >
-                                            Delete
-                                        </button>
+                                                <div className="sv-row-actions">
 
-                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        aria-label={`View ${credential.title}`}
+                                                        title="View credential"
+                                                        onClick={() =>
+                                                            setSelectedCredentialId(
+                                                                credential.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <Icon name="eye" size={16} />
+                                                    </button>
 
-                                </div>
+                                                    <button
+                                                        type="button"
+                                                        aria-label={`Edit ${credential.title}`}
+                                                        title="Edit credential"
+                                                        onClick={() =>
+                                                            setEditCredentialId(
+                                                                credential.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <Icon name="edit" size={16} />
+                                                    </button>
 
-                            )
-                        )}
+                                                    <button
+                                                        type="button"
+                                                        aria-label={`Share ${credential.title}`}
+                                                        title="Share credential"
+                                                        onClick={() =>
+                                                            setShareCredentialData(
+                                                                credential
+                                                            )
+                                                        }
+                                                    >
+                                                        <Icon name="share" size={16} />
+                                                    </button>
 
-                    </div>
+                                                    <button
+                                                        type="button"
+                                                        aria-label={`Manage sharing for ${credential.title}`}
+                                                        title="Manage sharing"
+                                                        onClick={() =>
+                                                            setManageShareCredentialData(
+                                                                credential
+                                                            )
+                                                        }
+                                                    >
+                                                        <Icon name="users" size={16} />
+                                                    </button>
 
-                )}
+                                                    <button
+                                                        type="button"
+                                                        className="is-danger"
+                                                        aria-label={`Delete ${credential.title}`}
+                                                        title="Delete credential"
+                                                        onClick={() =>
+                                                            setDeleteCredentialData(
+                                                                credential
+                                                            )
+                                                        }
+                                                    >
+                                                        <Icon name="trash" size={16} />
+                                                    </button>
 
+                                                </div>
+
+                                            </div>
+
+                                        );
+                                    }
+                                )}
+
+                            </div>
+
+                        </>
+
+                    )}
+
+                </section>
 
             </main>
 

@@ -4,49 +4,29 @@ import {
     getSecurityAlerts,
     resolveSecurityAlert,
 } from "../services/adminService";
-
+import Icon from "./Icon";
 
 function SecurityAlerts() {
-
-    const [alerts, setAlerts] =
-        useState([]);
-
-    const [filter, setFilter] =
-        useState("ALL");
-
-    const [loading, setLoading] =
-        useState(true);
-
-    const [refreshing, setRefreshing] =
-        useState(false);
-
-    const [resolvingId, setResolvingId] =
-        useState(null);
-
-    const [error, setError] =
-        useState("");
-
-    const [success, setSuccess] =
-        useState("");
-
+    const [alerts, setAlerts] = useState([]);
+    const [filter, setFilter] = useState("ALL");
+    const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+    const [resolvingId, setResolvingId] = useState(null);
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
     // =========================================================
     // LOAD ALERTS
     // =========================================================
 
     useEffect(() => {
-
         loadAlerts();
-
+        // Alerts are loaded once while the page is mounted.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
-    const loadAlerts = async (
-        showLoading = true
-    ) => {
-
+    const loadAlerts = async (showLoading = true) => {
         try {
-
             if (showLoading) {
                 setLoading(true);
             } else {
@@ -55,617 +35,310 @@ function SecurityAlerts() {
 
             setError("");
 
-            const response =
-                await getSecurityAlerts();
+            const response = await getSecurityAlerts();
 
             if (Array.isArray(response)) {
-
                 setAlerts(response);
-
             } else {
-
                 setAlerts([]);
-
-                setError(
-                    "Unable to load security alerts."
-                );
+                setError("Unable to load security alerts.");
             }
-
         } catch (err) {
-
-            console.error(
-                "Security alerts error:",
-                err
-            );
+            console.error("Security alerts error:", err);
 
             setError(
                 err.response?.data?.message ||
-                "Unable to load security alerts."
+                    "Unable to load security alerts.",
             );
-
         } finally {
-
             setLoading(false);
             setRefreshing(false);
         }
     };
 
-
     // =========================================================
     // RESOLVE
     // =========================================================
 
-    const handleResolve = async (
-        alertId
-    ) => {
-
+    const handleResolve = async (alertId) => {
         try {
-
-            setResolvingId(
-                alertId
-            );
-
+            setResolvingId(alertId);
             setError("");
             setSuccess("");
 
-            const response =
-                await resolveSecurityAlert(
-                    alertId
-                );
+            const response = await resolveSecurityAlert(alertId);
 
-            setAlerts(
-                previousAlerts =>
-                    previousAlerts.map(
-                        alert =>
-                            alert.id === alertId
-                                ? {
-                                    ...alert,
-                                    resolved: true
-                                }
-                                : alert
-                    )
+            setAlerts((previousAlerts) =>
+                previousAlerts.map((alert) =>
+                    alert.id === alertId
+                        ? {
+                              ...alert,
+                              resolved: true,
+                          }
+                        : alert,
+                ),
             );
 
             setSuccess(
-                response ||
-                "Security alert resolved successfully."
+                response || "Security alert resolved successfully.",
             );
-
         } catch (err) {
-
-            console.error(
-                "Resolve security alert error:",
-                err
-            );
+            console.error("Resolve security alert error:", err);
 
             setError(
                 err.response?.data?.message ||
-                "Unable to resolve security alert."
+                    "Unable to resolve security alert.",
             );
-
         } finally {
-
             setResolvingId(null);
         }
     };
-
 
     // =========================================================
     // FILTER
     // =========================================================
 
-    const filteredAlerts =
-        alerts.filter(
-            (alert) => {
+    const filteredAlerts = alerts.filter((alert) => {
+        const risk = alert.riskLevel?.toUpperCase();
 
-                const risk =
-                    alert.riskLevel
-                        ?.toUpperCase();
+        if (filter === "UNRESOLVED") {
+            return !alert.resolved;
+        }
 
-                if (
-                    filter === "UNRESOLVED"
-                ) {
+        if (filter === "HIGH") {
+            return risk === "HIGH";
+        }
 
-                    return !alert.resolved;
-                }
+        if (filter === "MEDIUM") {
+            return risk === "MEDIUM";
+        }
 
-                if (
-                    filter === "HIGH"
-                ) {
+        if (filter === "LOW") {
+            return risk === "LOW";
+        }
 
-                    return risk === "HIGH";
-                }
-
-                if (
-                    filter === "MEDIUM"
-                ) {
-
-                    return risk === "MEDIUM";
-                }
-
-                if (
-                    filter === "LOW"
-                ) {
-
-                    return risk === "LOW";
-                }
-
-                return true;
-            }
-        );
-
+        return true;
+    });
 
     // =========================================================
     // COUNTS
     // =========================================================
 
-    const unresolvedCount =
-        alerts.filter(
-            alert =>
-                !alert.resolved
-        ).length;
+    const unresolvedCount = alerts.filter((alert) => !alert.resolved).length;
+    const highCount = alerts.filter(
+        (alert) => alert.riskLevel?.toUpperCase() === "HIGH",
+    ).length;
+    const mediumCount = alerts.filter(
+        (alert) => alert.riskLevel?.toUpperCase() === "MEDIUM",
+    ).length;
+    const lowCount = alerts.filter(
+        (alert) => alert.riskLevel?.toUpperCase() === "LOW",
+    ).length;
 
-    const highCount =
-        alerts.filter(
-            alert =>
-                alert.riskLevel
-                    ?.toUpperCase() === "HIGH"
-        ).length;
-
-    const mediumCount =
-        alerts.filter(
-            alert =>
-                alert.riskLevel
-                    ?.toUpperCase() === "MEDIUM"
-        ).length;
-
-    const lowCount =
-        alerts.filter(
-            alert =>
-                alert.riskLevel
-                    ?.toUpperCase() === "LOW"
-        ).length;
-
+    const filterOptions = [
+        { id: "ALL", label: "All alerts", count: alerts.length },
+        { id: "UNRESOLVED", label: "Unresolved", count: unresolvedCount },
+        { id: "HIGH", label: "High risk", count: highCount },
+        { id: "MEDIUM", label: "Medium risk", count: mediumCount },
+        { id: "LOW", label: "Low risk", count: lowCount },
+    ];
 
     // =========================================================
     // LOADING
     // =========================================================
 
     if (loading) {
-
         return (
+            <section className="sv-page-stack">
+                <header className="sv-page-header">
+                    <div>
+                        <span className="sv-eyebrow">Security operations</span>
+                        <h1>Security Alerts</h1>
+                        <p>Loading security alerts…</p>
+                    </div>
+                </header>
 
-            <section className="content-page">
-
-                <div className="page-loading">
-                    Loading security alerts...
+                <div className="sv-loading-panel" role="status">
+                    <span className="sv-loading-bar" aria-hidden="true" />
+                    Loading security alerts…
                 </div>
-
             </section>
         );
     }
 
-
     return (
-
-        <section className="content-page">
-
-
-            {/* =================================================
-                HEADER
-            ================================================= */}
-
-            <div className="page-heading">
-
+        <section className="sv-page-stack">
+            <header className="sv-page-header">
                 <div>
-
-                    <span className="eyebrow">
-                        SECURITY
-                    </span>
-
-                    <h1>
-                        Security Alerts
-                    </h1>
-
+                    <span className="sv-eyebrow">Security operations</span>
+                    <h1>Security Alerts</h1>
                     <p>
-                        Monitor suspicious activity
-                        and security events.
+                        Monitor suspicious activity and security events
+                        recorded by SecureVault.
                     </p>
-
                 </div>
 
-
-                <button
-                    type="button"
-                    className="text-button"
-                    onClick={() =>
-                        loadAlerts(false)
-                    }
-                    disabled={refreshing}
-                >
-                    {refreshing
-                        ? "Refreshing..."
-                        : "Refresh"}
-                </button>
-
-            </div>
-
-
-            {/* =================================================
-                STATUS
-            ================================================= */}
-
-            <div className="alert-count">
-
-                {unresolvedCount}{" "}
-                unresolved
-                {unresolvedCount === 1
-                    ? " alert"
-                    : " alerts"}
-
-            </div>
-
-
-            {/* =================================================
-                SUCCESS
-            ================================================= */}
-
-            {success && (
-
-                <div className="success-message">
-
-                    {success}
-
-                </div>
-
-            )}
-
-
-            {/* =================================================
-                ERROR
-            ================================================= */}
-
-            {error && (
-
-                <div className="error-message">
-
-                    <span>
-                        {error}
+                <div className="sv-header-actions">
+                    <span
+                        className={`sv-status-chip ${unresolvedCount > 0 ? "danger" : "positive"}`}
+                    >
+                        {unresolvedCount} unresolved
                     </span>
 
                     <button
                         type="button"
-                        className="text-button"
-                        onClick={() =>
-                            loadAlerts()
-                        }
+                        className="sv-btn sv-btn-secondary"
+                        onClick={() => loadAlerts(false)}
+                        disabled={refreshing}
+                    >
+                        <Icon name="refresh" size={16} />
+                        {refreshing ? "Refreshing…" : "Refresh"}
+                    </button>
+                </div>
+            </header>
+
+            {success && (
+                <div className="sv-callout positive" role="status">
+                    <Icon name="check" size={16} />
+                    <div>
+                        <strong>Alert resolved</strong>
+                        <span>{success}</span>
+                    </div>
+                </div>
+            )}
+
+            {error && (
+                <div className="sv-inline-error" role="alert">
+                    <span>{error}</span>
+                    <button
+                        type="button"
+                        className="sv-btn sv-btn-secondary"
+                        onClick={() => loadAlerts()}
                     >
                         Try again
                     </button>
-
                 </div>
-
             )}
 
-
-            {/* =================================================
-                SUMMARY FILTERS
-            ================================================= */}
-
-            <div className="alert-summary-grid">
-
-
-                <button
-                    type="button"
-                    className={
-                        filter === "ALL"
-                            ? "alert-filter-card active"
-                            : "alert-filter-card"
-                    }
-                    onClick={() =>
-                        setFilter("ALL")
-                    }
-                >
-
-                    <span>
-                        All Alerts
-                    </span>
-
-                    <strong>
-                        {alerts.length}
-                    </strong>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    className={
-                        filter === "UNRESOLVED"
-                            ? "alert-filter-card active"
-                            : "alert-filter-card"
-                    }
-                    onClick={() =>
-                        setFilter("UNRESOLVED")
-                    }
-                >
-
-                    <span>
-                        Unresolved
-                    </span>
-
-                    <strong>
-                        {unresolvedCount}
-                    </strong>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    className={
-                        filter === "HIGH"
-                            ? "alert-filter-card active high"
-                            : "alert-filter-card high"
-                    }
-                    onClick={() =>
-                        setFilter("HIGH")
-                    }
-                >
-
-                    <span>
-                        High Risk
-                    </span>
-
-                    <strong>
-                        {highCount}
-                    </strong>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    className={
-                        filter === "MEDIUM"
-                            ? "alert-filter-card active medium"
-                            : "alert-filter-card medium"
-                    }
-                    onClick={() =>
-                        setFilter("MEDIUM")
-                    }
-                >
-
-                    <span>
-                        Medium Risk
-                    </span>
-
-                    <strong>
-                        {mediumCount}
-                    </strong>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    className={
-                        filter === "LOW"
-                            ? "alert-filter-card active low"
-                            : "alert-filter-card low"
-                    }
-                    onClick={() =>
-                        setFilter("LOW")
-                    }
-                >
-
-                    <span>
-                        Low Risk
-                    </span>
-
-                    <strong>
-                        {lowCount}
-                    </strong>
-
-                </button>
-
+            <div className="sv-filter-row" role="group" aria-label="Filter alerts">
+                {filterOptions.map((option) => (
+                    <button
+                        key={option.id}
+                        type="button"
+                        className={`sv-filter-button ${filter === option.id ? "is-active" : ""}`}
+                        onClick={() => setFilter(option.id)}
+                        aria-pressed={filter === option.id}
+                    >
+                        {option.label}
+                        <strong>{option.count}</strong>
+                    </button>
+                ))}
             </div>
 
-
-            {/* =================================================
-                ALERT LIST
-            ================================================= */}
-
             {filteredAlerts.length === 0 ? (
-
-                <div className="empty-state">
-
-                    <h3>
-                        No alerts found
-                    </h3>
-
-                    <p>
-                        There are no security alerts
-                        matching this filter.
-                    </p>
-
+                <div className="sv-empty-state large">
+                    <span className="sv-empty-icon positive" aria-hidden="true">
+                        <Icon name="shield" size={22} />
+                    </span>
+                    <div>
+                        <h2>No alerts found</h2>
+                        <p>
+                            There are no security alerts matching this filter.
+                        </p>
+                    </div>
                 </div>
-
             ) : (
+                <div className="sv-alert-feed">
+                    {filteredAlerts.map((alert) => {
+                        const risk =
+                            alert.riskLevel?.toUpperCase() || "UNKNOWN";
 
-                <div className="security-alert-list">
+                        const alertType =
+                            alert.alertType?.replaceAll("_", " ") ||
+                            "Security Alert";
 
-                    {filteredAlerts.map(
-                        (alert) => {
-
-                            const risk =
-                                alert.riskLevel
-                                    ?.toUpperCase() ||
-                                "UNKNOWN";
-
-
-                            const alertType =
-                                alert.alertType
-                                    ?.replaceAll(
-                                        "_",
-                                        " "
-                                    ) ||
-                                "Security Alert";
-
-
-                            return (
-
-                                <div
-                                    key={alert.id}
-                                    className={
-                                        alert.resolved
-                                            ? "security-alert-card resolved"
-                                            : "security-alert-card"
-                                    }
-                                >
-
-
-                                    {/* TOP */}
-
-                                    <div className="alert-card-top">
-
-                                        <div className="alert-card-title">
-
-                                            <span
-                                                className={
-                                                    `risk-badge ${risk.toLowerCase()}`
-                                                }
-                                            >
-                                                {risk}
-                                            </span>
-
-                                            <h3>
-                                                {alertType}
-                                            </h3>
-
-                                        </div>
-
-
+                        return (
+                            <article
+                                key={alert.id}
+                                className={`sv-alert-card ${risk.toLowerCase()} ${alert.resolved ? "is-resolved" : ""}`}
+                            >
+                                <div className="sv-alert-card-head">
+                                    <div className="sv-alert-card-title">
                                         <span
-                                            className={
-                                                alert.resolved
-                                                    ? "status-badge resolved-status"
-                                                    : "status-badge unresolved-status"
+                                            className={`sv-risk-badge ${risk.toLowerCase()}`}
+                                        >
+                                            {risk}
+                                        </span>
+                                        <h3>{alertType}</h3>
+                                    </div>
+
+                                    <span
+                                        className={`sv-status-chip ${alert.resolved ? "positive" : "warning"}`}
+                                    >
+                                        {alert.resolved
+                                            ? "Resolved"
+                                            : "Unresolved"}
+                                    </span>
+                                </div>
+
+                                <p className="sv-alert-card-body">
+                                    {alert.message ||
+                                        "No additional information available."}
+                                </p>
+
+                                <div className="sv-alert-card-details">
+                                    <div>
+                                        <span>User</span>
+                                        <strong>
+                                            {alert.email || "Not available"}
+                                        </strong>
+                                    </div>
+
+                                    <div>
+                                        <span>User ID</span>
+                                        <strong>
+                                            {alert.userId
+                                                ? `#${alert.userId}`
+                                                : "Not available"}
+                                        </strong>
+                                    </div>
+
+                                    <div>
+                                        <span>Detected</span>
+                                        <strong>
+                                            {alert.timestamp
+                                                ? new Date(
+                                                      alert.timestamp,
+                                                  ).toLocaleString()
+                                                : "Not recorded"}
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                {!alert.resolved && (
+                                    <div className="sv-alert-card-actions">
+                                        <button
+                                            type="button"
+                                            className="sv-btn sv-btn-secondary"
+                                            disabled={resolvingId === alert.id}
+                                            onClick={() =>
+                                                handleResolve(alert.id)
                                             }
                                         >
-                                            {alert.resolved
-                                                ? "Resolved"
-                                                : "Unresolved"}
-                                        </span>
-
+                                            <Icon name="check" size={15} />
+                                            {resolvingId === alert.id
+                                                ? "Resolving…"
+                                                : "Mark as resolved"}
+                                        </button>
                                     </div>
-
-
-                                    {/* MESSAGE */}
-
-                                    <p className="alert-message">
-
-                                        {alert.message ||
-                                            "No additional information available."}
-
-                                    </p>
-
-
-                                    {/* DETAILS */}
-
-                                    <div className="alert-details">
-
-                                        <div>
-
-                                            <span>
-                                                User
-                                            </span>
-
-                                            <strong>
-                                                {alert.email ||
-                                                    "Not available"}
-                                            </strong>
-
-                                        </div>
-
-
-                                        <div>
-
-                                            <span>
-                                                User ID
-                                            </span>
-
-                                            <strong>
-                                                {alert.userId
-                                                    ? `#${alert.userId}`
-                                                    : "Not available"}
-                                            </strong>
-
-                                        </div>
-
-
-                                        <div>
-
-                                            <span>
-                                                Detected
-                                            </span>
-
-                                            <strong>
-                                                {alert.timestamp
-                                                    ? new Date(
-                                                        alert.timestamp
-                                                    ).toLocaleString()
-                                                    : "Not recorded"}
-                                            </strong>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    {/* ACTION */}
-
-                                    {!alert.resolved && (
-
-                                        <div className="alert-card-actions">
-
-                                            <button
-                                                type="button"
-                                                className="resolve-alert-button"
-                                                disabled={
-                                                    resolvingId ===
-                                                    alert.id
-                                                }
-                                                onClick={() =>
-                                                    handleResolve(
-                                                        alert.id
-                                                    )
-                                                }
-                                            >
-
-                                                {resolvingId ===
-                                                    alert.id
-                                                    ? "Resolving..."
-                                                    : "Mark as Resolved"}
-
-                                            </button>
-
-                                        </div>
-
-                                    )}
-
-                                </div>
-                            );
-                        }
-                    )}
-
+                                )}
+                            </article>
+                        );
+                    })}
                 </div>
-
             )}
-
         </section>
     );
 }
-
 
 export default SecurityAlerts;

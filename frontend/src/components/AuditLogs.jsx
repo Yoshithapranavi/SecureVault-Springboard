@@ -5,47 +5,29 @@ import {
     downloadAuditReportPdf,
     downloadAuditReportExcel,
 } from "../services/adminService";
-
+import Icon from "./Icon";
 
 function AuditLogs() {
-
-    const [auditLogs, setAuditLogs] =
-        useState([]);
-
-    const [loading, setLoading] =
-        useState(true);
-
-    const [refreshing, setRefreshing] =
-        useState(false);
-
-    const [error, setError] =
-        useState("");
-
-    const [search, setSearch] =
-        useState("");
-    const [downloadingPdf, setDownloadingPdf] =
-        useState(false);
-
-    const [downloadingExcel, setDownloadingExcel] =
-        useState(false);
+    const [auditLogs, setAuditLogs] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+    const [error, setError] = useState("");
+    const [search, setSearch] = useState("");
+    const [downloadingPdf, setDownloadingPdf] = useState(false);
+    const [downloadingExcel, setDownloadingExcel] = useState(false);
 
     // =========================================================
     // LOAD AUDIT LOGS
     // =========================================================
 
     useEffect(() => {
-
         loadAuditLogs();
-
+        // Audit logs are loaded once while the page is mounted.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
-    const loadAuditLogs = async (
-        showLoading = true
-    ) => {
-
+    const loadAuditLogs = async (showLoading = true) => {
         try {
-
             if (showLoading) {
                 setLoading(true);
             } else {
@@ -54,29 +36,16 @@ function AuditLogs() {
 
             setError("");
 
-            const response =
-                await getAuditLogs();
+            const response = await getAuditLogs();
 
-            setAuditLogs(
-                Array.isArray(response)
-                    ? response
-                    : []
-            );
-
+            setAuditLogs(Array.isArray(response) ? response : []);
         } catch (err) {
-
-            console.error(
-                "Unable to load audit logs:",
-                err
-            );
+            console.error("Unable to load audit logs:", err);
 
             setError(
-                err.response?.data?.message ||
-                "Unable to load audit logs."
+                err.response?.data?.message || "Unable to load audit logs.",
             );
-
         } finally {
-
             setLoading(false);
             setRefreshing(false);
         }
@@ -87,164 +56,103 @@ function AuditLogs() {
     // =========================================================
 
     const handleDownloadPdf = async () => {
-
         try {
-
             setDownloadingPdf(true);
             setError("");
 
-            const pdfBlob =
-                await downloadAuditReportPdf();
+            const pdfBlob = await downloadAuditReportPdf();
 
-            const url =
-                window.URL.createObjectURL(
-                    new Blob(
-                        [pdfBlob],
-                        {
-                            type: "application/pdf",
-                        }
-                    )
-                );
+            const url = window.URL.createObjectURL(
+                new Blob([pdfBlob], {
+                    type: "application/pdf",
+                }),
+            );
 
-            const link =
-                document.createElement("a");
+            const link = document.createElement("a");
 
             link.href = url;
-
-            link.download =
-                "audit-report.pdf";
+            link.download = "audit-report.pdf";
 
             document.body.appendChild(link);
-
             link.click();
-
             link.remove();
 
             window.URL.revokeObjectURL(url);
-
         } catch (err) {
-
-            console.error(
-                "Audit PDF error:",
-                err
-            );
+            console.error("Audit PDF error:", err);
 
             setError(
                 err.response?.data?.message ||
-                "Unable to download audit PDF."
+                    "Unable to download audit PDF.",
             );
-
         } finally {
-
             setDownloadingPdf(false);
         }
     };
-
 
     // =========================================================
     // DOWNLOAD AUDIT EXCEL
     // =========================================================
 
     const handleDownloadExcel = async () => {
-
         try {
-
             setDownloadingExcel(true);
             setError("");
 
-            const excelBlob =
-                await downloadAuditReportExcel();
+            const excelBlob = await downloadAuditReportExcel();
 
-            const url =
-                window.URL.createObjectURL(
-                    new Blob(
-                        [excelBlob],
-                        {
-                            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        }
-                    )
-                );
+            const url = window.URL.createObjectURL(
+                new Blob([excelBlob], {
+                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                }),
+            );
 
-            const link =
-                document.createElement("a");
+            const link = document.createElement("a");
 
             link.href = url;
-
-            link.download =
-                "audit-report.xlsx";
+            link.download = "audit-report.xlsx";
 
             document.body.appendChild(link);
-
             link.click();
-
             link.remove();
 
             window.URL.revokeObjectURL(url);
-
         } catch (err) {
-
-            console.error(
-                "Audit Excel error:",
-                err
-            );
+            console.error("Audit Excel error:", err);
 
             setError(
                 err.response?.data?.message ||
-                "Unable to download audit Excel."
+                    "Unable to download audit Excel.",
             );
-
         } finally {
-
             setDownloadingExcel(false);
         }
     };
-
 
     // =========================================================
     // SEARCH
     // =========================================================
 
-    const searchValue =
-        search.toLowerCase().trim();
+    const searchValue = search.toLowerCase().trim();
 
+    const filteredLogs = auditLogs.filter((log) => {
+        if (!searchValue) {
+            return true;
+        }
 
-    const filteredLogs =
-        auditLogs.filter(
-            (log) => {
-
-                if (!searchValue) {
-                    return true;
-                }
-
-                return (
-                    log.action
-                        ?.toLowerCase()
-                        .includes(searchValue)
-                    ||
-                    log.entityType
-                        ?.toLowerCase()
-                        .includes(searchValue)
-                    ||
-                    String(
-                        log.entityId
-                    ).includes(searchValue)
-                    ||
-                    log.performedBy
-                        ?.toLowerCase()
-                        .includes(searchValue)
-                );
-            }
+        return (
+            log.action?.toLowerCase().includes(searchValue) ||
+            log.entityType?.toLowerCase().includes(searchValue) ||
+            String(log.entityId).includes(searchValue) ||
+            log.performedBy?.toLowerCase().includes(searchValue)
         );
-
+    });
 
     // =========================================================
     // FORMAT ACTION
     // =========================================================
 
-    const formatAction = (
-        action
-    ) => {
-
+    const formatAction = (action) => {
         if (!action) {
             return "Unknown Action";
         }
@@ -252,279 +160,166 @@ function AuditLogs() {
         return action
             .replaceAll("_", " ")
             .toLowerCase()
-            .replace(
-                /\b\w/g,
-                character =>
-                    character.toUpperCase()
-            );
+            .replace(/\b\w/g, (character) => character.toUpperCase());
     };
-
 
     // =========================================================
     // LOADING
     // =========================================================
 
     if (loading) {
-
         return (
+            <section className="sv-page-stack">
+                <header className="sv-page-header">
+                    <div>
+                        <span className="sv-eyebrow">Administration</span>
+                        <h1>Audit Logs</h1>
+                        <p>Loading audit entries…</p>
+                    </div>
+                </header>
 
-            <section className="content-page">
-
-                <div className="page-loading">
-                    Loading audit logs...
+                <div className="sv-loading-panel" role="status">
+                    <span className="sv-loading-bar" aria-hidden="true" />
+                    Loading audit logs…
                 </div>
-
             </section>
         );
     }
 
-
     return (
-
-        <section className="content-page">
-
-
-            {/* =================================================
-                HEADER
-            ================================================= */}
-
-            <div className="page-heading">
-
+        <section className="sv-page-stack">
+            <header className="sv-page-header">
                 <div>
-
-                    <span className="eyebrow">
-                        SECURITY
-                    </span>
-
-                    <h1>
-                        Audit Logs
-                    </h1>
-
+                    <span className="sv-eyebrow">Administration</span>
+                    <h1>Audit Logs</h1>
                     <p>
-                        Review credential and security
-                        operations performed in SecureVault.
+                        Credential and security operations recorded across
+                        SecureVault.
                     </p>
-
                 </div>
 
-
-                <button
-                    type="button"
-                    className="text-button"
-                    onClick={() =>
-                        loadAuditLogs(false)
-                    }
-                    disabled={refreshing}
-                >
-                    {refreshing
-                        ? "Refreshing..."
-                        : "Refresh"}
-                </button>
-                <button
-                    type="button"
-                    className="text-button"
-                    onClick={handleDownloadPdf}
-                    disabled={downloadingPdf}
-                >
-                    {downloadingPdf
-                        ? "Downloading..."
-                        : "Download PDF"}
-                </button>
-
-                <button
-                    type="button"
-                    className="text-button"
-                    onClick={handleDownloadExcel}
-                    disabled={downloadingExcel}
-                >
-                    {downloadingExcel
-                        ? "Downloading..."
-                        : "Download Excel"}
-                </button>
-
-            </div>
-
-
-            {/* =================================================
-                ERROR
-            ================================================= */}
-
-            {error && (
-
-                <div className="error-message">
-
-                    <span>
-                        {error}
-                    </span>
+                <div className="sv-header-actions">
+                    <button
+                        type="button"
+                        className="sv-btn sv-btn-secondary"
+                        onClick={() => loadAuditLogs(false)}
+                        disabled={refreshing}
+                    >
+                        <Icon name="refresh" size={16} />
+                        {refreshing ? "Refreshing…" : "Refresh"}
+                    </button>
 
                     <button
                         type="button"
-                        className="text-button"
-                        onClick={() =>
-                            loadAuditLogs()
-                        }
+                        className="sv-btn sv-btn-secondary"
+                        onClick={handleDownloadPdf}
+                        disabled={downloadingPdf}
+                    >
+                        <Icon name="download" size={16} />
+                        {downloadingPdf ? "Downloading…" : "PDF"}
+                    </button>
+
+                    <button
+                        type="button"
+                        className="sv-btn sv-btn-secondary"
+                        onClick={handleDownloadExcel}
+                        disabled={downloadingExcel}
+                    >
+                        <Icon name="download" size={16} />
+                        {downloadingExcel ? "Downloading…" : "Excel"}
+                    </button>
+                </div>
+            </header>
+
+            {error && (
+                <div className="sv-inline-error" role="alert">
+                    <span>{error}</span>
+                    <button
+                        type="button"
+                        className="sv-btn sv-btn-secondary"
+                        onClick={() => loadAuditLogs()}
                     >
                         Try again
                     </button>
-
                 </div>
-
             )}
 
+            <div className="sv-table-shell">
+                <div className="sv-table-toolbar">
+                    <label className="sv-search-field">
+                        <Icon name="search" size={15} />
+                        <input
+                            type="search"
+                            value={search}
+                            onChange={(event) =>
+                                setSearch(event.target.value)
+                            }
+                            placeholder="Search action, entity or user"
+                            aria-label="Search audit logs"
+                        />
+                    </label>
 
-            {/* =================================================
-                TOOLBAR
-            ================================================= */}
-
-            <div className="admin-users-toolbar">
-
-                <input
-                    type="text"
-                    value={search}
-                    onChange={(event) =>
-                        setSearch(
-                            event.target.value
-                        )
-                    }
-                    placeholder="Search action, entity or user..."
-                    className="admin-user-search"
-                />
-
-
-                <span className="admin-user-count">
-
-                    {filteredLogs.length}
-                    {" "}
-                    {filteredLogs.length === 1
-                        ? "entry"
-                        : "entries"}
-
-                </span>
-
-            </div>
-
-
-            {/* =================================================
-                EMPTY
-            ================================================= */}
-
-            {filteredLogs.length === 0 ? (
-
-                <div className="empty-state">
-
-                    <h3>
-                        No audit activity found
-                    </h3>
-
-                    <p>
-                        {searchValue
-                            ? "Try a different search term."
-                            : "There are no recorded audit entries."}
-                    </p>
-
+                    <span className="sv-toolbar-count">
+                        {filteredLogs.length}{" "}
+                        {filteredLogs.length === 1 ? "entry" : "entries"}
+                    </span>
                 </div>
 
-            ) : (
+                {filteredLogs.length === 0 ? (
+                    <div className="sv-empty-state">
+                        <div>
+                            <h3>No audit activity found</h3>
+                            <p>
+                                {searchValue
+                                    ? "Try a different search term."
+                                    : "There are no recorded audit entries."}
+                            </p>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="sv-table-scroll">
+                        <table className="sv-data-table">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Entity</th>
+                                    <th>Entity ID</th>
+                                    <th>Performed by</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
 
-                <div className="audit-table-wrapper">
-
-                    <table className="audit-table">
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    Action
-                                </th>
-
-                                <th>
-                                    Entity
-                                </th>
-
-                                <th>
-                                    Entity ID
-                                </th>
-
-                                <th>
-                                    Performed By
-                                </th>
-
-                                <th>
-                                    Timestamp
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody>
-
-                            {filteredLogs.map(
-                                (log) => (
-
-                                    <tr
-                                        key={
-                                            log.id
-                                        }
-                                    >
-
+                            <tbody>
+                                {filteredLogs.map((log) => (
+                                    <tr key={log.id}>
                                         <td>
-
-                                            <span className="audit-action">
-                                                {formatAction(
-                                                    log.action
-                                                )}
+                                            <span className="sv-action-tag">
+                                                {formatAction(log.action)}
                                             </span>
-
                                         </td>
 
+                                        <td>{log.entityType || "—"}</td>
+
+                                        <td>{log.entityId ?? "—"}</td>
+
+                                        <td>{log.performedBy || "—"}</td>
 
                                         <td>
-                                            {log.entityType ||
-                                                "—"}
-                                        </td>
-
-
-                                        <td>
-                                            {log.entityId ??
-                                                "—"}
-                                        </td>
-
-
-                                        <td>
-                                            {log.performedBy ||
-                                                "—"}
-                                        </td>
-
-
-                                        <td>
-
                                             {log.timestamp
                                                 ? new Date(
-                                                    log.timestamp
-                                                ).toLocaleString()
+                                                      log.timestamp,
+                                                  ).toLocaleString()
                                                 : "—"}
-
                                         </td>
-
                                     </tr>
-
-                                )
-                            )}
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            )}
-
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
         </section>
     );
 }
-
 
 export default AuditLogs;

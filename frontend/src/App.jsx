@@ -4,6 +4,8 @@ import "./App.css";
 
 import "./premium-ui.css";
 
+import "./redesign.css";
+
 // =========================================================
 // AUTH / PAGES
 // =========================================================
@@ -23,7 +25,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 // COMPONENTS
 // =========================================================
 
-import AppSidebar from "./components/AppSidebar";
+import TopNav from "./components/AppTopNav";
 import Dashboard from "./components/Dashboard";
 import SecurityOverview from "./components/SecurityOverview";
 
@@ -50,7 +52,6 @@ import ResetPassword from "./pages/ResetPassword";
 
 import { useAuth } from "./context/AuthContext";
 import Register from "./pages/Register";
-
 
 function App() {
 
@@ -352,13 +353,13 @@ function App() {
 
   return (
 
-    <div className="securevault-app">
+    <div className="securevault-app sv-app-shell">
 
       {/* =================================================
-                SIDEBAR
+                TOP NAVIGATION
             ================================================= */}
 
-      <AppSidebar
+      <TopNav
         user={user}
         isAdmin={isAdmin}
         activeSection={activeSection}
@@ -368,10 +369,16 @@ function App() {
 
 
       {/* =================================================
+                WORKSPACE
+            ================================================= */}
+
+      <div className="sv-app-body">
+
+        {/* =================================================
                 MAIN CONTENT
             ================================================= */}
 
-      <main className="app-main">
+        <main className="app-main sv-main" data-app-main>
 
 
         {/* =================================================
@@ -577,7 +584,7 @@ function App() {
 
             <AdminDashboard
               onGoToVault={() => setActiveSection("vault")}
-              onLogout={logout}
+              onNavigate={setActiveSection}
             />
 
           )}
@@ -606,7 +613,9 @@ function App() {
 
           )}
 
-      </main>
+        </main>
+
+      </div>
 
     </div>
   );

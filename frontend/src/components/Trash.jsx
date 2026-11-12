@@ -5,458 +5,267 @@ import {
     restoreCredential,
     permanentlyDeleteCredential,
 } from "../services/vaultService";
+import Icon from "./Icon";
 
-
-function Trash({
-    userId,
-    onChanged,
-}) {
-
-    // =========================================================
-    // STATE
-    // =========================================================
-
-    const [credentials, setCredentials] =
-        useState([]);
-
-    const [loading, setLoading] =
-        useState(true);
-
-    const [error, setError] =
-        useState("");
-
-    const [actionLoading, setActionLoading] =
-        useState(null);
-
-
-    // =========================================================
-    // LOAD TRASH
-    // =========================================================
+function Trash({ userId, onChanged }) {
+    const [credentials, setCredentials] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [actionLoading, setActionLoading] = useState(null);
 
     useEffect(() => {
-
         if (userId) {
-
             loadTrash();
-
         }
-
+        // Trash is scoped to the authenticated user.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userId]);
 
-
-    // =========================================================
-    // LOAD DELETED CREDENTIALS
-    // =========================================================
-
     const loadTrash = async () => {
-
         try {
-
             setLoading(true);
             setError("");
 
-
-            const response =
-                await getDeletedCredentials();
-
+            const response = await getDeletedCredentials();
 
             if (response.success) {
-
-                setCredentials(
-                    response.data || []
-                );
-
+                setCredentials(response.data || []);
             } else {
-
-                setError(
-                    response.message ||
-                    "Unable to load trash."
-                );
+                setError(response.message || "Unable to load trash.");
             }
-
         } catch (err) {
-
-            console.error(
-                "Trash loading error:",
-                err
-            );
+            console.error("Trash loading error:", err);
 
             setError(
-                err.response?.data?.message ||
-                "Unable to load trash."
+                err.response?.data?.message || "Unable to load trash.",
             );
-
         } finally {
-
             setLoading(false);
         }
     };
 
-
-    // =========================================================
-    // RESTORE CREDENTIAL
-    // =========================================================
-
-    const handleRestore = async (
-        credentialId
-    ) => {
-
+    const handleRestore = async (credentialId) => {
         try {
-
-            setActionLoading(
-                credentialId
-            );
-
+            setActionLoading(credentialId);
             setError("");
 
-
-            const response =
-                await restoreCredential(
-                    credentialId
-                );
-
+            const response = await restoreCredential(credentialId);
 
             if (!response.success) {
-
                 setError(
-                    response.message ||
-                    "Unable to restore credential."
+                    response.message || "Unable to restore credential.",
                 );
-
                 return;
             }
 
-
-            // -------------------------------------------------
-            // Refresh Trash
-            // -------------------------------------------------
-
             await loadTrash();
 
-
-            // -------------------------------------------------
-            // Refresh Vault
-            // -------------------------------------------------
-
             if (onChanged) {
-
                 await onChanged();
-
             }
-
         } catch (err) {
-
-            console.error(
-                "Restore error:",
-                err
-            );
+            console.error("Restore error:", err);
 
             setError(
                 err.response?.data?.message ||
-                "Unable to restore credential."
+                    "Unable to restore credential.",
             );
-
         } finally {
-
             setActionLoading(null);
         }
     };
 
-
-    // =========================================================
-    // PERMANENT DELETE
-    // =========================================================
-
-    const handlePermanentDelete = async (
-        credentialId
-    ) => {
-
-        const confirmed =
-            window.confirm(
-                "Are you sure you want to permanently delete this credential? This action cannot be undone."
-            );
-
+    const handlePermanentDelete = async (credentialId) => {
+        const confirmed = window.confirm(
+            "Are you sure you want to permanently delete this credential? This action cannot be undone.",
+        );
 
         if (!confirmed) {
-
             return;
         }
 
-
         try {
-
-            setActionLoading(
-                credentialId
-            );
-
+            setActionLoading(credentialId);
             setError("");
 
-
-            const response =
-                await permanentlyDeleteCredential(
-                    credentialId
-                );
-
+            const response = await permanentlyDeleteCredential(credentialId);
 
             if (!response.success) {
-
                 setError(
                     response.message ||
-                    "Unable to permanently delete credential."
+                        "Unable to permanently delete credential.",
                 );
-
                 return;
             }
 
-
-            // -------------------------------------------------
-            // Refresh Trash
-            // -------------------------------------------------
-
             await loadTrash();
 
-
-            // -------------------------------------------------
-            // Refresh Vault
-            // -------------------------------------------------
-
             if (onChanged) {
-
                 await onChanged();
-
             }
-
         } catch (err) {
-
-            console.error(
-                "Permanent delete error:",
-                err
-            );
+            console.error("Permanent delete error:", err);
 
             setError(
                 err.response?.data?.message ||
-                "Unable to permanently delete credential."
+                    "Unable to permanently delete credential.",
             );
-
         } finally {
-
             setActionLoading(null);
         }
     };
 
-
-    // =========================================================
-    // LOADING
-    // =========================================================
-
     if (loading) {
-
         return (
-
-            <section className="trash-section">
-
-                <div className="trash-header">
-
+            <section className="sv-page-stack">
+                <header className="sv-page-header">
                     <div>
-
-                        <h2>
-                            Trash
-                        </h2>
-
-                        <p>
-                            Loading deleted credentials...
-                        </p>
-
+                        <span className="sv-eyebrow">Workspace</span>
+                        <h1>Trash</h1>
+                        <p>Loading deleted credentials…</p>
                     </div>
+                </header>
 
+                <div className="sv-loading-panel" role="status">
+                    <span className="sv-loading-bar" aria-hidden="true" />
+                    Loading trash…
                 </div>
-
             </section>
         );
     }
 
-
-    // =========================================================
-    // UI
-    // =========================================================
-
     return (
-
-        <section className="trash-section">
-
-
-            {/* =================================================
-                HEADER
-            ================================================= */}
-
-            <div className="trash-header">
-
+        <section className="sv-page-stack">
+            <header className="sv-page-header">
                 <div>
-
-                    <h2>
-                        Trash
-                    </h2>
-
+                    <span className="sv-eyebrow">Workspace</span>
+                    <h1>Trash</h1>
                     <p>
-                        Deleted credentials are kept here
-                        until restored or permanently deleted.
+                        Deleted credentials are retained here until they are
+                        restored or permanently removed.
                     </p>
-
                 </div>
 
+                <div className="sv-header-actions">
+                    <span className="sv-status-chip neutral">
+                        {credentials.length}{" "}
+                        {credentials.length === 1 ? "item" : "items"}
+                    </span>
 
-                <span className="trash-count">
-
-                    {credentials.length}
-
-                </span>
-
-            </div>
-
-
-            {/* =================================================
-                ERROR
-            ================================================= */}
+                    <button
+                        type="button"
+                        className="sv-btn sv-btn-secondary"
+                        onClick={loadTrash}
+                    >
+                        <Icon name="refresh" size={16} />
+                        Refresh
+                    </button>
+                </div>
+            </header>
 
             {error && (
-
-                <div className="error-message">
-
-                    {error}
-
+                <div className="sv-error-panel" role="alert">
+                    <div className="sv-error-icon" aria-hidden="true">
+                        <Icon name="warning" />
+                    </div>
+                    <div>
+                        <h2>Trash unavailable</h2>
+                        <p>{error}</p>
+                    </div>
+                    <button
+                        type="button"
+                        className="sv-btn sv-btn-secondary"
+                        onClick={loadTrash}
+                    >
+                        Try again
+                    </button>
                 </div>
-
             )}
-
-
-            {/* =================================================
-                EMPTY TRASH
-            ================================================= */}
 
             {credentials.length === 0 ? (
-
-                <div className="empty-trash">
-
-                    <h3>
-                        Trash is empty
-                    </h3>
-
-                    <p>
-                        Deleted credentials will appear here.
-                    </p>
-
+                <div className="sv-empty-state large">
+                    <span className="sv-empty-icon" aria-hidden="true">
+                        <Icon name="trash" size={22} />
+                    </span>
+                    <div>
+                        <h2>Trash is empty</h2>
+                        <p>
+                            Deleted credentials will appear here so they can be
+                            restored if needed.
+                        </p>
+                    </div>
                 </div>
-
             ) : (
+                <div className="sv-table-shell">
+                    <div className="sv-table-header">
+                        <span>Credential</span>
+                        <span>Category</span>
+                        <span>Website</span>
+                        <span>Actions</span>
+                    </div>
 
-
-                /* =================================================
-                   TRASH LIST
-                ================================================= */
-
-                <div className="trash-list">
-
-                    {credentials.map(
-                        (credential) => (
-
+                    <div>
+                        {credentials.map((credential) => (
                             <div
-                                className="trash-card"
+                                className="sv-trash-row"
                                 key={credential.id}
                             >
-
-
-                                {/* =================================
-                                    CREDENTIAL INFO
-                                ================================= */}
-
-                                <div className="trash-card-info">
-
-                                    <h3>
-                                        {credential.title}
-                                    </h3>
-
-
+                                <div className="sv-trash-copy">
+                                    <strong>{credential.title}</strong>
                                     <span>
-                                        {credential.category}
+                                        {credential.username ||
+                                            "No username recorded"}
                                     </span>
-
-
-                                    <p>
-                                        {credential.username}
-                                    </p>
-
-
-                                    <p>
-                                        {credential.websiteUrl ||
-                                            "No website provided"}
-                                    </p>
-
                                 </div>
 
+                                <span
+                                    className={`sv-category-badge ${String(
+                                        credential.category || "OTHER",
+                                    ).toLowerCase()}`}
+                                >
+                                    {credential.category || "OTHER"}
+                                </span>
 
-                                {/* =================================
-                                    ACTIONS
-                                ================================= */}
+                                <span className="sv-trash-site">
+                                    {credential.websiteUrl || "No website"}
+                                </span>
 
-                                <div className="trash-actions">
-
-
-                                    {/* RESTORE */}
-
+                                <div className="sv-trash-actions">
                                     <button
                                         type="button"
+                                        className="sv-btn sv-btn-secondary"
                                         disabled={
-                                            actionLoading ===
-                                            credential.id
+                                            actionLoading === credential.id
                                         }
                                         onClick={() =>
-                                            handleRestore(
-                                                credential.id
-                                            )
+                                            handleRestore(credential.id)
                                         }
                                     >
-
-                                        {actionLoading ===
-                                            credential.id
-                                            ? "Processing..."
+                                        {actionLoading === credential.id
+                                            ? "Working…"
                                             : "Restore"}
-
                                     </button>
-
-
-                                    {/* PERMANENT DELETE */}
 
                                     <button
                                         type="button"
+                                        className="sv-btn sv-btn-danger"
                                         disabled={
-                                            actionLoading ===
-                                            credential.id
+                                            actionLoading === credential.id
                                         }
                                         onClick={() =>
-                                            handlePermanentDelete(
-                                                credential.id
-                                            )
+                                            handlePermanentDelete(credential.id)
                                         }
                                     >
-
-                                        Permanently Delete
-
+                                        Delete permanently
                                     </button>
-
                                 </div>
-
                             </div>
-
-                        )
-                    )}
-
+                        ))}
+                    </div>
                 </div>
-
             )}
-
         </section>
     );
 }
-
 
 export default Trash;

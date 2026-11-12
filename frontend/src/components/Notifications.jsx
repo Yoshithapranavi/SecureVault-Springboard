@@ -4,277 +4,216 @@ import {
     getNotifications,
     markNotificationAsRead,
 } from "../services/notificationService";
+import Icon from "./Icon";
 
 function Notifications() {
-
-    const [notifications, setNotifications] =
-        useState([]);
-
-    const [loading, setLoading] =
-        useState(true);
-
-    const [error, setError] =
-        useState("");
-
-
-    // =========================================================
-    // LOAD NOTIFICATIONS
-    // =========================================================
+    const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     useEffect(() => {
-
         loadNotifications();
-
+        // Notifications are loaded once for the mounted page.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
     const loadNotifications = async () => {
-
         try {
-
             setLoading(true);
             setError("");
 
-            const response =
-                await getNotifications();
+            const response = await getNotifications();
 
             if (response?.success) {
-
-                setNotifications(
-                    response.data || []
-                );
-
+                setNotifications(response.data || []);
             } else {
-
                 setError(
-                    response?.message ||
-                    "Unable to load notifications."
+                    response?.message || "Unable to load notifications.",
                 );
             }
-
         } catch (err) {
-
-            console.error(
-                "Notification loading error:",
-                err
-            );
+            console.error("Notification loading error:", err);
 
             setError(
                 err.response?.data?.message ||
-                "Unable to load notifications."
+                    "Unable to load notifications.",
             );
-
         } finally {
-
             setLoading(false);
         }
     };
 
-
-    // =========================================================
-    // MARK AS READ
-    // =========================================================
-
-    const handleMarkAsRead = async (
-        notificationId
-    ) => {
-
+    const handleMarkAsRead = async (notificationId) => {
         try {
-
-            const response =
-                await markNotificationAsRead(
-                    notificationId
-                );
+            const response = await markNotificationAsRead(notificationId);
 
             if (response?.success) {
-
-                setNotifications(
-                    (current) =>
-                        current.map(
-                            (notification) =>
-                                notification.id ===
-                                    notificationId
-                                    ? {
-                                        ...notification,
-                                        status: "READ",
-                                    }
-                                    : notification
-                        )
+                setNotifications((current) =>
+                    current.map((notification) =>
+                        notification.id === notificationId
+                            ? { ...notification, status: "READ" }
+                            : notification,
+                    ),
                 );
-
             } else {
-
                 setError(
                     response?.message ||
-                    "Unable to mark notification as read."
+                        "Unable to mark notification as read.",
                 );
             }
-
         } catch (err) {
-
-            console.error(
-                "Mark notification read error:",
-                err
-            );
+            console.error("Mark notification read error:", err);
 
             setError(
                 err.response?.data?.message ||
-                "Unable to mark notification as read."
+                    "Unable to mark notification as read.",
             );
         }
     };
 
-
-    // =========================================================
-    // LOADING
-    // =========================================================
-
     if (loading) {
-
         return (
-            <section className="content-page">
+            <section className="sv-page-stack">
+                <header className="sv-page-header">
+                    <div>
+                        <span className="sv-eyebrow">Account</span>
+                        <h1>Notifications</h1>
+                        <p>Loading account notifications…</p>
+                    </div>
+                </header>
 
-                <div className="page-loading">
-                    Loading notifications...
+                <div className="sv-loading-panel" role="status">
+                    <span className="sv-loading-bar" aria-hidden="true" />
+                    Loading notifications…
                 </div>
-
             </section>
         );
     }
 
-
-    // =========================================================
-    // PAGE
-    // =========================================================
+    const unreadCount = notifications.filter(
+        (notification) => notification.status !== "READ",
+    ).length;
 
     return (
-
-        <section className="content-page">
-
-            <div className="page-heading">
-
+        <section className="sv-page-stack">
+            <header className="sv-page-header">
                 <div>
+                    <span className="sv-eyebrow">Account</span>
+                    <h1>Notifications</h1>
+                    <p>
+                        Security and account activity messages generated by
+                        SecureVault for your account.
+                    </p>
+                </div>
 
-                    <span className="eyebrow">
-                        ACCOUNT
+                <div className="sv-header-actions">
+                    <span
+                        className={`sv-status-chip ${
+                            unreadCount > 0 ? "warning" : "positive"
+                        }`}
+                    >
+                        {unreadCount > 0
+                            ? `${unreadCount} unread`
+                            : "All read"}
                     </span>
 
-                    <h1>
-                        Notifications
-                    </h1>
-
-                    <p>
-                        Security and account activity
-                        notifications.
-                    </p>
-
+                    <button
+                        type="button"
+                        className="sv-btn sv-btn-secondary"
+                        onClick={loadNotifications}
+                    >
+                        <Icon name="refresh" size={16} />
+                        Refresh
+                    </button>
                 </div>
-
-            </div>
-
+            </header>
 
             {error && (
-
-                <div className="error-message">
+                <div className="sv-inline-error" role="alert">
                     {error}
                 </div>
-
             )}
-
-
-            {/* =================================================
-                EMPTY STATE
-            ================================================= */}
 
             {notifications.length === 0 ? (
-
-                <div className="empty-state">
-
-                    <h2>
-                        You're all caught up
-                    </h2>
-
-                    <p>
-                        There are no notifications
-                        to display.
-                    </p>
-
+                <div className="sv-empty-state large">
+                    <span className="sv-empty-icon positive" aria-hidden="true">
+                        <Icon name="check" size={22} />
+                    </span>
+                    <div>
+                        <h2>You&apos;re all caught up</h2>
+                        <p>
+                            No account or security notifications are waiting
+                            for review.
+                        </p>
+                    </div>
                 </div>
-
             ) : (
+                <div className="sv-notification-list">
+                    {notifications.map((notification) => {
+                        const isRead = notification.status === "READ";
 
-                <div className="notifications-list">
-
-                    {notifications.map(
-                        (notification) => {
-
-                            const isRead =
-                                notification.status ===
-                                "READ";
-
-                            return (
-
-                                <div
-                                    key={notification.id}
-                                    className={
-                                        `notification-card ${isRead
-                                            ? "read"
-                                            : "unread"
-                                        }`
-                                    }
+                        return (
+                            <article
+                                className={`sv-notification-row ${
+                                    isRead ? "" : "is-unread"
+                                }`}
+                                key={notification.id}
+                            >
+                                <span
+                                    className={`sv-empty-icon ${
+                                        isRead ? "" : "positive"
+                                    }`}
+                                    aria-hidden="true"
                                 >
+                                    <Icon
+                                        name={
+                                            isRead
+                                                ? "notifications"
+                                                : "alerts"
+                                        }
+                                        size={17}
+                                    />
+                                </span>
 
-                                    <div>
+                                <div className="sv-notification-copy">
+                                    <strong>
+                                        {notification.title ||
+                                            "Security notification"}
+                                    </strong>
+                                    <p>
+                                        {notification.message ||
+                                            "No additional information provided."}
+                                    </p>
 
-                                        <strong>
-                                            {notification.title ||
-                                                "Security Notification"}
-                                        </strong>
-
-                                        <p>
-                                            {notification.message ||
-                                                "No additional information."}
-                                        </p>
-
-                                        {notification.createdAt && (
-
-                                            <small>
-                                                {new Date(
-                                                    notification.createdAt
-                                                ).toLocaleString()}
-                                            </small>
-
-                                        )}
-
-                                    </div>
-
-
-                                    {!isRead && (
-
-                                        <button
-                                            type="button"
-                                            className="text-button"
-                                            onClick={() =>
-                                                handleMarkAsRead(
-                                                    notification.id
-                                                )
-                                            }
-                                        >
-                                            Mark as read
-                                        </button>
-
+                                    {notification.createdAt && (
+                                        <time>
+                                            {new Date(
+                                                notification.createdAt,
+                                            ).toLocaleString()}
+                                        </time>
                                     )}
-
                                 </div>
 
-                            );
-                        }
-                    )}
-
+                                {isRead ? (
+                                    <span className="sv-notification-state">
+                                        Read
+                                    </span>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        className="sv-btn sv-btn-secondary"
+                                        onClick={() =>
+                                            handleMarkAsRead(notification.id)
+                                        }
+                                    >
+                                        Mark as read
+                                    </button>
+                                )}
+                            </article>
+                        );
+                    })}
                 </div>
-
             )}
-
         </section>
     );
 }

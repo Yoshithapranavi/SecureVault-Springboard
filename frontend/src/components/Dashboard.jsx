@@ -1,8 +1,31 @@
 import { useEffect, useState } from "react";
 import { getDashboard } from "../services/adminService";
+import { getPasswordHealth } from "../services/vaultService";
+import Icon from "./Icon";
+
+function formatAction(action) {
+    if (!action) return "Activity recorded";
+
+    return action
+        .replaceAll("_", " ")
+        .toLowerCase()
+        .replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+function formatDateTime(value) {
+    if (!value) return "Time unavailable";
+
+    return new Date(value).toLocaleString(undefined, {
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+}
 
 function Dashboard({ user, onNavigate }) {
     const [dashboard, setDashboard] = useState(null);
+    const [health, setHealth] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -10,6 +33,8 @@ function Dashboard({ user, onNavigate }) {
         if (user?.id) {
             loadDashboard();
         }
+        // The dashboard is scoped to the authenticated user.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user?.id]);
 
     const loadDashboard = async () => {
@@ -17,58 +42,188 @@ function Dashboard({ user, onNavigate }) {
             setLoading(true);
             setError("");
 
-            const response = await getDashboard();
+            const [dashboardResult, healthResult] = await Promise.allSettled([
+                getDashboard(),
+                getPasswordHealth(),
+            ]);
+
+            if (dashboardResult.status === "rejected") {
+                throw dashboardResult.reason;
+            }
+
+            const response = dashboardResult.value;
 
             if (response?.success === false) {
-                setError(
-                    response.message ||
-                    "Unable to load dashboard."
-                );
+                setError(response.message || "Unable to load dashboard.");
                 return;
             }
 
-            setDashboard(response);
+            setDashboard(response || {});
+
+            if (
+                healthResult.status === "fulfilled" &&
+                healthResult.value?.success
+            ) {
+                setHealth(healthResult.value.data || null);
+            } else {
+                setHealth(null);
+            }
         } catch (err) {
-            console.error(
-                "Dashboard loading error:",
-                err
-            );
+            console.error("Dashboard loading error:", err);
 
             setError(
-                err.response?.data?.message ||
-                "Unable to load dashboard."
+                err.response?.data?.message || "Unable to load dashboard.",
             );
         } finally {
             setLoading(false);
         }
     };
 
-    const totalCredentials =
-        dashboard?.totalCredentials ?? 0;
+    const totalCredentials = Number(dashboard?.totalCredentials) || 0;
+    const sharedCredentials = Number(dashboard?.sharedCredentials) || 0;
+    const weakPasswords = Number(dashboard?.weakPasswordCount) || 0;
+    const failedLogins = Number(dashboard?.failedLoginCount) || 0;
+    const alerts = Array.isArray(dashboard?.recentSecurityAlerts)
+        ? dashboard.recentSecurityAlerts
+        : [];
+    const recentActivity = Array.isArray(dashboard?.recentUserActivity)
+        ? dashboard.recentUserActivity
+        : [];
 
-    const sharedCredentials =
-        dashboard?.sharedCredentials ?? 0;
+    const strongPasswords = Number(health?.strongPasswords) || 0;
+    const mediumPasswords = Number(health?.mediumPasswords) || 0;
+    const healthTotal = Number(health?.totalCredentials) || totalCredentials;
 
-    const weakPasswords =
-        dashboard?.weakPasswordCount ?? 0;
+    const derivedHealth =
+        healthTotal > 0
+            ? Math.round(((healthTotal - weakPasswords) / healthTotal) * 100)
+            : 0;
 
-    const failedLogins =
-        dashboard?.failedLoginCount ?? 0;
+    const healthScore = health
+        ? Math.max(0, Math.min(100, Math.round(Number(health.healthPercentage) || 0)))
+        : derivedHealth;
 
-    const alerts =
-        dashboard?.recentSecurityAlerts || [];
+    let postureLabel = "Needs attention";
+    let postureTone = "warning";
 
-    const firstName =
-        user?.name?.split(" ")[0] || "there";
+    if (totalCredentials === 0) {
+        postureLabel = "Vault is empty";
+        postureTone = "neutral";
+    } else if (healthScore >= 80) {
+        postureLabel = "Strong posture";
+        postureTone = "positive";
+    } else if (healthScore >= 60) {
+        postureLabel = "Reasonable posture";
+        postureTone = "neutral";
+    }
+
+    const firstName = user?.name?.split(" ")[0] || "there";
+
+    const priorityActions = [];
+
+    if (weakPasswords > 0) {
+        priorityActions.push({
+            id: "weak",
+            tone: "warning",
+            icon: "warning",
+            title: "Update weak passwords",
+            detail: `${weakPasswords} credential${weakPasswords === 1 ? "" : "s"} fall below the current strength criteria.`,
+            action: "health",
+            actionLabel: "Review passwords",
+        });
+    }
+
+    if (failedLogins > 0) {
+        priorityActions.push({
+            id: "failed-logins",
+            tone: "warning",
+            icon: "activity",
+            title: "Review failed sign-in attempts",
+            detail: `${failedLogins} failed sign-in attempt${failedLogins === 1 ? "" : "s"} recorded for your account.`,
+            action: "activity",
+            actionLabel: "View login activity",
+        });
+    }
+
+    if (alerts.length > 0) {
+        priorityActions.push({
+            id: "alerts",
+            tone: "danger",
+            icon: "alerts",
+            title: "Check recent security alerts",
+            detail: `${alerts.length} recent alert${alerts.length === 1 ? "" : "s"} may require review.`,
+            action: "alerts",
+            actionLabel: "Open alerts",
+        });
+    }
+
+    if (sharedCredentials > 0) {
+        priorityActions.push({
+            id: "shared",
+            tone: "info",
+            icon: "shared",
+            title: "Audit shared access",
+            detail: `${sharedCredentials} credential${sharedCredentials === 1 ? "" : "s"} currently shared with your account.`,
+            action: "shared",
+            actionLabel: "Review sharing",
+        });
+    }
+
+    if (priorityActions.length === 0 && totalCredentials > 0) {
+        priorityActions.push({
+            id: "all-clear",
+            tone: "positive",
+            icon: "check",
+            title: "No urgent action required",
+            detail:
+                "Your recent security checks are clear. Keep credentials unique and review access regularly.",
+            action: "security",
+            actionLabel: "View security overview",
+        });
+    }
+
+    const quickTools = [
+        {
+            id: "vault",
+            icon: "vault",
+            title: "Password Vault",
+            detail: "Open your saved credentials",
+        },
+        {
+            id: "generator",
+            icon: "generator",
+            title: "Password Generator",
+            detail: "Create a strong, unique password",
+        },
+        {
+            id: "health",
+            icon: "health",
+            title: "Password Health",
+            detail: "Review password strength",
+        },
+        {
+            id: "devices",
+            icon: "devices",
+            title: "Trusted Devices",
+            detail: "Review account access",
+        },
+    ];
 
     if (loading) {
         return (
-            <section className="sv-dashboard-page sv-dashboard-loading">
-                <div className="sv-loading-orb">
-                    <div></div>
+            <section className="sv-dashboard-page">
+                <div className="sv-page-header">
+                    <div>
+                        <span className="sv-eyebrow">Workspace overview</span>
+                        <h1>Security dashboard</h1>
+                        <p>Preparing your security overview…</p>
+                    </div>
                 </div>
 
-                <p>Securing your workspace...</p>
+                <div className="sv-loading-panel" role="status">
+                    <span className="sv-loading-bar" aria-hidden="true" />
+                    Loading vault and security data…
+                </div>
             </section>
         );
     }
@@ -76,18 +231,22 @@ function Dashboard({ user, onNavigate }) {
     if (error) {
         return (
             <section className="sv-dashboard-page">
-                <div className="sv-error-panel">
-                    <div className="sv-error-icon">!</div>
-
+                <div className="sv-page-header">
                     <div>
-                        <h3>Dashboard unavailable</h3>
+                        <span className="sv-eyebrow">Workspace overview</span>
+                        <h1>Security dashboard</h1>
+                    </div>
+                </div>
+
+                <div className="sv-error-panel" role="alert">
+                    <div className="sv-error-icon" aria-hidden="true">
+                        <Icon name="warning" />
+                    </div>
+                    <div>
+                        <h2>Dashboard unavailable</h2>
                         <p>{error}</p>
                     </div>
-
-                    <button
-                        type="button"
-                        onClick={loadDashboard}
-                    >
+                    <button type="button" className="sv-btn sv-btn-secondary" onClick={loadDashboard}>
                         Try again
                     </button>
                 </div>
@@ -97,615 +256,335 @@ function Dashboard({ user, onNavigate }) {
 
     return (
         <section className="sv-dashboard-page">
-
-            {/* =====================================================
-                TOP BAR
-            ===================================================== */}
-
-            <header className="sv-dashboard-header">
-
-                <div className="sv-dashboard-heading">
-
-                    <span className="sv-overline">
-                        SECURE WORKSPACE
-                    </span>
-
-                    <h1>
-                        Good to see you, {firstName}.
-                    </h1>
-
+            <header className="sv-page-header">
+                <div>
+                    <span className="sv-eyebrow">Workspace overview</span>
+                    <h1>Security dashboard</h1>
                     <p>
-                        Your credentials and security
-                        activity are all in one place.
+                        Good to see you, {firstName}. Here is the current state of
+                        your vault and account security.
                     </p>
-
                 </div>
 
-                <div className="sv-dashboard-header-actions">
-
+                <div className="sv-header-actions">
                     <button
                         type="button"
-                        className="sv-secondary-action"
+                        className="sv-btn sv-btn-secondary"
                         onClick={loadDashboard}
-                        disabled={loading}
                     >
-                        <span className="sv-refresh-icon">
-                            ↻
-                        </span>
-
+                        <Icon name="refresh" size={16} />
                         Refresh
                     </button>
-
                     <button
                         type="button"
-                        className="sv-primary-action"
-                        onClick={() =>
-                            onNavigate("vault")
-                        }
+                        className="sv-btn sv-btn-primary"
+                        onClick={() => onNavigate("vault")}
                     >
-                        Open Vault
-                        <span>↗</span>
+                        <Icon name="plus" size={16} />
+                        Add credential
                     </button>
-
                 </div>
-
             </header>
 
-
-            {/* =====================================================
-                HERO SECURITY PANEL
-            ===================================================== */}
-
-            <div className="sv-security-hero">
-
-                <div className="sv-hero-content">
-
-                    <div className="sv-live-status">
-                        <span className="sv-live-dot"></span>
-                        VAULT STATUS
+            <div className="sv-dashboard-grid">
+                <section className="sv-posture-panel">
+                    <div className="sv-panel-heading">
+                        <div>
+                            <span className="sv-eyebrow">Security posture</span>
+                            <h2>Password health</h2>
+                        </div>
+                        <span className={`sv-status-chip ${postureTone}`}>
+                            {postureLabel}
+                        </span>
                     </div>
 
-                    <h2>
-                        Your digital credentials,
-                        <br />
-                        <span>protected by design.</span>
-                    </h2>
-
-                    <p>
-                        SecureVault keeps your credentials
-                        organized while encryption,
-                        authentication and security monitoring
-                        work quietly in the background.
-                    </p>
-
-                    <div className="sv-hero-actions">
-
-                        <button
-                            type="button"
-                            className="sv-hero-primary"
-                            onClick={() =>
-                                onNavigate("vault")
-                            }
+                    <div className="sv-posture-body">
+                        <div
+                            className={`sv-score-ring ${postureTone}`}
+                            style={{ "--score": `${healthScore * 3.6}deg` }}
+                            role="img"
+                            aria-label={`Password health score ${healthScore} percent`}
                         >
-                            Enter my vault
-                            <span>→</span>
-                        </button>
-
-                        <button
-                            type="button"
-                            className="sv-hero-secondary"
-                            onClick={() =>
-                                onNavigate("security")
-                            }
-                        >
-                            Security overview
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                {/* =================================================
-                    ANIMATED SECURITY CORE
-                ================================================= */}
-
-                <div className="sv-security-visual">
-
-                    <div className="sv-orbit sv-orbit-one"></div>
-
-                    <div className="sv-orbit sv-orbit-two"></div>
-
-                    <div className="sv-orbit sv-orbit-three"></div>
-
-                    <div className="sv-security-grid"></div>
-
-                    <div className="sv-security-core">
-
-                        <div className="sv-core-inner">
-                            <span>SV</span>
+                            <div className="sv-score-inner">
+                                <strong>{totalCredentials === 0 ? "—" : `${healthScore}%`}</strong>
+                                <span>password health</span>
+                            </div>
                         </div>
 
+                        <div className="sv-posture-copy">
+                            <h3>
+                                {totalCredentials === 0
+                                    ? "Add a credential to begin"
+                                    : weakPasswords > 0
+                                      ? `${weakPasswords} password${weakPasswords === 1 ? "" : "s"} need${weakPasswords === 1 ? "s" : ""} attention`
+                                      : "Saved passwords meet the strength criteria"}
+                            </h3>
+                            <p>
+                                {totalCredentials === 0
+                                    ? "Your vault is ready. Add your first credential and SecureVault will begin reporting password health."
+                                    : health
+                                      ? `${strongPasswords} strong and ${mediumPasswords} medium-strength passwords across ${healthTotal} stored credentials.`
+                                      : "Health data is currently unavailable. The score shown is based on the number of weak passwords reported by the vault."}
+                            </p>
+
+                            <div className="sv-health-legend">
+                                <span>
+                                    <i className="positive" />
+                                    {strongPasswords} strong
+                                </span>
+                                <span>
+                                    <i className="neutral" />
+                                    {mediumPasswords} medium
+                                </span>
+                                <span>
+                                    <i className="warning" />
+                                    {weakPasswords} weak
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
-                    <span className="sv-orbit-dot sv-dot-one"></span>
-                    <span className="sv-orbit-dot sv-dot-two"></span>
-                    <span className="sv-orbit-dot sv-dot-three"></span>
+                    <div className="sv-posture-footer">
+                        <span>
+                            {totalCredentials === 0
+                                ? "No stored credentials yet."
+                                : `${totalCredentials} credential${totalCredentials === 1 ? "" : "s"} protected in your vault.`}
+                        </span>
+                        <button
+                            type="button"
+                            className="sv-text-link"
+                            onClick={() => onNavigate("health")}
+                        >
+                            Open password health
+                            <Icon name="arrowRight" size={15} />
+                        </button>
+                    </div>
+                </section>
 
-                </div>
+                <section className="sv-priority-panel">
+                    <div className="sv-panel-heading">
+                        <div>
+                            <span className="sv-eyebrow">Recommended</span>
+                            <h2>Priority actions</h2>
+                        </div>
+                    </div>
 
+                    <div className="sv-priority-list">
+                        {priorityActions.map((item) => (
+                            <button
+                                type="button"
+                                key={item.id}
+                                className={`sv-priority-item ${item.tone}`}
+                                onClick={() => onNavigate(item.action)}
+                            >
+                                <span className="sv-priority-icon" aria-hidden="true">
+                                    <Icon name={item.icon} size={18} />
+                                </span>
+                                <span className="sv-priority-copy">
+                                    <strong>{item.title}</strong>
+                                    <span>{item.detail}</span>
+                                </span>
+                                <span className="sv-priority-action">
+                                    {item.actionLabel}
+                                    <Icon name="arrowRight" size={14} />
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+                </section>
             </div>
 
-
-            {/* =====================================================
-                STAT STRIP
-            ===================================================== */}
-
-            <div className="sv-stat-strip">
-
+            <div className="sv-stat-row">
                 <button
                     type="button"
-                    className="sv-stat-item"
-                    onClick={() =>
-                        onNavigate("vault")
-                    }
+                    className="sv-stat-card"
+                    onClick={() => onNavigate("vault")}
                 >
-                    <span className="sv-stat-label">
-                        VAULT ITEMS
+                    <span className="sv-stat-icon">
+                        <Icon name="vault" size={18} />
                     </span>
-
-                    <strong>
-                        {totalCredentials}
-                    </strong>
-
-                    <span className="sv-stat-note">
-                        Credentials secured
-                    </span>
-
-                    <span className="sv-stat-arrow">
-                        →
+                    <span className="sv-stat-copy">
+                        <span>Vault items</span>
+                        <strong>{totalCredentials}</strong>
+                        <small>Credentials secured</small>
                     </span>
                 </button>
 
-
                 <button
                     type="button"
-                    className="sv-stat-item"
-                    onClick={() =>
-                        onNavigate("shared")
-                    }
+                    className="sv-stat-card"
+                    onClick={() => onNavigate("shared")}
                 >
-                    <span className="sv-stat-label">
-                        SHARED ACCESS
+                    <span className="sv-stat-icon">
+                        <Icon name="shared" size={18} />
                     </span>
-
-                    <strong>
-                        {sharedCredentials}
-                    </strong>
-
-                    <span className="sv-stat-note">
-                        Shared with you
-                    </span>
-
-                    <span className="sv-stat-arrow">
-                        →
+                    <span className="sv-stat-copy">
+                        <span>Shared access</span>
+                        <strong>{sharedCredentials}</strong>
+                        <small>Credentials shared with you</small>
                     </span>
                 </button>
 
-
                 <button
                     type="button"
-                    className={`sv-stat-item ${weakPasswords > 0
-                            ? "sv-stat-warning"
-                            : "sv-stat-good"
-                        }`}
-                    onClick={() =>
-                        onNavigate("health")
-                    }
+                    className={`sv-stat-card ${weakPasswords > 0 ? "is-warning" : "is-positive"}`}
+                    onClick={() => onNavigate("health")}
                 >
-                    <span className="sv-stat-label">
-                        PASSWORD HEALTH
+                    <span className="sv-stat-icon">
+                        <Icon name="warning" size={18} />
                     </span>
-
-                    <strong>
-                        {weakPasswords}
-                    </strong>
-
-                    <span className="sv-stat-note">
-                        {weakPasswords > 0
-                            ? "Need attention"
-                            : "No weak passwords"}
-                    </span>
-
-                    <span className="sv-stat-arrow">
-                        →
+                    <span className="sv-stat-copy">
+                        <span>Weak passwords</span>
+                        <strong>{weakPasswords}</strong>
+                        <small>
+                            {weakPasswords > 0 ? "Needs attention" : "No weak passwords"}
+                        </small>
                     </span>
                 </button>
 
-
-                <div className="sv-stat-item sv-stat-security">
-
-                    <span className="sv-stat-label">
-                        SECURITY EVENTS
+                <button
+                    type="button"
+                    className={`sv-stat-card ${failedLogins > 0 ? "is-warning" : ""}`}
+                    onClick={() => onNavigate("activity")}
+                >
+                    <span className="sv-stat-icon">
+                        <Icon name="activity" size={18} />
                     </span>
-
-                    <strong>
-                        {failedLogins}
-                    </strong>
-
-                    <span className="sv-stat-note">
-                        Failed login attempts
+                    <span className="sv-stat-copy">
+                        <span>Failed sign-ins</span>
+                        <strong>{failedLogins}</strong>
+                        <small>Recorded login attempts</small>
                     </span>
-
-                    <span className="sv-security-status">
-                        <span></span>
-                        MONITORED
-                    </span>
-
-                </div>
-
+                </button>
             </div>
-
-
-            {/* =====================================================
-                MAIN LOWER GRID
-            ===================================================== */}
 
             <div className="sv-dashboard-lower">
-
-                {/* =================================================
-                    QUICK ACCESS
-                ================================================= */}
-
-                <section className="sv-dashboard-card sv-quick-card">
-
-                    <div className="sv-card-heading">
-
+                <section className="sv-panel sv-activity-panel">
+                    <div className="sv-panel-heading">
                         <div>
-                            <span className="sv-card-overline">
-                                SHORTCUTS
-                            </span>
-
-                            <h2>
-                                Jump back in
-                            </h2>
-
-                            <p>
-                                Your most useful security tools.
-                            </p>
+                            <span className="sv-eyebrow">Account activity</span>
+                            <h2>Recent activity</h2>
                         </div>
-
+                        <button
+                            type="button"
+                            className="sv-text-link"
+                            onClick={() => onNavigate("activity")}
+                        >
+                            View all
+                            <Icon name="arrowRight" size={15} />
+                        </button>
                     </div>
 
-
-                    <div className="sv-quick-grid">
-
-                        <button
-                            type="button"
-                            onClick={() =>
-                                onNavigate("vault")
-                            }
-                        >
-                            <span className="sv-quick-icon">
-                                ◈
+                    {recentActivity.length > 0 ? (
+                        <div className="sv-activity-list">
+                            {recentActivity.slice(0, 6).map((entry, index) => (
+                                <div className="sv-activity-row" key={entry.id || index}>
+                                    <span className="sv-activity-icon" aria-hidden="true">
+                                        <Icon name="activity" size={16} />
+                                    </span>
+                                    <div className="sv-activity-copy">
+                                        <strong>{formatAction(entry.action)}</strong>
+                                        <span>
+                                            {entry.entityType
+                                                ? `${entry.entityType}${entry.entityId ? ` #${entry.entityId}` : ""}`
+                                                : "SecureVault"}
+                                            {entry.performedBy ? ` · ${entry.performedBy}` : ""}
+                                        </span>
+                                    </div>
+                                    <time>{formatDateTime(entry.timestamp)}</time>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="sv-empty-state">
+                            <span className="sv-empty-icon" aria-hidden="true">
+                                <Icon name="clock" size={20} />
                             </span>
-
-                            <span className="sv-quick-text">
-                                <strong>
-                                    My Vault
-                                </strong>
-
-                                <small>
-                                    Manage credentials
-                                </small>
-                            </span>
-
-                            <span className="sv-quick-arrow">
-                                ↗
-                            </span>
-                        </button>
-
-
-                        <button
-                            type="button"
-                            onClick={() =>
-                                onNavigate("generator")
-                            }
-                        >
-                            <span className="sv-quick-icon">
-                                ✦
-                            </span>
-
-                            <span className="sv-quick-text">
-                                <strong>
-                                    Password Generator
-                                </strong>
-
-                                <small>
-                                    Create a strong password
-                                </small>
-                            </span>
-
-                            <span className="sv-quick-arrow">
-                                ↗
-                            </span>
-                        </button>
-
-
-                        <button
-                            type="button"
-                            onClick={() =>
-                                onNavigate("health")
-                            }
-                        >
-                            <span className="sv-quick-icon">
-                                ◒
-                            </span>
-
-                            <span className="sv-quick-text">
-                                <strong>
-                                    Password Health
-                                </strong>
-
-                                <small>
-                                    Review password strength
-                                </small>
-                            </span>
-
-                            <span className="sv-quick-arrow">
-                                ↗
-                            </span>
-                        </button>
-
-
-                        <button
-                            type="button"
-                            onClick={() =>
-                                onNavigate("shared")
-                            }
-                        >
-                            <span className="sv-quick-icon">
-                                ⇄
-                            </span>
-
-                            <span className="sv-quick-text">
-                                <strong>
-                                    Shared With Me
-                                </strong>
-
-                                <small>
-                                    View shared credentials
-                                </small>
-                            </span>
-
-                            <span className="sv-quick-arrow">
-                                ↗
-                            </span>
-                        </button>
-
-                    </div>
-
+                            <div>
+                                <strong>No recent activity</strong>
+                                <p>Account activity will appear here as you use the vault.</p>
+                            </div>
+                        </div>
+                    )}
                 </section>
 
-
-                {/* =================================================
-                    SECURITY PULSE
-                ================================================= */}
-
-                <section className="sv-dashboard-card sv-pulse-card">
-
-                    <div className="sv-card-heading">
-
+                <section className="sv-panel sv-alerts-panel">
+                    <div className="sv-panel-heading">
                         <div>
-                            <span className="sv-card-overline">
-                                SECURITY PULSE
-                            </span>
-
-                            <h2>
-                                All systems active
-                            </h2>
+                            <span className="sv-eyebrow">Monitoring</span>
+                            <h2>Recent security alerts</h2>
                         </div>
-
-                        <span className="sv-pulse-live">
-                            LIVE
-                        </span>
-
+                        <button
+                            type="button"
+                            className="sv-text-link"
+                            onClick={() => onNavigate("alerts")}
+                        >
+                            View all
+                            <Icon name="arrowRight" size={15} />
+                        </button>
                     </div>
 
+                    {alerts.length > 0 ? (
+                        <div className="sv-alert-list">
+                            {alerts.slice(0, 5).map((alert) => {
+                                const risk = String(alert.riskLevel || "LOW").toLowerCase();
 
-                    <div className="sv-security-checks">
-
-                        <div className="sv-security-check">
-                            <span className="sv-check-mark">
-                                ✓
-                            </span>
-
-                            <div>
-                                <strong>
-                                    Encrypted vault
-                                </strong>
-
-                                <small>
-                                    Credential protection active
-                                </small>
-                            </div>
-
-                            <span className="sv-check-active">
-                                ACTIVE
-                            </span>
+                                return (
+                                    <div className="sv-alert-row" key={alert.id}>
+                                        <span className={`sv-risk-badge ${risk}`}>
+                                            {alert.riskLevel || "LOW"}
+                                        </span>
+                                        <div className="sv-alert-copy">
+                                            <strong>{formatAction(alert.alertType)}</strong>
+                                            <span>{alert.message}</span>
+                                        </div>
+                                        <time>{formatDateTime(alert.timestamp)}</time>
+                                    </div>
+                                );
+                            })}
                         </div>
-
-
-                        <div className="sv-security-check">
-                            <span className="sv-check-mark">
-                                ✓
+                    ) : (
+                        <div className="sv-empty-state">
+                            <span className="sv-empty-icon positive" aria-hidden="true">
+                                <Icon name="check" size={20} />
                             </span>
-
                             <div>
-                                <strong>
-                                    Authentication
-                                </strong>
-
-                                <small>
-                                    Account access protected
-                                </small>
+                                <strong>No recent security alerts</strong>
+                                <p>Your account has no new security events to review.</p>
                             </div>
-
-                            <span className="sv-check-active">
-                                ACTIVE
-                            </span>
                         </div>
-
-
-                        <div className="sv-security-check">
-                            <span className="sv-check-mark">
-                                ✓
-                            </span>
-
-                            <div>
-                                <strong>
-                                    Activity monitoring
-                                </strong>
-
-                                <small>
-                                    Security events monitored
-                                </small>
-                            </div>
-
-                            <span className="sv-check-active">
-                                ACTIVE
-                            </span>
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        type="button"
-                        className="sv-text-action"
-                        onClick={() =>
-                            onNavigate("security")
-                        }
-                    >
-                        View security center
-                        <span>→</span>
-                    </button>
-
+                    )}
                 </section>
-
             </div>
 
-
-            {/* =====================================================
-                RECENT ACTIVITY
-            ===================================================== */}
-
-            <section className="sv-dashboard-card sv-activity-card">
-
-                <div className="sv-card-heading">
-
+            <section className="sv-panel sv-tools-panel">
+                <div className="sv-panel-heading">
                     <div>
-                        <span className="sv-card-overline">
-                            SECURITY ACTIVITY
-                        </span>
-
-                        <h2>
-                            Recent alerts
-                        </h2>
-
-                        <p>
-                            Keep an eye on activity associated
-                            with your account.
-                        </p>
+                        <span className="sv-eyebrow">Shortcuts</span>
+                        <h2>Quick tools</h2>
                     </div>
-
-                    <button
-                        type="button"
-                        className="sv-text-action"
-                        onClick={() =>
-                            onNavigate("alerts")
-                        }
-                    >
-                        View all
-                        <span>→</span>
-                    </button>
-
                 </div>
 
-
-                {alerts.length > 0 ? (
-
-                    <div className="sv-activity-list">
-
-                        {alerts
-                            .slice(0, 5)
-                            .map((alert) => (
-
-                                <div
-                                    className="sv-activity-row"
-                                    key={alert.id}
-                                >
-
-                                    <div className="sv-activity-indicator">
-                                        <span></span>
-                                    </div>
-
-                                    <div className="sv-activity-main">
-
-                                        <strong>
-                                            {alert.alertType}
-                                        </strong>
-
-                                        <span>
-                                            {alert.message}
-                                        </span>
-
-                                    </div>
-
-                                    <span
-                                        className={`sv-risk-badge ${String(
-                                            alert.riskLevel || ""
-                                        ).toLowerCase()
-                                            }`}
-                                    >
-                                        {alert.riskLevel}
-                                    </span>
-
-                                    <span className="sv-activity-arrow">
-                                        →
-                                    </span>
-
-                                </div>
-
-                            ))}
-
-                    </div>
-
-                ) : (
-
-                    <div className="sv-empty-activity">
-
-                        <div className="sv-empty-icon">
-                            ✓
-                        </div>
-
-                        <div>
-                            <strong>
-                                No recent security alerts
-                            </strong>
-
-                            <span>
-                                Your account has no new
-                                security events to review.
+                <div className="sv-tool-grid">
+                    {quickTools.map((tool) => (
+                        <button
+                            type="button"
+                            className="sv-tool-card"
+                            key={tool.id}
+                            onClick={() => onNavigate(tool.id)}
+                        >
+                            <span className="sv-tool-icon" aria-hidden="true">
+                                <Icon name={tool.icon} size={18} />
                             </span>
-                        </div>
-
-                    </div>
-
-                )}
-
+                            <span>
+                                <strong>{tool.title}</strong>
+                                <small>{tool.detail}</small>
+                            </span>
+                            <Icon name="arrowUpRight" size={15} />
+                        </button>
+                    ))}
+                </div>
             </section>
-
         </section>
     );
 }
