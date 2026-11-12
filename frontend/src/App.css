@@ -57,9 +57,7 @@ textarea:focus-visible {
   justify-content: center;
   padding: 32px 20px;
   background:
-    radial-gradient(circle at 15% 10%, rgba(49, 91, 220, .10), transparent 30%),
-    radial-gradient(circle at 90% 90%, rgba(197, 82, 60, .07), transparent 28%),
-    var(--sv-bg);
+    var(--sv-surface, #ffffff);
 }
 
 .auth-card {
@@ -242,7 +240,7 @@ textarea:focus-visible {
   width: 258px;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, #111827 0%, #0f172a 100%);
+  background: var(--sv-surface, #ffffff);
   color: #fff;
   z-index: 100;
   border-right: 1px solid rgba(255, 255, 255, .06);
@@ -264,7 +262,7 @@ textarea:focus-visible {
   place-items: center;
   flex: 0 0 auto;
   border-radius: 11px;
-  background: linear-gradient(135deg, #315bdc, #5278ee);
+  background: var(--sv-surface, #ffffff);
   color: #fff;
   font-size: 15px;
   font-weight: 800;
@@ -716,7 +714,7 @@ textarea:focus-visible {
 }
 
 .dashboard-info-panel {
-  background: linear-gradient(145deg, #eef3ff, #f8faff);
+  background: var(--sv-surface, #ffffff);
 }
 
 .dashboard-info-panel h2 {
@@ -1928,7 +1926,7 @@ textarea:focus-visible {
   padding: 22px;
   border: 1px solid var(--sv-border);
   border-radius: var(--sv-radius);
-  background: linear-gradient(145deg, #fff, #f7f9fc);
+  background: var(--sv-surface, #ffffff);
   box-shadow: var(--sv-shadow);
 }
 
@@ -2825,7 +2823,7 @@ textarea:focus-visible {
   padding: 10px 12px;
   border: 1px solid var(--border, #d9dee7);
   border-radius: 8px;
-  background: #ffffff;
+  background: var(--sv-surface, #ffffff);
   font-size: 14px;
   line-height: 1.4;
   outline: none;

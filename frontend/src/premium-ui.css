@@ -108,9 +108,7 @@
 
 .sv-primary-action {
     border: 1px solid var(--sv-blue);
-    background: linear-gradient(135deg,
-            #4c70ed,
-            #385bd4);
+    background: var(--sv-surface, #ffffff);
 
     color: white;
 
@@ -150,16 +148,7 @@
     border-radius: 21px;
 
     background:
-        radial-gradient(circle at 78% 45%,
-            rgba(87, 112, 255, .23),
-            transparent 25%),
-        radial-gradient(circle at 65% 90%,
-            rgba(128, 103, 237, .15),
-            transparent 28%),
-        linear-gradient(125deg,
-            #0b1527 0%,
-            #101c30 50%,
-            #172542 100%);
+        var(--sv-surface, #ffffff);
 
     box-shadow:
         0 25px 55px rgba(15, 23, 42, .15);
@@ -175,11 +164,7 @@
     inset: 0;
 
     background-image:
-        linear-gradient(rgba(255, 255, 255, .035) 1px,
-            transparent 1px),
-        linear-gradient(90deg,
-            rgba(255, 255, 255, .035) 1px,
-            transparent 1px);
+        none;
 
     background-size: 36px 36px;
 
@@ -258,9 +243,7 @@
 
 .sv-hero-content h2 span {
     background:
-        linear-gradient(90deg,
-            #8da5ff,
-            #a98df5);
+        var(--sv-surface, #ffffff);
 
     -webkit-background-clip: text;
     background-clip: text;
@@ -359,9 +342,7 @@
     border-radius: 50%;
 
     background:
-        radial-gradient(circle,
-            rgba(73, 104, 238, .20),
-            transparent 66%);
+        var(--sv-surface, #ffffff);
 
     animation: sv-glow 4s infinite ease-in-out;
 }
@@ -421,10 +402,7 @@
     border-radius: 50%;
 
     background:
-        radial-gradient(circle at 35% 28%,
-            #7790ff,
-            #3558ce 45%,
-            #17285e);
+        var(--sv-surface, #ffffff);
 
     border: 1px solid rgba(255, 255, 255, .2);
 
@@ -549,9 +527,7 @@
 
 .sv-stat-item:hover {
     background:
-        linear-gradient(145deg,
-            #ffffff,
-            #f8faff);
+        var(--sv-surface, #ffffff);
 }
 
 .sv-stat-item::before {
@@ -808,9 +784,7 @@
     border-radius: 10px;
 
     background:
-        linear-gradient(145deg,
-            #ffffff,
-            #fafbfe);
+        var(--sv-surface, #ffffff);
 
     text-align: left;
 
@@ -841,9 +815,7 @@
     border-radius: 10px;
 
     background:
-        linear-gradient(145deg,
-            #edf2ff,
-            #f3efff);
+        var(--sv-surface, #ffffff);
 
     color: var(--sv-blue);
 
@@ -916,9 +888,7 @@
     border-radius: 50%;
 
     background:
-        radial-gradient(circle,
-            rgba(66, 99, 235, .09),
-            transparent 65%);
+        var(--sv-surface, #ffffff);
 }
 
 .sv-pulse-live {
@@ -1065,9 +1035,7 @@
     padding-left: 5px;
 
     background:
-        linear-gradient(90deg,
-            #fbfcff,
-            white);
+        var(--sv-surface, #ffffff);
 }
 
 .sv-activity-indicator {
@@ -1172,9 +1140,7 @@
 
 .app-sidebar {
     background:
-        linear-gradient(180deg,
-            #111c2d 0%,
-            #0d1726 100%) !important;
+        var(--sv-surface, #ffffff);
 
     border-right:
         1px solid rgba(255, 255, 255, .055);
@@ -1199,9 +1165,7 @@
     border-radius: 11px;
 
     background:
-        linear-gradient(145deg,
-            #4a6ff0,
-            #3154ca);
+        var(--sv-surface, #ffffff);
 
     box-shadow:
         0 7px 18px rgba(65, 105, 225, .25);
@@ -1271,9 +1235,7 @@
 
 .sidebar-item.active {
     background:
-        linear-gradient(90deg,
-            rgba(66, 99, 235, .28),
-            rgba(66, 99, 235, .12)) !important;
+        var(--sv-surface, #ffffff);
 
     color: white;
 
@@ -1285,9 +1247,7 @@
     height: 25px;
 
     background:
-        linear-gradient(180deg,
-            #91a8ff,
-            #4269e5);
+        var(--sv-surface, #ffffff);
 }
 
 .sidebar-item.active .sidebar-icon {
@@ -1323,9 +1283,7 @@
     border-radius: 9px;
 
     background:
-        linear-gradient(145deg,
-            #4269e5,
-            #3154c7);
+        var(--sv-surface, #ffffff);
 }
 
 .sidebar-logout {
@@ -1607,6 +1565,187 @@
 }
 
 /* =========================================================
+   LAYOUT REFINEMENT
+   Keep surfaces purposeful and align repeated content to the
+   same 4/8/12/16/24 spacing rhythm.
+========================================================= */
+
+.auth-card {
+    padding: 40px !important;
+    border: 1px solid var(--sv-border) !important;
+    border-radius: 12px !important;
+    background: var(--sv-surface) !important;
+    box-shadow: var(--sv-shadow) !important;
+}
+
+.auth-header h1 {
+    margin-bottom: 8px;
+}
+
+.auth-card .form-group {
+    margin-bottom: 20px;
+}
+
+.auth-card .auth-button {
+    margin-top: 4px;
+}
+
+.auth-card .sv-password-field {
+    width: 100%;
+}
+
+.sv-dashboard-card,
+.sv-stat-strip,
+.content-page > .page-heading,
+.vault-page > .vault-header {
+    width: 100%;
+}
+
+.sv-dashboard-card {
+    border: 1px solid var(--sv-border) !important;
+    border-radius: 12px;
+    background: var(--sv-surface) !important;
+    box-shadow: var(--sv-shadow);
+}
+
+.sv-dashboard-lower {
+    align-items: start;
+    gap: 20px;
+}
+
+.sv-card-heading {
+    margin-bottom: 20px;
+}
+
+.sv-quick-grid {
+    gap: 0;
+    border-top: 1px solid var(--sv-border-soft);
+}
+
+.sv-quick-grid > button {
+    min-height: 64px;
+    border-bottom: 1px solid var(--sv-border-soft);
+    border-radius: 0;
+}
+
+.sv-quick-grid > button:last-child {
+    border-bottom: 0;
+}
+
+.sv-quick-grid > button:hover {
+    background: var(--sv-surface-soft);
+}
+
+.vault-header-actions {
+    gap: 8px;
+}
+
+.vault-top {
+    margin: 28px 0 16px;
+}
+
+.vault-top h2 {
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.credential-card-header .favorite-button {
+    margin-left: auto;
+}
+
+.credential-actions button {
+    color: var(--sv-text-2);
+}
+
+.credential-actions button:hover {
+    border-color: var(--sv-border-strong);
+    background: var(--sv-surface-soft);
+    color: var(--sv-text);
+}
+
+.credential-modal form,
+.credential-modal .modal-actions {
+    padding-left: 28px;
+    padding-right: 28px;
+}
+
+.modal-header {
+    padding: 22px 28px;
+    border-bottom: 1px solid var(--sv-border-soft);
+}
+
+.modal-actions {
+    border-top: 1px solid var(--sv-border-soft);
+}
+
+.profile-card,
+.generator-card,
+.password-health-card,
+.shared-credentials-section,
+.trash-section {
+    padding: 24px;
+}
+
+.password-health-stats {
+    gap: 8px;
+}
+
+.health-stat {
+    border-radius: 8px;
+    background: var(--sv-surface-soft);
+}
+
+.empty-state,
+.empty-vault,
+.empty-trash,
+.empty-shared,
+.admin-empty {
+    border: 1px dashed var(--sv-border-strong);
+    border-radius: 10px;
+    background: transparent;
+}
+
+@media (max-width: 760px) {
+    .auth-card {
+        padding: 28px 20px !important;
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .sv-hero-content {
+        padding: 32px 24px;
+    }
+
+    .sv-stat-strip {
+        border-radius: 8px;
+    }
+
+    .profile-card,
+    .generator-card,
+    .password-health-card,
+    .shared-credentials-section,
+    .trash-section {
+        padding: 18px;
+    }
+
+    .credential-actions {
+        justify-content: stretch;
+    }
+
+    .credential-actions button {
+        flex: 1;
+    }
+
+    .modal-header,
+    .credential-modal form,
+    .credential-modal .modal-actions {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+/* =========================================================
    FINAL SECUREVAULT FRONTEND POLISH
 ========================================================= */
 
@@ -1802,9 +1941,7 @@
 
 .modal-header {
     background:
-        linear-gradient(180deg,
-            #ffffff,
-            #fbfcfe);
+        var(--sv-surface, #ffffff);
 }
 
 .modal-security-icon {
@@ -1835,9 +1972,7 @@
     overflow: hidden;
 
     background:
-        linear-gradient(145deg,
-            #ffffff,
-            #fafbfe);
+        var(--sv-surface, #ffffff);
 
     transition:
         transform .22s ease,
@@ -1857,9 +1992,7 @@
     height: 0;
 
     background:
-        linear-gradient(180deg,
-            #4169e1,
-            #8067ed);
+        var(--sv-surface, #ffffff);
 
     transition:
         height .25s ease;
@@ -1913,13 +2046,7 @@
 
 .auth-page {
     background:
-        radial-gradient(circle at 15% 20%,
-            rgba(65, 105, 225, .08),
-            transparent 28%),
-        radial-gradient(circle at 85% 80%,
-            rgba(128, 103, 237, .06),
-            transparent 30%),
-        #f4f6fa;
+        var(--sv-surface, #ffffff);
 }
 
 .auth-card {
@@ -1951,9 +2078,7 @@
 
 .auth-button {
     background:
-        linear-gradient(135deg,
-            #4169e1,
-            #365bd1) !important;
+        var(--sv-surface, #ffffff);
 
     box-shadow:
         0 8px 20px rgba(65, 105, 225, .20);
@@ -2002,7 +2127,7 @@
 }
 
 .share-management-card:hover {
-    background: #ffffff;
+    background: var(--sv-surface, #ffffff);
 
     border-color: #d0d8e6;
 
@@ -2081,9 +2206,7 @@
 .primary-button,
 .add-button {
     background:
-        linear-gradient(135deg,
-            #4169e1,
-            #365bd1) !important;
+        var(--sv-surface, #ffffff);
 
     border-color:
         #4169e1 !important;
@@ -2236,9 +2359,7 @@
     border: 1px solid var(--sv-primary-final) !important;
 
     background:
-        linear-gradient(135deg,
-            #4a70e8,
-            #365bd2) !important;
+        var(--sv-surface, #ffffff);
 
     color: #ffffff !important;
 
@@ -2266,7 +2387,7 @@
 
 .secondary-button,
 .cancel-button {
-    background: #ffffff !important;
+    background: var(--sv-surface, #ffffff);
 
     border-color:
         var(--sv-line-strong) !important;
@@ -2398,7 +2519,7 @@
     border-radius: 9px !important;
 
     background:
-        #ffffff !important;
+        var(--sv-surface, #ffffff);
 
     transition:
         border-color .18s ease,
@@ -2429,9 +2550,7 @@
     border-radius: 14px !important;
 
     background:
-        linear-gradient(145deg,
-            #ffffff,
-            #fafbfe) !important;
+        var(--sv-surface, #ffffff);
 
     transition:
         transform .22s ease,
@@ -2451,9 +2570,7 @@
     height: 0;
 
     background:
-        linear-gradient(180deg,
-            #4169e1,
-            #8067ed);
+        var(--sv-surface, #ffffff);
 
     transition:
         height .25s ease;
@@ -2503,9 +2620,7 @@
 
 .modal-header {
     background:
-        linear-gradient(180deg,
-            #ffffff,
-            #fbfcfe);
+        var(--sv-surface, #ffffff);
 
     border-bottom:
         1px solid #edf0f4 !important;
@@ -2667,7 +2782,7 @@
         translateY(-2px);
 
     background:
-        #ffffff !important;
+        var(--sv-surface, #ffffff);
 
     border-color:
         #ccd5e3 !important;
@@ -2706,7 +2821,7 @@
         #cbd5e4 !important;
 
     background:
-        #ffffff !important;
+        var(--sv-surface, #ffffff);
 
     transform:
         translateY(-1px);
@@ -2811,9 +2926,7 @@
         15px !important;
 
     background:
-        linear-gradient(145deg,
-            #ffffff,
-            #f6f8fc) !important;
+        var(--sv-surface, #ffffff);
 }
 
 .security-status-panel::after {
@@ -2830,9 +2943,7 @@
     border-radius: 50%;
 
     background:
-        radial-gradient(circle,
-            rgba(65, 105, 225, .10),
-            transparent 68%);
+        var(--sv-surface, #ffffff);
 }
 
 .security-stat {
@@ -3105,7 +3216,7 @@
 
 .admin-users-table {
     background:
-        #ffffff;
+        var(--sv-surface, #ffffff);
 }
 
 .admin-users-table tbody tr {
@@ -3153,13 +3264,7 @@
     overflow: hidden;
 
     background:
-        radial-gradient(circle at 10% 20%,
-            rgba(65, 105, 225, .09),
-            transparent 27%),
-        radial-gradient(circle at 90% 85%,
-            rgba(128, 103, 237, .07),
-            transparent 28%),
-        #f4f6fa !important;
+        var(--sv-surface, #ffffff);
 }
 
 .auth-card {
@@ -3259,7 +3364,7 @@ textarea:focus {
         14px !important;
 
     background:
-        #ffffff !important;
+        var(--sv-surface, #ffffff);
 
     border:
         1px dashed #d7dee8 !important;
@@ -3502,7 +3607,7 @@ a {
 
     overflow: hidden !important;
 
-    background: #ffffff !important;
+    background: var(--sv-surface, #ffffff);
 
     border: 1px solid #e3e8f0 !important;
 
@@ -3536,7 +3641,7 @@ a {
     border-bottom:
         1px solid #edf0f4 !important;
 
-    background: #ffffff !important;
+    background: var(--sv-surface, #ffffff);
 }
 
 
@@ -3769,7 +3874,7 @@ a {
 
     border-color: #4b6fe8 !important;
 
-    background: #ffffff !important;
+    background: var(--sv-surface, #ffffff);
 
     box-shadow:
         0 0 0 4px rgba(75, 111, 232, 0.10) !important;
@@ -3838,7 +3943,7 @@ a {
 
     border-color: #4b6fe8 !important;
 
-    background: #ffffff !important;
+    background: var(--sv-surface, #ffffff);
 
     box-shadow:
         0 0 0 4px rgba(75, 111, 232, 0.10) !important;
@@ -4077,7 +4182,7 @@ a {
     border-top:
         1px solid #edf0f4 !important;
 
-    background: #ffffff !important;
+    background: var(--sv-surface, #ffffff);
 }
 
 
@@ -4111,7 +4216,7 @@ a {
     border:
         1px solid #d8e0eb !important;
 
-    background: #ffffff !important;
+    background: var(--sv-surface, #ffffff);
 
     color: #435069 !important;
 }
@@ -4545,7 +4650,7 @@ a {
 
     border-top: 1px solid #edf0f4 !important;
 
-    background: #ffffff !important;
+    background: var(--sv-surface, #ffffff);
 }
 
 
@@ -4557,6 +4662,195 @@ a {
 
     .modal-overlay {
         padding: 14px !important;
+    }
+
+    /* =========================================================
+       2026 LIGHT-FIRST SECURITY SAAS LAYER
+       Presentation-only overrides. Service, state and navigation
+       contracts remain in the existing components.
+    ========================================================= */
+    :root {
+      --sv-bg: #f6f8fb;
+      --sv-page: #f6f8fb;
+      --sv-surface: #ffffff;
+      --sv-surface-soft: #eef2f6;
+      --sv-text: #172033;
+      --sv-text-soft: #344054;
+      --sv-text-2: #5c687a;
+      --sv-muted: #5c687a;
+      --sv-subtle: #667085;
+      --sv-border: #d7dee8;
+      --sv-border-soft: #e6ebf0;
+      --sv-border-strong: #aab6c5;
+      --sv-primary: #173b63;
+      --sv-primary-hover: #0f2946;
+      --sv-primary-soft: #e8f0f8;
+      --sv-success: #176b4d;
+      --sv-success-bg: #e8f4ee;
+      --sv-warning: #8a5a00;
+      --sv-warning-bg: #fff5d6;
+      --sv-danger: #b42318;
+      --sv-danger-bg: #fff0ee;
+      --sv-focus: 0 0 0 3px rgb(23 59 99 / 24%);
+      --sv-shadow: 0 1px 2px rgb(23 32 51 / 8%);
+      --sv-shadow-hover: 0 8px 24px rgb(23 32 51 / 12%);
+      --sv-radius: 10px;
+      --sv-radius-sm: 6px;
+    }
+
+    html { background: var(--sv-bg); }
+    body { background: var(--sv-bg); color: var(--sv-text); }
+    button, input, select, textarea { font-family: inherit; }
+    button:focus-visible, a:focus-visible, input:focus-visible,
+    select:focus-visible, textarea:focus-visible {
+      outline: 3px solid #6b9bc8;
+      outline-offset: 2px;
+      box-shadow: none;
+    }
+    .securevault-app { background: var(--sv-bg); }
+    .app-sidebar {
+      width: 240px;
+      background: var(--sv-surface);
+      color: var(--sv-text);
+      border-right: 1px solid var(--sv-border);
+      box-shadow: 1px 0 0 rgb(23 32 51 / 2%);
+    }
+    .sidebar-brand {
+      min-height: 78px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--sv-border-soft);
+    }
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--sv-primary);
+      color: #fff;
+      font-weight: 800;
+    }
+    .sidebar-brand strong { color: var(--sv-text); letter-spacing: -.02em; }
+    .sidebar-brand span { color: var(--sv-muted); }
+    .sidebar-navigation { padding: 14px 10px; }
+    .sidebar-section-label {
+      margin: 18px 10px 6px;
+      color: #667085;
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: .08em;
+    }
+    .sidebar-item {
+      position: relative;
+      min-height: 40px;
+      margin: 2px 0;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: #475467;
+      font-weight: 600;
+      text-align: left;
+    }
+    .sidebar-item:hover { background: var(--sv-surface-soft); color: var(--sv-text); }
+    .sidebar-item.active {
+      background: var(--sv-primary-soft);
+      color: var(--sv-primary);
+      font-weight: 700;
+    }
+    .sidebar-item.active::before {
+      content: "";
+      position: absolute;
+      inset: 5px auto 5px 0;
+      width: 3px;
+      border-radius: 2px;
+      background: var(--sv-primary);
+    }
+    .sidebar-icon { color: currentColor; }
+    .sidebar-svg-icon { width: 18px; height: 18px; }
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 14px 16px 18px;
+      border-top: 1px solid var(--sv-border-soft);
+    }
+    .user-avatar { background: var(--sv-primary); color: #fff; }
+    .sidebar-user-info strong { color: var(--sv-text); }
+    .sidebar-user-info span { color: var(--sv-muted); }
+    .sidebar-logout { color: var(--sv-danger); }
+    .sidebar-overlay { background: rgb(15 41 70 / 28%); }
+    .mobile-menu-button {
+      border: 1px solid var(--sv-border);
+      background: var(--sv-surface);
+      color: var(--sv-primary);
+      border-radius: 6px;
+      box-shadow: var(--sv-shadow);
+    }
+    .app-main { min-width: 0; background: var(--sv-bg); }
+    .section-wrapper, .page-container { max-width: 1440px; }
+    .page-header, .section-header { border-bottom-color: var(--sv-border); }
+    h1, h2, h3 { color: var(--sv-text); letter-spacing: -.02em; }
+    .card, .dashboard-card, .content-card, .table-card, .stat-card,
+    .modal-content, .auth-card {
+      background: var(--sv-surface);
+      border: 1px solid var(--sv-border);
+      border-radius: 10px;
+      box-shadow: var(--sv-shadow);
+    }
+    .card:hover, .dashboard-card:hover, .stat-card:hover { box-shadow: var(--sv-shadow-hover); }
+    .primary-button, .add-button, .auth-button {
+      min-height: 42px;
+      border-radius: 6px;
+      background: var(--sv-primary);
+      box-shadow: none;
+    }
+    .primary-button:hover, .add-button:hover, .auth-button:hover {
+      background: var(--sv-primary-hover);
+      transform: none;
+      box-shadow: none;
+    }
+    .secondary-button, .cancel-button, .icon-button {
+      border-radius: 6px;
+      border-color: var(--sv-border-strong);
+      color: var(--sv-text);
+      background: var(--sv-surface);
+    }
+    input, select, textarea, .form-control {
+      border-color: var(--sv-border-strong);
+      border-radius: 6px;
+      background: var(--sv-surface);
+      color: var(--sv-text);
+    }
+    input::placeholder, textarea::placeholder { color: #667085; }
+    .success-message { color: var(--sv-success); background: var(--sv-success-bg); border-color: #9dd5ba; }
+    .error-message { color: var(--sv-danger); background: var(--sv-danger-bg); border-color: #f4b4ac; }
+    table { border-color: var(--sv-border); }
+    th { background: var(--sv-surface-soft); color: var(--sv-text-soft); }
+    td { border-color: var(--sv-border-soft); color: var(--sv-text); }
+    .status-badge, .badge { border-radius: 999px; font-weight: 700; }
+    .auth-page {
+      background: var(--sv-bg);
+      padding: 24px 16px;
+    }
+    .auth-card { max-width: 440px; border-radius: 12px; box-shadow: 0 8px 28px rgb(23 32 51 / 8%); }
+    .auth-header h1 { font-size: clamp(24px, 4vw, 30px); }
+    .modal-backdrop { background: rgb(15 41 70 / 36%); }
+    .modal-content { box-shadow: 0 16px 48px rgb(23 32 51 / 18%); }
+    .loading-spinner { border-color: var(--sv-border); border-top-color: var(--sv-primary); }
+
+    @media (max-width: 760px) {
+      .app-sidebar {
+        width: min(292px, calc(100vw - 28px));
+        transform: translateX(-105%);
+        transition: transform .18s ease;
+      }
+      .app-sidebar.sidebar-open { transform: translateX(0); }
+      .app-main { margin-left: 0 !important; padding-top: 60px; }
+      .sidebar-navigation { overflow-y: auto; }
+      .section-wrapper, .page-container { padding-left: 16px; padding-right: 16px; }
+      .card, .dashboard-card, .content-card, .table-card { border-radius: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
     }
 
     .modal-overlay>.credential-modal {
@@ -4638,7 +4932,7 @@ a {
 
     overflow: hidden !important;
 
-    background: #ffffff !important;
+    background: var(--sv-surface, #ffffff);
 
     border: 1px solid #e3e8f0 !important;
 
@@ -4678,7 +4972,7 @@ a {
 
     border-bottom: 1px solid #edf0f4 !important;
 
-    background: #ffffff !important;
+    background: var(--sv-surface, #ffffff);
 }
 
 
@@ -5010,7 +5304,7 @@ a {
 
     border-top: 1px solid #edf0f4 !important;
 
-    background: #ffffff !important;
+    background: var(--sv-surface, #ffffff);
 }
 
 
@@ -5250,9 +5544,7 @@ a {
     overflow: hidden;
     border-radius: 22px;
     background:
-        linear-gradient(135deg,
-            #172033 0%,
-            #23355d 100%);
+        var(--sv-surface, #ffffff);
     color: #fff;
     box-shadow:
         0 20px 45px rgba(15, 23, 42, .15);
@@ -6097,10 +6389,7 @@ a {
     justify-content: center;
     padding: 30px 18px;
     background:
-        radial-gradient(circle at 10% 10%,
-            rgba(49, 88, 201, .09),
-            transparent 32%),
-        var(--sv-bg);
+        var(--sv-surface, #ffffff);
 }
 
 .auth-card {
@@ -7562,4 +7851,126 @@ textarea:focus-visible {
         animation-duration: .01ms !important;
         transition-duration: .01ms !important;
     }
+}
+
+/* Final viewport-independent accessibility and light-first overrides. */
+:root {
+    --sv-bg: #f6f8fb;
+    --sv-surface: #ffffff;
+    --sv-text: #172033;
+    --sv-border: #d7dee8;
+    --sv-primary: #173b63;
+    --sv-primary-hover: #0f2946;
+    --sv-focus: 0 0 0 3px rgb(23 59 99 / 28%);
+}
+
+html,
+body,
+#root,
+.securevault-app {
+    background: var(--sv-bg);
+    color: var(--sv-text);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--sv-primary);
+    outline-offset: 2px;
+    box-shadow: var(--sv-focus);
+}
+
+.primary-button,
+.add-button,
+.auth-button,
+.generator-button,
+.share-button,
+.save-button,
+.sv-primary-action {
+    background: var(--sv-primary) !important;
+    border-color: var(--sv-primary) !important;
+    color: #fff !important;
+}
+
+.primary-button:hover,
+.add-button:hover,
+.auth-button:hover,
+.generator-button:hover,
+.share-button:hover,
+.save-button:hover,
+.sv-primary-action:hover {
+    background: var(--sv-primary-hover) !important;
+    border-color: var(--sv-primary-hover) !important;
+}
+
+.auth-page {
+    background: var(--sv-bg);
+}
+
+.auth-card {
+    background: var(--sv-surface) !important;
+    border: 1px solid var(--sv-border) !important;
+    border-radius: 12px !important;
+    padding: 32px !important;
+    box-shadow: 0 8px 24px rgb(23 32 51 / 10%) !important;
+}
+
+.app-sidebar[role="dialog"] {
+    z-index: 20;
+}
+
+@media (max-width: 760px) {
+    .auth-card {
+        padding: 24px !important;
+    }
+}
+
+/* Keep the light-first auth surface consistent on mobile after legacy media rules. */
+.auth-page {
+    background: var(--sv-bg) !important;
+}
+
+/* Targeted conformance: flat, mature SaaS surfaces (no gradients or glow effects). */
+.sv-primary-action,
+.primary-button,
+.add-button,
+.auth-button,
+.generator-button,
+.share-button,
+.save-button {
+    background: var(--sv-primary) !important;
+    color: #fff !important;
+}
+
+.sv-primary-action:hover,
+.primary-button:hover,
+.add-button:hover,
+.auth-button:hover,
+.generator-button:hover,
+.share-button:hover,
+.save-button:hover {
+    background: var(--sv-primary-hover) !important;
+}
+
+.sv-security-hero {
+    background: #10233c !important;
+}
+
+.sv-security-hero::before,
+.sv-security-hero::after {
+    display: none !important;
+}
+
+.sv-hero-content h2 span {
+    background: none !important;
+    -webkit-text-fill-color: currentColor;
+    color: #fff !important;
+}
+
+.sv-glow,
+[class*="glow"] {
+    animation: none !important;
+    background: transparent !important;
 }

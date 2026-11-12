@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function SidebarIcon({ name }) {
     const paths = {
@@ -47,6 +47,56 @@ function AppSidebar({
 
     const [mobileOpen, setMobileOpen] =
         useState(false);
+    const menuButtonRef = useRef(null);
+    const drawerRef = useRef(null);
+
+    useEffect(() => {
+        if (!mobileOpen) return undefined;
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") {
+                setMobileOpen(false);
+                menuButtonRef.current?.focus();
+                return;
+            }
+
+            if (event.key !== "Tab" || !drawerRef.current) return;
+            const focusable = drawerRef.current.querySelectorAll(
+                'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+            );
+            if (!focusable.length) {
+                event.preventDefault();
+                drawerRef.current.focus();
+                return;
+            }
+
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        };
+
+        const main = document.querySelector(".app-main");
+        if (main) {
+            main.inert = true;
+            main.setAttribute("aria-hidden", "true");
+        }
+        document.body.style.overflow = "hidden";
+        document.addEventListener("keydown", handleKeyDown);
+        drawerRef.current?.focus();
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+            if (main) {
+                main.inert = false;
+                main.removeAttribute("aria-hidden");
+            }
+            document.body.style.overflow = "";
+        };
+    }, [mobileOpen]);
 
 
     const handleNavigate = (section) => {
@@ -181,10 +231,14 @@ function AppSidebar({
             ================================================= */}
 
             <button
+                ref={menuButtonRef}
                 className="mobile-menu-button"
                 type="button"
+                aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
+                aria-expanded={mobileOpen}
+                aria-controls="securevault-navigation"
                 onClick={() =>
-                    setMobileOpen(!mobileOpen)
+                    setMobileOpen((open) => !open)
                 }
             >
                 <span className="mobile-menu-glyph" aria-hidden="true">
@@ -201,6 +255,8 @@ function AppSidebar({
             {mobileOpen && (
                 <div
                     className="sidebar-overlay"
+                    role="presentation"
+                    aria-hidden="true"
                     onClick={() =>
                         setMobileOpen(false)
                     }
@@ -213,6 +269,12 @@ function AppSidebar({
             ================================================= */}
 
             <aside
+                id="securevault-navigation"
+                ref={drawerRef}
+                tabIndex={mobileOpen ? -1 : undefined}
+                role={mobileOpen ? "dialog" : undefined}
+                aria-modal={mobileOpen ? "true" : undefined}
+                aria-label="Primary navigation"
                 className={`app-sidebar ${mobileOpen
                     ? "sidebar-open"
                     : ""
@@ -256,6 +318,7 @@ function AppSidebar({
                             ? "active"
                             : ""
                             }`}
+                        aria-current={activeSection === "dashboard" ? "page" : undefined}
                         onClick={() =>
                             handleNavigate("dashboard")
                         }
@@ -289,6 +352,7 @@ function AppSidebar({
                                 ? "active"
                                 : ""
                                 }`}
+                            aria-current={activeSection === item.id ? "page" : undefined}
                             onClick={() =>
                                 handleNavigate(item.id)
                             }
@@ -328,6 +392,7 @@ function AppSidebar({
                                         ? "active"
                                         : ""
                                     }`}
+                                aria-current={activeSection === item.id ? "page" : undefined}
                                 onClick={() =>
                                     handleNavigate(item.id)
                                 }
@@ -363,6 +428,7 @@ function AppSidebar({
                                 ? "active"
                                 : ""
                                 }`}
+                            aria-current={activeSection === item.id ? "page" : undefined}
                             onClick={() =>
                                 handleNavigate(item.id)
                             }
@@ -400,6 +466,7 @@ function AppSidebar({
                                         ? "active"
                                         : ""
                                         }`}
+                                    aria-current={activeSection === item.id ? "page" : undefined}
                                     onClick={() =>
                                         handleNavigate(item.id)
                                     }
